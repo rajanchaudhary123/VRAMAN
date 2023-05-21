@@ -23,6 +23,7 @@ def post_save_create_profile_receiver(sender, instance, created, **kwargs):
 
 @receiver(pre_save, sender=User)
 def pre_save_profile_reciever(sender, instance, **kwargs):
-    print(instance.username, 'this is being created')       
+    #print(instance.username, 'this is being created')  
+    pass     
 
 # post_save.connect(post_save_create_profile_receiver,sender=User)
