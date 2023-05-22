@@ -9,7 +9,7 @@ from django.db.models.fields.related import ForeignKey, OneToOneField
 
 
 class UserManager(BaseUserManager):
-    def create_user(self,first_name,last_name,username,email,password=None):
+    def create_user(self,first_name,last_name,username,email,password=None,):
         if not email:
             raise ValueError('User must have email address')
         
@@ -21,6 +21,7 @@ class UserManager(BaseUserManager):
             username = username,
             first_name = first_name,
             last_name = last_name,
+            
 
         )
         user.set_password(password) #SAR256#format
@@ -86,6 +87,12 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+    def get_role(self):
+        if self.role == 1:
+            user_role = 'Vendor'
+        elif self.role == 2:
+            user_role = 'Customer'
+        return user_role
 
     
 class UserProfile(models.Model):
