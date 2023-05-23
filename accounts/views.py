@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from accounts.utils import detectUser
+from accounts.utils import detectUser,send_verification_email
 
 from vendor.forms import VendorForm
 from .forms import UserForm
@@ -39,6 +39,10 @@ def registerUser(request):
             user = form.save(commit=False)
             user.set_password(password)
             user.role = User.CUSTOMER
+
+
+            
+
             #last_name = form.cleaned_data['last_name']
             #username = form.cleaned_data['username']
             #email = form.cleaned_data['email']
@@ -47,6 +51,18 @@ def registerUser(request):
             #user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, interest=interest, password=password)
             #user.role = User.CUSTOMER
             user.save()
+
+            # send verification email
+            #mail_subject = 'Please activate your account'
+            #email_template = 'accounts/emails/account_verification_email.html'
+            send_verification_email(request, user)
+            messages.success(request, 'Your account has been registered sucessfully!')
+            return redirect('registerUser')
+             
+
+
+
+
             messages.success(request, "your account has been registered successfully!")
             return redirect('registerUser')
         else:
@@ -86,6 +102,10 @@ def registerVendor(request):
           user_profile = UserProfile.objects.get(user=user)
           vendor.user_profile = user_profile
           vendor.save()
+
+          # send verification email
+          send_verification_email(request, user)
+
           messages.success(request,"your account has been registered successfully! Please wait for approval.")
           return redirect('registerVendor')
 
@@ -101,6 +121,11 @@ def registerVendor(request):
         'v_form': v_form,
     }
    return render(request,'accounts/registerVendor.html',context)
+
+
+def activate(request, uidb64, token):
+    # activate the user by setting the is_active status true
+    return
 
 # login
 def login(request):
