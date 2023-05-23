@@ -1,0 +1,12 @@
+{% autoescape off %}
+
+
+HI {{user.first_name}},
+
+{% if is_approved %}
+Congratulations! Your company has been approved by our admin team. --Bhraman
+{% else %}
+We're sorry! You are not eligible for publishing your  packages on our website. For more details, please contact support@Bhraman.com
+{% endif %}
+
+{% endautoescape %}
