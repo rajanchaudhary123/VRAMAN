@@ -6,6 +6,13 @@ from .models import Vendor
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
 from accounts.views import check_role_vendor
+from menu.models import Category, PackageItem
+from menu.forms import CategoryForm
+
+
+def get_vendor(request):
+    vendor = Vendor.objects.get(user=request.user)
+    return vendor
 
 # Create your views here.
 @login_required(login_url='login')
@@ -37,3 +44,33 @@ def vprofile(request):
 
     }
     return render (request,'vendor/vprofile.html',context)
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def menu_builder(request):
+    vendor = get_vendor(request)
+    categories= Category.objects.filter(vendor=vendor)
+    context = {
+        'categories': categories,
+    }
+    return render(request,'vendor/menu_builder.html',context)
+
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def packageitems_by_category(request,pk=None):
+    vendor = vendor = get_vendor(request)
+    category = get_object_or_404(Category, pk=pk)
+    packageitems = PackageItem.objects.filter(vendor=vendor, category=category)
+    context = {
+        'packageitems': packageitems,
+        'category': category,
+    }
+    return render(request,'vendor/packageitems_by_category.html',context)
+
+def add_category(request):
+    form = CategoryForm()
+    context = {
+        'form' : form
+    }
+    return render(request,'vendor/add_category.html',context)
