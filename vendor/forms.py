@@ -1,5 +1,6 @@
 from django import forms
 from .models import Vendor
+from accounts.validators import allow_only_images_validator
 
 '''Category= [
     ('adventure', 'Adventure'),
@@ -11,6 +12,7 @@ from .models import Vendor
     ]'''
 
 class VendorForm(forms.ModelForm):
+    vendor_license = forms.FileField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}),validators=[allow_only_images_validator])
    # interest= forms.CharField(label='Interest ?', widget=forms.Select(choices=Category))
   
     class Meta:
