@@ -181,7 +181,7 @@ def edit_package(request, pk=None):
             print(form.errors)
 
     else:
-        form = CategoryForm(instance=package)
+        form = PackageItemForm(instance=package)
         form.fields['category'].queryset = Category.objects.filter(vendor=get_vendor(request))
 
     context = {
