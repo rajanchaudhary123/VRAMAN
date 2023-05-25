@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
 from accounts.views import check_role_vendor
 from menu.models import Category, PackageItem
-from menu.forms import CategoryForm
+from menu.forms import CategoryForm ,PackageItemForm
 from django.template.defaultfilters import slugify
 
 
@@ -129,3 +129,66 @@ def delete_category(request, pk=None):
     category.delete()
     messages.success(request, 'Category has been deleted successfully!')
     return redirect('menu_builder')
+
+#using keyword package
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+
+def add_package(request):
+    if request.method == 'POST':
+        form = PackageItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            packagetitle = form.cleaned_data['package_title']
+            package = form.save(commit=False)
+            package.vendor = get_vendor(request)
+            
+           # category.save() # here the category id will be generated
+            package.slug = slugify(packagetitle) #+'-'+str(category.id) # chicken-15
+            form.save()
+            #category.save()
+            messages.success(request, 'Package added successfully!')
+            return redirect('packageitems_by_category',package.category.id)
+        else:
+            print(form.errors)
+    else:
+     form= PackageItemForm()
+    context={
+        'form':form
+    }
+
+    return render(request, 'vendor/add_package.html',context)
+
+
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def edit_package(request, pk=None):
+    package = get_object_or_404(PackageItem, pk=pk)
+    if request.method == 'POST':
+        form = PackageItemForm(request.POST, request.FILES, instance=package)
+        if form.is_valid():
+            packagetitle = form.cleaned_data['package_title']
+            package = form.save(commit=False)
+            package.vendor = get_vendor(request)
+            package.slug = slugify(packagetitle)
+            form.save()
+            messages.success(request, 'Package updated successfully!')
+            return redirect('packageitems_by_category',package.category.id)
+        else:
+            print(form.errors)
+
+    else:
+        form = CategoryForm(instance=package)
+    context = {
+        'form': form,
+        'package': package,
+    }
+    return render(request, 'vendor/edit_package.html', context)
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def delete_package(request, pk=None):
+    package = get_object_or_404(PackageItem, pk=pk)
+    package.delete()
+    messages.success(request, 'package has been deleted successfully!')
+    return redirect('packageitems_by_category',package.category.id)
