@@ -152,6 +152,9 @@ def add_package(request):
             print(form.errors)
     else:
      form= PackageItemForm()
+     # modify this form
+     form.fields['category'].queryset = Category.objects.filter(vendor=get_vendor(request))
+
     context={
         'form':form
     }
@@ -179,6 +182,8 @@ def edit_package(request, pk=None):
 
     else:
         form = CategoryForm(instance=package)
+        form.fields['category'].queryset = Category.objects.filter(vendor=get_vendor(request))
+
     context = {
         'form': form,
         'package': package,
