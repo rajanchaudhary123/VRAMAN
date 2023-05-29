@@ -27,5 +27,11 @@ function onPlaceChanged (){
     //console.log(place);
     var geocoder = new google.maps.Geocoder()
     var address = document.getElementById('id_address').value 
+    
+   // geocoder.geocode({'address': address}, function(results, status){
+        //console.log('results=>', results)
+        //console.log('status=>', status)
+   // })
+    
 
 }
