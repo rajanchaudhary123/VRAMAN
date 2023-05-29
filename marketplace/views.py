@@ -25,6 +25,11 @@ def vendor_detail(request, vendor_slug):
         'vendor':vendor,
         'categories':categories,
     }
-        
 
     return render(request, 'marketplace/vendor_detail.html',context)
+
+
+def review_rating(request):
+        
+
+    return render(request, 'marketplace/review_rating.html')
