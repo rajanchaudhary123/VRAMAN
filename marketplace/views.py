@@ -7,6 +7,7 @@ from django.contrib import messages
 from .models import ReviewRating
 from django.contrib.auth.decorators import login_required,user_passes_test
 from accounts.views import check_role_customer
+from django.http import HttpResponse
 
 def marketplace(request):
     vendors = Vendor.objects.filter(is_approved=True, user__is_active=True)
@@ -60,5 +61,6 @@ def submit_review(request, vendor_id):
 
 
        
-        
-    
+#in video139
+def add_to_cart(request, package_id):
+    return HttpResponse('testing')

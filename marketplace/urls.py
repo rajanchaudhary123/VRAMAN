@@ -9,7 +9,7 @@ urlpatterns = [
     path('submit_review/<int:vendor_id>/',views.submit_review,name='submit_review'),
 
     # ADD TO CART
-    #path('add_to_cart/<int:food_id>/', views.add_to_cart, name='add_to_cart'),
+    path('add_to_cart/<int:package_id>/', views.add_to_cart, name='add_to_cart'),
     # DECREASE CART
     #path('decrease_cart/<int:food_id>/', views.decrease_cart, name='decrease_cart'),
     # DELETE CART ITEM

@@ -204,8 +204,10 @@ label:hover ~ input:checked ~ label{
                                                 <div class="price-holder">
                                                     <span class="price">${{package.price}}</span>
 
-                                                    <a href="#" class="restaurant_add-menu"><i class="icon-plus4 text-color"></i></a>
-                                                    <sapn id="add-menu-loader-10"></sapn>
+                                                 
+                                                    <a href="#" class="decrease_cart"  style="margin-right: 28px;"><i class="icon-minus text-color"></i></a>
+                                                    <label id="qty">0</label>
+                                                    <a href="#" class="add_to_cart"><i class="icon-plus4 text-color"></i></a>
                                                 </div>
                                             </li>
                                             {% endfor %}
