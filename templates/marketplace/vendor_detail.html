@@ -28,6 +28,7 @@
 	<script src="{% static 'js/modernizr.js' %}"></script>
 	<script src="{% static 'js/bootstrap.js' %}"></script>
 	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <script src="{% static 'js/custom.js'%}"></script>
 
 	<style>
 		body, .main-section p, .mce-content-body p{
@@ -204,11 +205,10 @@ label:hover ~ input:checked ~ label{
                                                 <div class="price-holder">
                                                     <span class="price">${{package.price}}</span>
 
-                                                 
-                                                    <a href="#" class="decrease_cart"  style="margin-right: 28px;"><i class="icon-minus text-color"></i></a>
-                                                    <label id="qty">0</label>
-                                                    <a href="#" class="add_to_cart"><i class="icon-plus4 text-color"></i></a>
-                                                </div>
+                                                    <a href="#" class="decrease_cart" data-id="{{ package.id }}" data-url="{% url 'decrease_cart' package.id %}" style="margin-right: 28px;"><i class="icon-minus text-color"></i></a>
+                                                    <label id="qty-{{package.id}}">0</label>
+                                                    <a href="#" class="add_to_cart" data-id="{{ package.id }}" data-url="{% url 'add_to_cart' package.id %}"><i class="icon-plus4 text-color"></i></a>
+                                                    </div>
                                             </li>
                                             {% endfor %}
                                             
@@ -216,6 +216,13 @@ label:hover ~ input:checked ~ label{
                                         {% endfor %}
                                         
                                     </div>
+                                    {% for item in cart_items %}
+
+                                    <span id="qty-{{item.packageitem.id}}" class="item_qty d-none" data-qty="{{ item.quantity }}">{{ item.quantity }}</span>
+
+                                    
+
+                                    {% endfor %}
                                 </div>
                             </div>
                             
