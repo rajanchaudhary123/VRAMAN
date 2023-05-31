@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from accounts.views import check_role_customer
 from django.http import HttpResponse,JsonResponse
 from .models import Cart
-from .context_processors import get_cart_counter
+from .context_processors import get_cart_counter, get_cart_amounts
 
 def marketplace(request):
     vendors = Vendor.objects.filter(is_approved=True, user__is_active=True)
@@ -81,11 +81,11 @@ def add_to_cart(request, package_id):
                     # decrease the cart quantity
                     chkCart.quantity += 1
                     chkCart.save()
-                    return JsonResponse({'status': 'Success', 'message': 'Increased the cart quantity','cart_counter': get_cart_counter(request), 'qty': chkCart.quantity})
+                    return JsonResponse({'status': 'Success', 'message': 'Increased the cart quantity','cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
                 
                except:
                     chkCart = Cart.objects.create(user=request.user, packageitem=packageitem, quantity=1)
-                    return JsonResponse({'status': 'Success', 'message': 'Added the package to the cart', 'cart_counter': get_cart_counter(request), 'qty': chkCart.quantity})
+                    return JsonResponse({'status': 'Success', 'message': 'Added the package to the cart', 'cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
                
            
            except:
@@ -117,7 +117,7 @@ def decrease_cart(request, package_id):
                     else:
                         chkCart.delete()
                         chkCart.quantity = 0
-                    return JsonResponse({'status': 'Success','cart_counter': get_cart_counter(request), 'qty': chkCart.quantity})
+                    return JsonResponse({'status': 'Success','cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
                 
                except:
                     return JsonResponse({'status': 'Failed', 'message': 'You dont have this package in cart!!'})
@@ -132,4 +132,28 @@ def decrease_cart(request, package_id):
 
    else: 
       return JsonResponse({'status': 'login_required', 'message': 'Please login to continue'})
+
+@login_required(login_url = 'login')
+def cart(request):
+    cart_items = Cart.objects.filter(user=request.user).order_by('created_at')
+    context = {
+        'cart_items' : cart_items,
+    }
+    return render(request,'marketplace/cart.html', context)
+
+def delete_cart(request, cart_id):
+    if request.user.is_authenticated:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            try:
+                #check if the cart item exists
+                cart_item = Cart.objects.get(user=request.user, id=cart_id)
+                if cart_item:
+                    cart_item.delete()
+                    return JsonResponse({'status': 'Success','message':'Cart item has been deleted!','cart_counter': get_cart_counter(request),'cart_amount':get_cart_amounts(request)})
+            except:
+                return JsonResponse({'status': 'Failed', 'message': 'You dont have this package in cart!!'})
+    else:
+        return JsonResponse({'status': 'Failed', 'message': 'Request invalid'})
+
+
         
