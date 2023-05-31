@@ -90,10 +90,13 @@ $(document).ready(function(){
        
         success: function(response){
             console.log(response)
-            if(response.status == 'login_required'){
-                swal(response.message, '', 'info')
-
-            }
+         if(response.status == 'login_required'){
+                swal(response.message, '', 'info').then(function(){
+                    window.location = '/login';
+                })
+            }if(response.status == 'Failed'){
+                    swal(response.message, '', 'error')
+                } 
             else{
                 $('#cart_counter').html(response.cart_counter['cart_count']);
                 $('#qty-'+package_id).html(response.qty);
@@ -121,17 +124,17 @@ $(document).ready(function(){
     $.ajax({
         type: 'GET',
         url: url,
-       
         success: function(response){
             console.log(response)
-            if(response.status == 'Failed'){
-                console.log(response)
-
-            }
-            else{
+            if(response.status == 'login_required'){
+                swal(response.message, '', 'info').then(function(){
+                    window.location = '/login';
+                })
+            }else if(response.status == 'Failed'){
+                swal(response.message, '', 'error')
+            }else{
                 $('#cart_counter').html(response.cart_counter['cart_count']);
                 $('#qty-'+package_id).html(response.qty);
-
             }
 
            
