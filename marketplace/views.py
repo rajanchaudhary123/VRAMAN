@@ -10,6 +10,7 @@ from accounts.views import check_role_customer
 from django.http import HttpResponse,JsonResponse
 from .models import Cart
 from .context_processors import get_cart_counter, get_cart_amounts
+from django.db.models import Q
 
 def marketplace(request):
     vendors = Vendor.objects.filter(is_approved=True, user__is_active=True)
@@ -154,6 +155,26 @@ def delete_cart(request, cart_id):
                 return JsonResponse({'status': 'Failed', 'message': 'You dont have this package in cart!!'})
     else:
         return JsonResponse({'status': 'Failed', 'message': 'Request invalid'})
+    
+def search(request):
+    address = request.GET['address']
+    latitude = request.GET['lat']
+    longitude = request.GET['lng']
+    radius = request.GET['radius']
+    keyword = request.GET['keyword']
+    
+    # get vendor ids that has the food item the user is looking for
+    fetch_vendors_by_packageitems = PackageItem.objects.filter(package_title__icontains=keyword, is_available=True).values_list('vendor', flat=True)
+    
+    vendors = Vendor.objects.filter(Q(id__in=fetch_vendors_by_packageitems) | Q(vendor_name__icontains=keyword, is_approved=True, user__is_active=True)) #Q is used in case of or logic ie complex query
+    vendor_count = vendors.count()
+    context = {
+            'vendors': vendors,
+            'vendor_count': vendor_count,
+           
+        }
+    
+    return render(request,'marketplace/listings.html',context)
 
 
         
