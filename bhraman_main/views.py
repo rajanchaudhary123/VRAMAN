@@ -23,6 +23,7 @@ def get_or_set_current_location(request):
         return None
 
 def home(request):
+    package=PackageItem.objects.filter(is_available=True)[:8]
     if get_or_set_current_location(request) is not None:
     
 
@@ -37,5 +38,6 @@ def home(request):
         vendors = Vendor.objects.filter(is_approved=True, user__is_active=True)[:8]
     context = {
         'vendors': vendors,
+        'package': package
     }
     return render(request, 'home.html', context)
