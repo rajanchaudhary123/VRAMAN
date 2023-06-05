@@ -107,6 +107,9 @@ label:hover ~ input:checked ~ label{
                         </li>
                         <div class="text-holder">
                             <h4>{{package.description}}</h4>
+                            <h4>{{package.id}}</h4>
+                            <h4>{{package.slug}}</h4>
+                            
                         </div>
                         <div class="price-holder">
                             <span class="price">${{package.price}}</span>
@@ -115,7 +118,7 @@ label:hover ~ input:checked ~ label{
                             <label id="qty-{{package.id}}">0</label>
                             <a href="#" class="add_to_cart" data-id="{{ package.id }}" data-url="{% url 'add_to_cart' package.id %}"><i class="icon-plus4 text-color"></i></a>
                             </div>
-                        {% endfor %}
+                        
 
                         
 
@@ -133,8 +136,8 @@ label:hover ~ input:checked ~ label{
 <!-- Main Section End -->
 <div class="row">
     <div class="col-md-9">
-        <form action="#" method="POST">
-            {% comment %} {% url 'submit_review' single_product.id %} {% endcomment %}
+        <form  action="{% url 'submit_review_package' package.id %}" method="POST">
+            
             {% csrf_token %}
             <h5>Write Your Review</h5>
 
@@ -155,6 +158,7 @@ label:hover ~ input:checked ~ label{
                     <input type="radio" name="rating" id="rating1" value="0.5" required /><label for="rating1" title="0.5" class="half"></label>
                 </div>
 <br>
+                
                 Review Title:
                 <input type="text" class="form-control" name="subject">
                 <br>
@@ -183,6 +187,7 @@ label:hover ~ input:checked ~ label{
             </div>
 {% include 'includes/alerts.html' %}
         </form>
+        {% endfor %}
 <br>
 <header class="section-heading">
 <h3>Customer Reviews </h3>
@@ -193,7 +198,7 @@ label:hover ~ input:checked ~ label{
     <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview >= 2.5 and single_product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
     <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview >= 3.5 and single_product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
     <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
-<span>{{single_product.countReview}} reviews</span>
+<span>{{vendor.countReview}} reviews</span>
     </span>
 </div>
 
