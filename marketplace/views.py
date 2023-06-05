@@ -2,9 +2,9 @@ from django.shortcuts import get_object_or_404, render , redirect
 from vendor.models import  Vendor
 from menu.models import Category, PackageItem
 from django.db.models import Prefetch
-from .forms import ReviewForm
+from .forms import ReviewForm,ReviewFormPackage
 from django.contrib import messages
-from .models import ReviewRating
+from .models import ReviewRating,ReviewRatingPackage
 from django.contrib.auth.decorators import login_required,user_passes_test
 from accounts.views import check_role_customer
 from django.http import HttpResponse,JsonResponse
@@ -66,6 +66,30 @@ def submit_review(request, vendor_id):
                 data.review = form.cleaned_data['review']
                 data.ip = request.META.get('REMOTE_ADDR')
                 data.vendor_id = vendor_id
+                data.user_id = request.user.id
+                data.save()
+                messages.success(request, 'Thank you! Your review has been submitted.')
+                return redirect(url)
+@login_required(login_url='login')
+@user_passes_test(check_role_customer)
+def submit_review_package(request, package_id):
+    url = request.META.get('HTTP_REFERER')
+    if request.method == "POST":
+        try:
+            reviews = ReviewRatingPackage.objects.get(user__id=request.user.id, package__id =package_id)
+            form = ReviewFormPackage(request.POST,instance=reviews)
+            form.save()
+            messages.success(request,"Review has been updated.")
+            return redirect(url)
+        except ReviewRatingPackage.DoesNotExist:
+            form = ReviewFormPackage(request.POST)
+            if form.is_valid():
+                data = ReviewRatingPackage()
+                data.subject = form.cleaned_data['subject']
+                data.rating = form.cleaned_data['rating']
+                data.review = form.cleaned_data['review']
+                data.ip = request.META.get('REMOTE_ADDR')
+                data.package_id = package_id
                 data.user_id = request.user.id
                 data.save()
                 messages.success(request, 'Thank you! Your review has been submitted.')
@@ -195,6 +219,16 @@ def search(request):
             }
         
         return render(request,'marketplace/listings.html',context)
+    
+def package_detail(request, package_id):
+    package=PackageItem.objects.filter(id=package_id)
+    context={
+        'package':package,
+    }
+   
+   
+    return render(request, 'marketplace/package_detail.html',context)
+
 
 
             
