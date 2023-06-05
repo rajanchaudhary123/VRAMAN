@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ReviewRating
+from .models import ReviewRating,ReviewRatingPackage
 from .models import Cart
 
 
@@ -10,5 +10,8 @@ class CartAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(ReviewRating)
+
 admin.site.register(Cart, CartAdmin)
+
+admin.site.register(ReviewRatingPackage)
 

@@ -200,7 +200,7 @@ label:hover ~ input:checked ~ label{
                                             <li>
                                                 <div class="image-holder"> <img src="{{ package.image.url }}" alt=""></div>
                                                 <div class="text-holder">
-                                                    <h6>{{ package }}</h6>
+                                                    <h6><a href="{% url 'package_detail' package.id %}" >{{ package}}</a></h6> 
                                                     <span>{{ package.description }}</span>
                                                 </div>
                                                 <div class="price-holder">
@@ -344,3 +344,4 @@ label:hover ~ input:checked ~ label{
 
 
 {% endblock %}
+{% include 'includes/footer.html' %}
