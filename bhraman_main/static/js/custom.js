@@ -104,6 +104,7 @@ $(document).ready(function () {
             response.cart_amount['tax_dict'],
             response.cart_amount['grand_total']
         )
+        console.log(response.cart_amount['tax_dict']);
         }
       },
     });
@@ -203,7 +204,6 @@ $(document).ready(function () {
   function applyCartAmounts(subtotal, tax_dict, grand_total){
     if(window.location.pathname == '/cart/'){
         $('#subtotal').html(subtotal)
-        
         $('#total').html(grand_total)
 
         console.log(tax_dict)
