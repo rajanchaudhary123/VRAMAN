@@ -203,7 +203,7 @@ $(document).ready(function () {
   function applyCartAmounts(subtotal, tax_dict, grand_total){
     if(window.location.pathname == '/cart/'){
         $('#subtotal').html(subtotal)
-        $('#tax').html(tax)
+        
         $('#total').html(grand_total)
 
         console.log(tax_dict)
