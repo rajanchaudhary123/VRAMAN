@@ -199,22 +199,21 @@ $(document).ready(function () {
     }
   }
 
-  // apply cart amounts
-  function applyCartAmounts(subtotal, tax_dict, grand_total){
-    if(window.location.pathname == '/cart/'){
-        $('#subtotal').html(subtotal)
-        $('#tax').html(tax)
-        $('#total').html(grand_total)
+ // apply cart amounts
+ function applyCartAmounts(subtotal, tax_dict, grand_total){
+  if(window.location.pathname == '/cart/'){
+      $('#subtotal').html(subtotal)
+      $('#total').html(grand_total)
 
-        console.log(tax_dict)
-        for(key1 in tax_dict){
-            console.log(tax_dict[key1])
-            for(key2 in tax_dict[key1]){
-                // console.log(tax_dict[key1][key2])
-                $('#tax-'+key1).html(tax_dict[key1][key2])
-            }
-        }
-    }
+      console.log(tax_dict)
+      for(key1 in tax_dict){
+          console.log(tax_dict[key1])
+          for(key2 in tax_dict[key1]){
+              // console.log(tax_dict[key1][key2])
+              $('#tax-'+key1).html(tax_dict[key1][key2])
+          }
+      }
+  }
 }
 
 });
