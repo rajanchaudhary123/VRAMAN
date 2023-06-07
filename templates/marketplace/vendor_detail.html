@@ -117,8 +117,18 @@ label:hover ~ input:checked ~ label{
                                 <div class="text">
                                     {% if vendor.user_profile.address %}
                                     <i class="icon-location"></i>
-                                    <p>{{vendor.user_profile.address}}</p>
+                                    <p>{{vendor.user_profile.address}} </p>
+                                    
                                     {% endif %}
+                                    
+                                </div>
+                                <div class="text">
+                                    {% if vendor.user_profile.address %}
+                                    <i class="icon-mail"></i>
+                                    <p>{{vendor.user.email}} </p>
+                                    
+                                    {% endif %}
+                                    
                                 </div>
                                
                             </div>
