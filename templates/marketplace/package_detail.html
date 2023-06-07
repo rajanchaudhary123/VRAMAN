@@ -141,7 +141,7 @@ label:hover ~ input:checked ~ label{
             {% csrf_token %}
             <h5>Write Your Review</h5>
 
-            <div>
+            <>
                 <!-- Rating stars -->
                 <label>How do you rate this product?</label>
                 <br>
@@ -183,13 +183,12 @@ label:hover ~ input:checked ~ label{
                 <div class="alert alert-danger" role="alert" style="margin-top:10px;">
 2-Factor Review Submission is disabled for demo purpose.
 </div>
-
             </div>
 {% include 'includes/alerts.html' %}
         </form>
         {% endfor %}
 <br>
-<header class="section-heading">
+<!--<header class="section-heading">
 <h3>Customer Reviews </h3>
 <div class="rating-star">
 <span>
@@ -221,7 +220,7 @@ label:hover ~ input:checked ~ label{
                         </span>
                     </div>
                 </div>
-            </div> <!-- icontext.// -->
+            </div> 
             <div class="mt-3">
                 <h6>{{review.subject}}</h6>
                 <p>
@@ -232,11 +231,13 @@ label:hover ~ input:checked ~ label{
 {% endfor %}
 
 
-    </div> <!-- col.// -->
-</div> <!-- row.// -->
+    </div> 
+</div> 
 
 
-</div> <!-- container .//  -->
-</section>
+</div> 
+</section>-->
 <!-- ========================= SECTION CONTENT END// ========================= -->
 {% endblock %}
+
+{% include 'includes/footer.html' %}

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.db.models.fields.related import ForeignKey, OneToOneField
+from django.core.validators import RegexValidator
 
 
 from django.contrib.gis.db import models as gismodels
@@ -63,7 +64,15 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=12, blank=True)
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$',
+        message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
+    )
+    phone_number = models.CharField(
+        max_length=17,
+        blank=True,
+        validators=[phone_regex]
+    )
     interest = models.CharField(max_length=50, null=False )
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICE, blank=True, null=True)
 
@@ -97,7 +106,10 @@ class User(AbstractBaseUser):
             user_role = 'Customer'
         return user_role
 
-    
+    def clean(self):
+        super().clean()
+        if self.phone_number:
+            self.phone_number = self.phone_number.strip()
 class UserProfile(models.Model):
     user = OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     profile_picture = models.ImageField(upload_to='users/profile_pictures', blank=True, null=True)

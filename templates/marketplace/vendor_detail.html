@@ -123,8 +123,9 @@ label:hover ~ input:checked ~ label{
                                     
                                 </div>
                                 <div class="text">
+                                    <a href="mailto:{{vendor.user.email}}">Example mailto link</a>
                                     {% if vendor.user_profile.address %}
-                                    <i class="icon-mail"></i>
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
                                     <p>{{vendor.user.email}} </p>
                                     
                                     {% endif %}
@@ -211,7 +212,6 @@ label:hover ~ input:checked ~ label{
                                                 <div class="image-holder"> <img src="{{ package.image.url }}" alt=""></div>
                                                 <div class="text-holder">
                                                     <h6><a href="{% url 'package_detail' package.id %}" >{{ package}}</a></h6> 
-                                                    <span>{{ package.description }}</span>
                                                 </div>
                                                 <div class="price-holder">
                                                     <span class="price">${{package.price}}</span>
@@ -293,14 +293,14 @@ label:hover ~ input:checked ~ label{
                 <p>You must be logged in to post a review. <span><a href="{% url 'login' %}">Login now</a></span></p>
                 {% endif %}
                 <div class="alert alert-danger" role="alert" style="margin-top:10px;">
-2-Factor Review Submission is disabled for demo purpose.
-</div>
+                2-Factor Review Submission is disabled for demo purpose.
+                </div>
 
-            </div>
+</div>
 {% include 'includes/alerts.html' %}
         </form>
 <br>
-<header class="section-heading">
+<!--<header class="section-heading">
 <h3>Customer Reviews </h3>
 <div class="rating-star">
 <span>
@@ -332,7 +332,7 @@ label:hover ~ input:checked ~ label{
                         </span>
                     </div>
                 </div>
-            </div> <!-- icontext.// -->
+            </div>   
             <div class="mt-3">
                 <h6>{{review.subject}}</h6>
                 <p>
@@ -343,12 +343,12 @@ label:hover ~ input:checked ~ label{
 {% endfor %}
 
 
-    </div> <!-- col.// -->
-</div> <!-- row.// -->
+    
+</div> 
 
 
-</div> <!-- container .//  -->
-</section>
+</div> 
+</section> -->
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
 
