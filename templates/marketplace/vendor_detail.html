@@ -219,7 +219,6 @@ label:hover ~ input:checked ~ label{
                                     </div>
                                     {% for item in cart_items %}
 
-Swati Verma, [6/8/2023 11:57 AM]
 <span id="qty-{{item.packageitem.id}}" class="item_qty d-none" data-qty="{{ item.quantity }}">{{ item.quantity }}</span>
 
                                     
@@ -238,8 +237,8 @@ Swati Verma, [6/8/2023 11:57 AM]
 </div>
 
 <!-- Main Section End -->
-<div class="row">
-    <div class="col-md-9">
+<div class="row"style="margin-left: 100px; margin-top: 10px;">
+    <div class="col-md-9" style="margin-left: 200px; margin-top: 10px;">
         <form action="{% url 'submit_review' vendor.id %}" method="POST">
             {% comment %} {% url 'submit_review' single_product.id %} {% endcomment %}
             {% csrf_token %}
