@@ -1,6 +1,7 @@
 from django import forms
 from .models import User,UserProfile
 from .validators import allow_only_images_validator
+from django.core.validators import RegexValidator
 
 Interest= [
     ('adventure', 'Adventure'),
@@ -48,3 +49,18 @@ class UserProfileForm(forms.ModelForm):
         for field in self.fields:
             if field == 'latitude' or field == 'longitude':
                 self.fields[field].widget.attrs['readonly'] = 'readonly' 
+
+class UserInfoForm(forms.ModelForm):
+    phone_regex = RegexValidator(
+        regex=r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$',
+        message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
+    )
+
+    phone_number = forms.CharField(validators=[phone_regex])
+    class Meta:
+        model = User
+        fields = ['first_name','last_name','phone_number']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['phone_number'].error_messages = {'invalid': 'Invalid phone number format.'}
