@@ -2,7 +2,6 @@ asgiref==3.6.0
 distlib==0.3.6
 Django==4.2.1
 filelock==3.12.0
-GDAL @ file:///C:/Users/User/Desktop/swt/VRAMAN/GDAL-3.4.3-cp311-cp311-win_amd64.whl
 Pillow==9.5.0
 platformdirs==3.5.1
 psycopg2-binary==2.9.6
