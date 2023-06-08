@@ -132,8 +132,8 @@ label:hover ~ input:checked ~ label{
     </div>
 </div>
 <!-- Main Section End -->
-<div class="row">
-    <div class="col-md-9">
+<div class="row"style="margin-left: 100px; margin-top: 10px;">
+    <div class="col-md-9" style="margin-left: 200px; margin-top: 10px;">
         <form  action="{% url 'submit_review_package' package.id %}" method="POST">
             
             {% csrf_token %}
