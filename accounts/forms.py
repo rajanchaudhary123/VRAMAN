@@ -32,6 +32,12 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$',
+        message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
+    )
+
+    phone_number = forms.CharField(validators=[phone_regex])
     address = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Start typing...', 'required': 'required'}))
     profile_picture = forms.FileField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}),validators=[allow_only_images_validator])
     cover_photo = forms.FileField(widget=forms.FileInput(attrs={'class': 'btn btn-info'}),validators=[allow_only_images_validator])
@@ -41,18 +47,26 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ['profile_picture', 'cover_photo', 'address','country', 'state', 'city', 'pin_code', 'latitude', 'longitude']
+        fields = ['profile_picture', 'cover_photo','phone_number', 'address','country', 'state', 'city', 'pin_code', 'latitude', 'longitude']
 
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         for field in self.fields:
             if field == 'latitude' or field == 'longitude':
-                self.fields[field].widget.attrs['readonly'] = 'readonly' 
+                self.fields[field].widget.attrs['readonly'] = 'readonly'
+                
+            
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['phone_number'].error_messages = {'invalid': 'Invalid phone number format.'}
+    
+   
 
 class UserInfoForm(forms.ModelForm):
     phone_regex = RegexValidator(
-        regex=r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$',
+        regex=r'^\+?1?\d{9,15}$',   #r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$',
         message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
     )
 

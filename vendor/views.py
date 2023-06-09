@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render,redirect
 from .forms import VendorForm
 from accounts.forms import UserProfileForm
-from accounts.models import UserProfile
+from accounts.models import UserProfile,User
 from .models import Vendor
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
@@ -20,6 +20,8 @@ def get_vendor(request):
 @user_passes_test(check_role_vendor)
 def vprofile(request):
     profile = get_object_or_404(UserProfile, user=request.user)
+   
+   
     vendor = get_object_or_404(Vendor, user=request.user)
 
     if request.method == 'POST':
@@ -42,6 +44,8 @@ def vprofile(request):
         'vendor_form': vendor_form,
         'profile':profile,
         'vendor': vendor,
+        
+        
 
     }
     return render (request,'vendor/vprofile.html',context)
@@ -199,3 +203,4 @@ def delete_package(request, pk=None):
     package.delete()
     messages.success(request, 'package has been deleted successfully!')
     return redirect('packageitems_by_category',package.category.id)
+

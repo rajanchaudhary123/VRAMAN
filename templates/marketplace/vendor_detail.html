@@ -119,6 +119,22 @@ label:hover ~ input:checked ~ label{
                                     <p>{{vendor.user_profile.address}}</p>
                                     {% endif %}
                                 </div>
+                                <div class="text">
+                                    {% if vendor.user.email %}
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    <a href="mailto:{{vendor.user.email}}"style='color: white'>{{vendor.user.email}}</a>
+                                    
+                                    {% endif %}
+                                </div>
+                                <div class="text">
+                                    {% if vendor.user.phone_number %}
+                                    
+                                    <i class='fa fa-phone' ></i>
+                                    <p>{{vendor.user_profile.phone_number}}</p>
+                                    
+                                    {% endif %}
+                                </div>
+                                
                                
                             </div>
                         </div>
