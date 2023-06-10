@@ -128,7 +128,7 @@ env.bak/
 venv.bak/
 myenv/
 renv/
-
+meroenv/
 # Spyder project settings
 .spyderproject
 .spyproject
