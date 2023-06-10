@@ -168,6 +168,6 @@ DEFAULT_FROM_EMAIL = 'BHRAMAN marketplace <bhraman653@gmail.com>'
 GOOGLE_API_KEY ='AIzaSyCh9w2d8jWhKXSTRtLqa9521VGVkiR5wU4'
 
 
-os.environ['PATH'] = os.path.join(BASE_DIR, 'myenv\Lib\site-packages\osgeo') + ';' + os.environ['PATH']
-os.environ['PROJ_LIB'] = os.path.join(BASE_DIR, 'myenv\Lib\site-packages\osgeo\data\proj') + ';' + os.environ['PATH']
-GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'myenv\Lib\site-packages\osgeo\gdal304.dll')
+os.environ['PATH'] = os.path.join(BASE_DIR, 'meroenv\Lib\site-packages\osgeo') + ';' + os.environ['PATH']
+os.environ['PROJ_LIB'] = os.path.join(BASE_DIR, 'meroenv\Lib\site-packages\osgeo\data\proj') + ';' + os.environ['PATH']
+GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'meroenv\Lib\site-packages\osgeo\gdal304.dll')
