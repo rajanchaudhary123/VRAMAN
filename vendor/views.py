@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, render,redirect
 from django.http import HttpResponse,JsonResponse
 from .forms import VendorForm,OpeningHourForm
 from accounts.forms import UserProfileForm
+from accounts.models import UserProfile,User
+from .models import Vendor
 from accounts.models import UserProfile
 from .models import Vendor, OpeningHour
 from django.contrib import messages
@@ -22,6 +24,8 @@ def get_vendor(request):
 @user_passes_test(check_role_vendor)
 def vprofile(request):
     profile = get_object_or_404(UserProfile, user=request.user)
+   
+   
     vendor = get_object_or_404(Vendor, user=request.user)
 
     if request.method == 'POST':
@@ -44,6 +48,8 @@ def vprofile(request):
         'vendor_form': vendor_form,
         'profile':profile,
         'vendor': vendor,
+        
+        
 
     }
     return render (request,'vendor/vprofile.html',context)
