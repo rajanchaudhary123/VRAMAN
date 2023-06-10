@@ -115,6 +115,15 @@ class UserProfile(models.Model):
     profile_picture = models.ImageField(upload_to='users/profile_pictures', blank=True, null=True)
     cover_photo = models.ImageField(upload_to='users/cover_photos', blank=True, null=True)
     address = models.CharField(max_length=250, blank=True, null=True)
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$',
+        message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
+    )
+    phone_number = models.CharField(
+        max_length=17,
+        blank=True,
+        validators=[phone_regex]
+    )
     
     country = models.CharField(max_length=15, blank=True, null=True)
     state = models.CharField(max_length=20, blank=True, null=True)

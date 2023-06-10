@@ -1,4 +1,4 @@
-from .models import Cart, Tax
+from .models import Cart,Tax
 from menu.models import PackageItem
 
 #making cart count 
@@ -38,5 +38,3 @@ def get_cart_amounts(request):
         grand_total = subtotal + tax
     
     return dict(subtotal=subtotal, tax=tax, grand_total=grand_total, tax_dict=tax_dict)
-      
-
