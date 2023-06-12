@@ -1,7 +1,10 @@
+import datetime
 import json
 from django.db import models
+from django.forms import ValidationError
 from accounts.models import User
 from menu.models import PackageItem
+from django.utils import timezone
 
 
 class Payment(models.Model):
@@ -27,6 +30,10 @@ class Order(models.Model):
         ('Cancelled', 'Cancelled'),
     )
 
+    def validate_date(date):
+      if date < timezone.now().date():
+        raise ValidationError("Date cannot be in the past")
+
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
    # vendors = models.ManyToManyField(Vendor, blank=True)
@@ -36,6 +43,8 @@ class Order(models.Model):
     phone = models.CharField(max_length=15, blank=True)
     email = models.EmailField(max_length=50)
     address = models.CharField(max_length=200)
+    start_date = models.DateField(max_length=200,blank=False,null=True,default=None, validators=[validate_date])
+    end_date = models.DateField(max_length=200,blank=False,null=True,default=None, validators=[validate_date])
     country = models.CharField(max_length=15, blank=True)
     state = models.CharField(max_length=25, blank=True)
     city = models.CharField(max_length=50)
