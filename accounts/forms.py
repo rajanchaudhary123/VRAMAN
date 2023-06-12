@@ -58,6 +58,9 @@ class UserProfileForm(forms.ModelForm):
                 
             
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['phone_number'].error_messages = {'invalid': 'Invalid phone number format.'}
     
 
 class UserInfoForm(forms.ModelForm):
@@ -71,3 +74,6 @@ class UserInfoForm(forms.ModelForm):
         model = User
         fields = ['first_name','last_name','phone_number']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['phone_number'].error_messages = {'invalid': 'Invalid phone number format.'}

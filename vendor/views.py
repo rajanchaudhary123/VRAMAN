@@ -15,6 +15,8 @@ from django.template.defaultfilters import slugify
 from django.db import IntegrityError
 
 
+
+
 def get_vendor(request):
     vendor = Vendor.objects.get(user=request.user)
     return vendor
