@@ -62,7 +62,6 @@ class UserProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['phone_number'].error_messages = {'invalid': 'Invalid phone number format.'}
     
-   
 
 class UserInfoForm(forms.ModelForm):
     phone_regex = RegexValidator(
