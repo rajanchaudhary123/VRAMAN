@@ -60,8 +60,8 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-@property
-def name(self):
+    @property
+    def name(self):
         return f'{self.first_name} {self.last_name}'
 
 def order_placed_to(self):
