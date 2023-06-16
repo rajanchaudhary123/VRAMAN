@@ -106,12 +106,12 @@
                                             {% if order.payment_method == 'PayPal' %}
                                             <!-- PayPal Checkout Button -->
                                             <div id="paypal-button-container"></div>
-                                            {% elif order.payment_method == 'RazorPay' %}
-                                            <div id="rzp_payment_button">
-                                                <button class="btn btn-danger w-100 p-2" id="rzp-button1">Pay with RazorPay</button>
-                                                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-                                            </div>
+                                            {% elif order.payment_method == 'SajiloPay' %}
+                                            <!-- <div id="sajilopay_payment_button"> -->
+                                              <button type="submit" id="payment-button-wallet" class="wallet-btn wallet-btn-primary"></button>
+                                            <!-- </div> -->
                                             {% endif %}
+                                            
                                         </ul>
                                     </div>
                                     
@@ -208,7 +208,45 @@ onApprove: function(data, actions) {
                 window.location.href = order_complete +'?order_no='+response.order_number+'&trans_id='+response.transaction_id
             }
         })
-    }
+    }                                           
+    let transaction_id = uuidv4();
+   
+                                                $('#payment-button-wallet').on('click', function (e) {
+                                                e.preventDefault();
+                                                
+                                                let paymentDetails = {
+                                                vendor_key :"production_9fd0f8ca-aa3c-4633-ae44-20b96de67103",
+                                                title: "Bhraman",
+                                                description: "category",
+                                                amount : grand_total,
+                                                transaction_id: transaction_id,
+                                                response_url:"/home",
+                                                cancellation_url:"/home",
+                                                payment_method: "sajilopay",
+                                                }
+                                                //request payment process
+                                                $.ajax({
+                                                type: 'POST',
+                                                url: 'https://sandboxapi.sajilopay.com.np/api/merchant/process-payment',
+                                                async: true,
+                                                data: paymentDetails,
+                                                success: function (resp) {
+                                                    // Call the sendTransaction function with the updated transaction_id
+                                                     sendTransaction(paymentDetails.transaction_id, paymentDetails.payment_method, resp.status);
+
+
+                                                //your code after success.
+                                                //redirect the page to the URL obtained from the response.
+                                                location.href = resp.redirect_url;
+                                                },
+                                                error: function (resp) {
+                                                //your code on error
+                                                }
+                                                });
+                                                })
+                                                
 </script>
+<script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuid.min.js"></script>
+
 <!-- Main Section End -->
 {% endblock %}
