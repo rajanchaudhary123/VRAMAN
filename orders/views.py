@@ -5,10 +5,11 @@ from menu.models import PackageItem
 from .models import Order, OrderedPackage, Payment
 from marketplace.context_processors import get_cart_amounts
 import simplejson as json
-from marketplace.utils import generate_order_number
+from marketplace.utils import generate_order_number,order_total_by_vendor
 from django.http import HttpResponse, JsonResponse
 from accounts.utils import send_notification
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
 
 
 @login_required(login_url='login')
@@ -142,19 +143,19 @@ def payments(request):
         mail_subject = 'Thank you for ordering with us.'
         mail_template = 'orders/order_confirmation_email.html'
 
-        ordered_food = OrderedPackage.objects.filter(order=order)
+        ordered_package = OrderedPackage.objects.filter(order=order)
         customer_subtotal = 0
-        for item in ordered_food:
+        for item in ordered_package:
             customer_subtotal += (item.price * item.quantity)
         tax_data = json.loads(order.tax_data)
         context = {
             'user': request.user,
             'order': order,
             'to_email': order.email,
-            #'ordered_food': ordered_food,
-            #'domain': get_current_site(request),
-            #'customer_subtotal': customer_subtotal,
-            #'tax_data': tax_data,
+            'ordered_package': ordered_package,
+            'domain': get_current_site(request),
+            'customer_subtotal': customer_subtotal,
+            'tax_data': tax_data,
         }
         send_notification(mail_subject, mail_template, context)
 
@@ -167,22 +168,22 @@ def payments(request):
                 to_emails.append(i.packageitem.vendor.user.email)
                 #print(to_emails)
 
-                #ordered_package_to_vendor = OrderedPackage.objects.filter(order=order, fooditem__vendor=i.fooditem.vendor)
-                #print(ordered_package_to_vendor)
+                ordered_package_to_vendor = OrderedPackage.objects.filter(order=order, packageitem__vendor=i.packageitem.vendor)
+                print(ordered_package_to_vendor)
 
         
                 context = {
                     'order': order,
                     'to_email': i.packageitem.vendor.user.email,
-                    #'ordered_package_to_vendor': ordered_package_to_vendor,
-                    #'vendor_subtotal': order_total_by_vendor(order, i.fooditem.vendor.id)['subtotal'],
-                    #'tax_data': order_total_by_vendor(order, i.fooditem.vendor.id)['tax_dict'],
-                    #'vendor_grand_total': order_total_by_vendor(order, i.fooditem.vendor.id)['grand_total'],
+                    'ordered_package_to_vendor': ordered_package_to_vendor,
+                    'vendor_subtotal': order_total_by_vendor(order, i.packageitem.vendor.id)['subtotal'],
+                    'tax_data': order_total_by_vendor(order, i.packageitem.vendor.id)['tax_dict'],
+                    'vendor_grand_total': order_total_by_vendor(order, i.packageitem.vendor.id)['grand_total'],
                 }
                 send_notification(mail_subject, mail_template, context)
         
-     # CLEAR THE CART IF THE PAYMENT IS SUCCESS
-       # cart_items.delete() 
+    #CLEAR THE CART IF THE PAYMENT IS SUCCESS
+        cart_items.delete() 
 
    
 
