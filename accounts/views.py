@@ -293,6 +293,6 @@ def reset_password(request):
     return render(request,'accounts/reset_password.html')   
 
   
-    
 
-    
+
+  

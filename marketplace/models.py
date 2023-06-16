@@ -3,6 +3,9 @@ from accounts.models import User
 from vendor.models import Vendor
 from menu.models import PackageItem
 
+#for colab libraries
+from django.conf import settings
+
 # Create your models here.
 class ReviewRating(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
@@ -54,3 +57,16 @@ class Tax(models.Model):
 
     def str(self):
         return self.tax_type
+    
+
+    #start of colaboration model 
+    # Create your models here.
+
+
+class CollaborativeRecommendation(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    recommended_packages = models.ManyToManyField(PackageItem)
+
+
+
+    #end of colaboration model

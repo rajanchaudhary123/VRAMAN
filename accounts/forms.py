@@ -6,7 +6,7 @@ from django.core.validators import RegexValidator
 Interest= [
     ('adventure', 'Adventure'),
     ('vacation and chill', 'Vacation and Chill'),
-    ('sight seeing', 'Sight seeing'),
+    ('sight seeing', 'Sightseeing'),
     ('pilgrimage and peace', 'Pilgrimage and Peace'),
     ('trekking','Trekking'),
     ('hiking','Hiking'),

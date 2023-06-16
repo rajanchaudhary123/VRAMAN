@@ -7,11 +7,8 @@ from django.core.validators import RegexValidator
 from django.contrib.gis.db import models as gismodels
 from django.contrib.gis.geos import Point
  
-
-
-
-
-
+ 
+ 
 class UserManager(BaseUserManager):
     def create_user(self,first_name,last_name,username,email,password=None,):
         if not email:
