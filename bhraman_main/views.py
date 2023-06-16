@@ -6,6 +6,15 @@ from menu.models import PackageItem
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.measure import D # ``D`` is a shortcut for ``Distance``
 from django.contrib.gis.db.models.functions import Distance
+from django.contrib.auth.decorators import login_required,user_passes_test
+
+from marketplace.models import CollaborativeRecommendation
+from marketplace.models  import Cart
+  #for category based import
+from accounts.models import User
+from django import template
+from accounts.views import check_role_customer
+
 
 
 def get_or_set_current_location(request):
@@ -22,8 +31,47 @@ def get_or_set_current_location(request):
     else:
         return None
 
+@login_required(login_url='login')
 def home(request):
+
+   # start colaborative recommendation from marketplace's recommend_packages
+    
+   # Get the user's cart items
+    user_cart = Cart.objects.filter(user=request.user)
+    user_cart_items = user_cart.values_list('packageitem__id', flat=True)
+   
+
+    # Find other users who have similar cart items
+    similar_users = Cart.objects.filter(packageitem__in=user_cart_items).exclude(user=request.user)
+    #similar_users_cart_items = similar_users.values_list('packageitem__id', flat=True)
+
+    # Find the packages that are in the similar users' carts but not in the current user's cart
+    #recommended_packages_cf =  PackageItem.objects.filter(id__in=similar_users_cart_items)[:8]
+    # Save the collaborative recommendations for the user
+    collaborative_recommendation, created = CollaborativeRecommendation.objects.get_or_create(user=request.user)
+    
+
+    similar_users_cart_items = Cart.objects.filter(user__in=similar_users.values_list('user')).exclude(user=request.user)
+    recommended_packages_cf = PackageItem.objects.filter(cart__in=similar_users_cart_items).distinct()[:8]
+
+    collaborative_recommendation.recommended_packages.set(recommended_packages_cf)
+
+  #end of  colaborative recommendation from marketplace's recommend_packages
+
+
+#   #start of for category==interest
+    user = User.objects.get(email=request.user.email)
+    user_interest = user.interest
+    package_items = PackageItem.objects.filter(category__category_name=user_interest)
+
+
+
+#   #end of  category==interest
+
     package=PackageItem.objects.filter(is_available=True)[:8]
+
+   
+
     if get_or_set_current_location(request) is not None:
     
 
@@ -37,7 +85,17 @@ def home(request):
     else:
         vendors = Vendor.objects.filter(is_approved=True, user__is_active=True)[:8]
     context = {
+        'is_customer': (request.user.role == 'Customer'),
         'vendors': vendors,
-        'package': package
+        'package': package,
+         'recommended_packages_cf': recommended_packages_cf,
+        'package_items': package_items,
+       
+          
+         
     }
-    return render(request, 'home.html', context)
+    if request.user.is_authenticated:
+        return render(request, 'home.html', context)
+    else:
+        return render(request, 'home.html')
+
