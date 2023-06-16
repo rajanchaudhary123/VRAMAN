@@ -85,7 +85,7 @@ label:hover ~ input:checked ~ label{
 </head>
 {% include 'includes/navbar.html' %}
 {% block content %}
-<h4>PAckage detail</h4>
+<h4>PACKAGE DETAIL</h4>
 <div class="tab-content">
     <div id="home" class="tab-pane in active">
         <div class="menu-itam-holder">
@@ -104,10 +104,16 @@ label:hover ~ input:checked ~ label{
                                
                         </li>
                         <div class="text-holder">
-                            <h4>{{package}}</h4>
-                            <h4>{{package.description}}</h4>
-                            <h4>{{package.id}}</h4>
-                            <h4>{{package.slug}}</h4>
+                          <div><b>Package Name:</b> {{ package }} </div>
+                          <div><b>Package Description:</b> {{ package.description }} </div>
+                          <div><b>Package Address:</b> {{ package.address }} </div>
+                          <div><b>Package Country:</b> {{ package.country }} </div>
+                          <div><b>Package State: </b> {{ package.state }} </div>
+                          <div><b>Package City:</b> {{ package.city }} </div>
+                          <div><b>Package Latitude:</b> {{ package.latitude }} </div>
+                          <div><b>Package Longitude:</b> {{ package.longitude }} </div>
+                            
+                            
                             
                         </div>
                         <div class="price-holder">
