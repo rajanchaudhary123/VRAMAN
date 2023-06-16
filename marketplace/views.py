@@ -112,6 +112,8 @@ def submit_review_package(request, package_id):
 
        
 #in video139
+@login_required(login_url='login')
+@user_passes_test(check_role_customer)
 def add_to_cart(request, package_id):
     if request.user.is_authenticated:
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -142,7 +144,8 @@ def add_to_cart(request, package_id):
       return JsonResponse({'status': 'login_required', 'message': 'Please login to continue'})
     
     
-
+@login_required(login_url='login')
+@user_passes_test(check_role_customer)
 def decrease_cart(request, package_id):
  
    if request.user.is_authenticated:
@@ -176,14 +179,17 @@ def decrease_cart(request, package_id):
    else: 
       return JsonResponse({'status': 'login_required', 'message': 'Please login to continue'})
 
-@login_required(login_url = 'login')
+
+@login_required(login_url='login')
+@user_passes_test(check_role_customer)
 def cart(request):
     cart_items = Cart.objects.filter(user=request.user).order_by('created_at')
     context = {
         'cart_items' : cart_items,
     }
     return render(request,'marketplace/cart.html', context)
-
+@login_required(login_url='login')
+@user_passes_test(check_role_customer)
 def delete_cart(request, cart_id):
     if request.user.is_authenticated:
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -246,6 +252,7 @@ def package_detail(request, package_id):
 
 #checkout
 @login_required(login_url='login')
+@user_passes_test(check_role_customer)
 def checkout(request):
     cart_items = Cart.objects.filter(user=request.user).order_by('created_at')
     cart_count = cart_items.count()

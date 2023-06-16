@@ -112,10 +112,12 @@ label:hover ~ input:checked ~ label{
                         <div class="price-holder">
                             <span class="price">${{package.price}}</span>
 
+                            {% if user.is_authenticated and user.get_role == 'Customer' %}
 <a href="#" class="decrease_cart" data-id="{{ package.id }}" data-url="{% url 'decrease_cart' package.id %}" style="margin-right: 28px;"><i class="icon-minus text-color"></i></a>
                             <label id="qty-{{package.id}}">0</label>
                             <a href="#" class="add_to_cart" data-id="{{ package.id }}" data-url="{% url 'add_to_cart' package.id %}"><i class="icon-plus4 text-color"></i></a>
                             </div>
+                            {% endif %}
                         
 
                         
@@ -132,6 +134,7 @@ label:hover ~ input:checked ~ label{
     </div>
 </div>
 <!-- Main Section End -->
+{% if user.is_authenticated and user.get_role == 'Customer' %}
 <div class="row"style="margin-left: 100px; margin-top: 10px;">
     <div class="col-md-9" style="margin-left: 200px; margin-top: 10px;">
         <form  action="{% url 'submit_review_package' package.id %}" method="POST">
@@ -155,8 +158,9 @@ label:hover ~ input:checked ~ label{
                     <input type="radio" name="rating" id="rating2" value="1" required /><label for="rating2" title="1"></label>
                     <input type="radio" name="rating" id="rating1" value="0.5" required /><label for="rating1" title="0.5" class="half"></label>
                 </div>
+                {%endif%}
 <br>
-                
+{% if user.is_authenticated and user.get_role == 'Customer' %}
                 Review Title:
                 <input type="text" class="form-control" name="subject">
                 <br>
@@ -185,8 +189,11 @@ label:hover ~ input:checked ~ label{
 </div>
 {% include 'includes/alerts.html' %}
         </form>
+        {%endif%}
         {% endfor %}
+        
 <br>
+{% if user.is_authenticated and user.get_role == 'Customer' %}
 <header class="section-heading">
 <h3>Customer Reviews </h3>
 <div class="rating-star">
@@ -201,6 +208,7 @@ label:hover ~ input:checked ~ label{
 </div>
 
 </header>
+{%endif%}
 
 {% for review in reviews %}
         <article class="box mb-3">
@@ -230,6 +238,7 @@ label:hover ~ input:checked ~ label{
 {% endfor %}
 
 
+
     </div> <!-- col.// -->
 </div> <!-- row.// -->
 
@@ -237,5 +246,6 @@ label:hover ~ input:checked ~ label{
 </div> <!-- container .//  -->
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
+
 {% endblock %}
 {% include 'includes/footer.html' %}

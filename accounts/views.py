@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from accounts.utils import detectUser,send_verification_email
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
+import datetime
 
 from vendor.forms import VendorForm
 from .forms import UserForm
@@ -13,6 +14,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from django.core.exceptions import PermissionDenied
 from vendor.models import Vendor
 from django.template.defaultfilters import slugify
+from orders.models import Order
 
 # Restrict the vendor from accessing the customer page
 def check_role_vendor(user):
@@ -191,7 +193,14 @@ def myAccount(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def custDashboard(request):
-    return render(request,'accounts/custDashboard.html')
+    orders = Order.objects.filter(user=request.user, is_ordered=True)
+    recent_orders = orders[:5]
+    context = {
+        'orders': orders,
+        'orders_count': orders.count(),
+        'recent_orders': recent_orders,
+    }
+    return render(request, 'accounts/custDashboard.html', context)
 
 
 
@@ -199,8 +208,31 @@ def custDashboard(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
+    vendor = Vendor.objects.get(user=request.user)
+    orders = Order.objects.filter(vendors__in=[vendor.id], is_ordered=True).order_by('created_at')
     
-    return render(request,'accounts/vendorDashboard.html')
+    recent_orders = orders[:10]
+
+    # current month's revenue
+    current_month = datetime.datetime.now().month
+    current_month_orders = orders.filter(vendors__in=[vendor.id], created_at__month=current_month)
+    current_month_revenue = 0
+    for i in current_month_orders:
+        current_month_revenue += i.get_total_by_vendor()['grand_total']
+    
+
+    # total revenue
+    total_revenue = 0
+    for i in orders:
+        total_revenue += i.get_total_by_vendor()['grand_total']
+    context = {
+        'orders': orders,
+        'orders_count': orders.count(),
+        'recent_orders': recent_orders,
+        'total_revenue': total_revenue,
+        'current_month_revenue': current_month_revenue,
+    }
+    return render(request,'accounts/vendorDashboard.html',context)
   
 
 def forgot_password(request):
