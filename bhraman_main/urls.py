@@ -32,6 +32,8 @@ urlpatterns = [
     path('cart/', MarketplaceViews.cart, name='cart'),
     #Search 
     path('search/', MarketplaceViews.search, name='search'),
+    path('search_package/', MarketplaceViews.search_package, name='search_package'),
+    
 
     #CHeckout
     path('checkout/', MarketplaceViews.checkout, name='checkout'),
