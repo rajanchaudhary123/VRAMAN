@@ -60,7 +60,7 @@
         <tr>
             <th>Image</th>
             <th>Package Item</th>
-            <th>Qty</th>
+            <th>No. of people</th>
             <th>Price</th>
         </tr>
 
@@ -79,17 +79,17 @@
 <!-- Order amounts -->
 <table bgcolor="#EAF0F6" width="100%" role="presentation" border="0" cellpadding="0" cellspacing="10px" style="padding: 30px 30px 60px 60px;">
     <tbody>
-        <tr>Subtotal: NRP{{ customer_subtotal }}</tr>
+        <tr>Subtotal: ${{ customer_subtotal }}</tr>
         
         {% for key, val in tax_data.items %}
             {% for i, j in val.items %}
                 <tr>
-                    <td>{{ key }} <small>({{ i }}%)</small> : <span>NRP{{ j }}</span></td>
+                    <td>{{ key }} <small>({{ i }}%)</small> : <span>${{ j }}</span></td>
                 </tr>
             {% endfor %}
         {% endfor %}
 
-        <tr>Grand total: NRP{{ order.total }}</tr>
+        <tr>Grand total: ${{ order.total }}</tr>
     </tbody>
   </table>
 

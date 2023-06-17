@@ -55,6 +55,7 @@ def home(request):
     recommended_packages_cf = PackageItem.objects.filter(cart__in=similar_users_cart_items).distinct()[:8]
 
     collaborative_recommendation.recommended_packages.set(recommended_packages_cf)
+    
 
   #end of  colaborative recommendation from marketplace's recommend_packages
 
