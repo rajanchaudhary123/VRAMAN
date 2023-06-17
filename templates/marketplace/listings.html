@@ -7,16 +7,39 @@
 <!-- Main Section Start--> 
 <div class="main-section">
     <div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 10px;margin-bottom: 0px;">
+        
         <div class="container">
+           
+            
             <div class="row">
+                
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    
+                    <form action="{% url 'search_package' %}" method="GET">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+                                <div class="field-holder">
+                                    <input type="text" name="keyword" placeholder="Package name" style="width: 350px; height: 40px;">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 mb-2">
+                                <div class="field-holder" style="color: green;">
+                                    <input type="submit" value="Search" style="width: 100px; height: 40px;background-color: green; color: white;">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    
                     <div class="row">
+                       
                         <aside class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             
                         </aside>
+                        
                         <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
                             <div class="listing-sorting-holder">
                                 <div class="row">
+                                    
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <h4>{{ vendor_count }} Vendor's found</h4>
                                         <h4>{{ package_count }} Package's found</h4>

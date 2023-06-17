@@ -252,24 +252,17 @@ def search(request):
     
     #Search package
 def search_package(request):
-    if not 'address' in request.GET:
-      return redirect('marketplace')
-    else:
+   
 
-        address = request.GET['address']
-        latitude = request.GET['lat']
-        longitude = request.GET['lng']
+        
         
         keyword = request.GET['keyword']
         
         # get vendor ids that has the package item the user is looking for
         package_search = PackageItem.objects.filter(package_title__icontains=keyword, is_available=True)
-        print(package_search)
         fetch_vendors_by_packageitems = PackageItem.objects.filter(package_title__icontains=keyword, is_available=True).values_list('vendor', flat=True)
         
         vendors = Vendor.objects.filter(Q(id__in=fetch_vendors_by_packageitems) | Q(vendor_name__icontains=keyword, is_approved=True, user__is_active=True)) #Q is used in case of or logic ie complex query
-        
-       
         
         vendor_count = vendors.count()
         package_count = package_search.count()
@@ -278,9 +271,8 @@ def search_package(request):
         context = {
                 'package_search' : package_search,
                 'package_count':package_count,
-                'vendors': vendors,
                 'vendor_count': vendor_count,
-                'source_location': address,
+                
             
             }
         
