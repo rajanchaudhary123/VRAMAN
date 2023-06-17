@@ -3,8 +3,14 @@ from . import views
 
 urlpatterns = [
     path('', views.marketplace, name='marketplace'),
-    
-    
+
+
+    #for collaborative recommendation
+    path('', views.recommend_packages, name='recommend_packages'),
+    #for interest=category
+    path('', views.render_matching_packages, name='render_matching_packages'),
+
+
     path('<slug:vendor_slug>/',views.vendor_detail, name='vendor_detail'),
     #path('marketplace/review_rating/',views.review_rating, name='review_rating'),
     path('submit_review/<int:vendor_id>/',views.submit_review,name='submit_review'),

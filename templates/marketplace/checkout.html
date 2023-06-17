@@ -42,7 +42,7 @@
                                         <div class="row">
                                             <div class="form-group col-md-6 col-sm-12 col-lg-6" id="start_date">
                                                 Start Date:
-                                                <input type="date" id="start" name="start_date" min="2023-06-12">
+                                                <input type="date" id="start" name="start_date" >
                                                 <ul class="errorlist">
                                                     {% if form.errors.start_date %}
                                                     {% for error in form.errors.start_date %}
@@ -55,7 +55,7 @@
                                         
                                             <div class="form-group col-md-6 col-sm-12 col-lg-6" id="end_date">
                                                 End Date:
-                                                <input type="date" id="end" name="end_date" min="2023-06-12">
+                                                <input type="date" id="end" name="end_date" >
                                                 <ul class="errorlist">
                                                     {% if form.errors.end_date %}
                                                     {% for error in form.errors.end_date %}
@@ -130,7 +130,7 @@
                                                     <a href="{% url 'vendor_detail' item.packageitem.vendor.vendor_slug %}" class="badge badge-warning">{{ item.packageitem.vendor }}</a>
                                                 </div>
                                                 <div class ="quantity" style="display: inline-block; position: absolute; top: 50%; transform: translateY(-50%); margin-top: -10px;">
-                                                    <span>{{item.quantity}} QTY</span>
+                                                    <span>{{item.quantity}} No. of people</span>
                                                 </div>
                                                 <div class="price-holder">
                                                     <span class="price">${{item.packageitem.price}}</span>
@@ -190,6 +190,7 @@
                                             <!-- Select payment method -->
                                             <button  onclick="return payMethodConfirm();" type="submit"  class="btn btn-danger w-100 p-2 mt-3">PLACE ORDER</a>
                                         </ul>
+                                        
                                     </form>
                                     </div>
                                 </div>
@@ -263,5 +264,6 @@ if (!payMethod) {
 
 });
 </script>
+
 
 {% endblock %}

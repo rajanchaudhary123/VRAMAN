@@ -22,6 +22,13 @@ from .forms import OrderForm
 from datetime import date, datetime
 
 
+#import for collaborative recommendation 
+from .models import CollaborativeRecommendation
+
+from accounts.models import User
+
+
+
 def marketplace(request):
     vendors = Vendor.objects.filter(is_approved=True, user__is_active=True)
     package = PackageItem.objects.filter(is_available=True)
@@ -312,4 +319,63 @@ def checkout(request):
 
 
 
-            
+##collaborative filtering start
+def recommend_packages(request):
+    # Collaborative Filtering
+   
+
+    # # Get the user's cart items
+    user_cart = Cart.objects.filter(user=request.user)
+    user_cart_items = user_cart.values_list('packageitem__id', flat=True)
+   
+
+    # Find other users who have similar cart items
+    similar_users = Cart.objects.filter(packageitem__in=user_cart_items).exclude(user=request.user)
+    #similar_users_cart_items = similar_users.values_list('packageitem__id', flat=True)
+
+    # Find the packages that are in the similar users' carts but not in the current user's cart
+    #recommended_packages_cf =  PackageItem.objects.filter(id__in=similar_users_cart_items)[:8]
+    # Save the collaborative recommendations for the user
+    collaborative_recommendation, created = CollaborativeRecommendation.objects.get_or_create(user=request.user)
+    
+
+    similar_users_cart_items = Cart.objects.filter(user__in=similar_users.values_list('user')).exclude(user=request.user)
+    recommended_packages_cf = PackageItem.objects.filter(cart__in=similar_users_cart_items).distinct()[:8]
+
+    collaborative_recommendation.recommended_packages.set(recommended_packages_cf)
+    context = {
+        # 'user_cart':  user_cart,
+        # 'user_cart_items ': user_cart_items ,
+        'recommended_packages_cf': recommended_packages_cf,
+        # Add other context variables
+         'similar_users' : similar_users,
+         'similar_users_cart_items' :  similar_users_cart_items
+    }
+
+    return render(request, 'home.html', context)
+
+    # return render(request,'recommendation.html',context)
+#collaborative filtering end
+
+
+#category == interest start
+def render_matching_packages(request):
+    user = User.objects.get(pk=request.user.pk)
+
+    # Retrieve the user's interest
+    user_interest = user.interest
+
+    # Retrieve the packages whose category matches the user's interest
+    matching_packages = PackageItem.objects.filter(category__name=user_interest)
+
+
+    context = {
+        'matching_packages': matching_packages,
+    }
+
+    return render(request, 'matching_packages.html', context)
+
+
+
+
+#category == interest enf
