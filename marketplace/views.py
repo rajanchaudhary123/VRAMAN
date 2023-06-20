@@ -20,6 +20,7 @@ from django.contrib.gis.measure import D # ``D`` is a shortcut for ``Distance``
 from django.contrib.gis.db.models.functions import Distance
 from .forms import OrderForm
 from datetime import date, datetime
+from orders.models import OrderedPackage
 
 
 #import for collaborative recommendation 
@@ -60,12 +61,15 @@ def vendor_detail(request, vendor_slug):
         cart_items = Cart.objects.filter(user=request.user)
     else:
         cart_items = None
+
+    reviewvendor = ReviewRating.objects.filter(vendor = vendor.id, status=True)
     context = {
         'vendor':vendor,
         'categories':categories,
         'cart_items': cart_items,
         'opening_hours':opening_hours,
         'current_opening_hours':current_opening_hours,
+        'reviewvendor':reviewvendor,
     }
 
     return render(request, 'marketplace/vendor_detail.html',context)
@@ -280,8 +284,27 @@ def search_package(request):
     
 def package_detail(request, package_id):
     package=PackageItem.objects.filter(id=package_id)
+    #orderpackage = OrderedPackage.objects.filter(user=request.user, id = package_id).exists()
+    if request.user.is_authenticated:
+        
+        try:
+            orderpackage = OrderedPackage.objects.filter(user=request.user, id = package_id).exists()
+            print(orderpackage)
+        except OrderedPackage.DoesNotExist:
+            orderpackage = None
+    else:
+        orderpackage = None
+    
+
+    # Get the reviews
+    reviewpackage = ReviewRatingPackage.objects.filter(package = package_id, status=True)
+    print(reviewpackage)
+
+    
     context={
         'package':package,
+        'orderpackage':orderpackage,
+        'reviewpackage': reviewpackage,
     }
    
    
