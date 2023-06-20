@@ -3,7 +3,7 @@ from accounts.models import UserProfile
 
 from vendor.models import  Vendor
 from vendor.models import  Vendor, OpeningHour
-from menu.models import Category, PackageItem
+from menu.models import Category, PackageItem,PackageGallery
 from django.db.models import Prefetch
 from .forms import ReviewForm,ReviewFormPackage
 from django.contrib import messages
@@ -280,8 +280,14 @@ def search_package(request):
     
 def package_detail(request, package_id):
     package=PackageItem.objects.filter(id=package_id)
+
+    # GET the package gallery
+    package_gallery = PackageGallery.objects.filter(package=package_id)
+    print(package_gallery)
+
     context={
         'package':package,
+        'package_gallery':package_gallery,
     }
    
    

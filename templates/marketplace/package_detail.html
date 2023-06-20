@@ -91,6 +91,7 @@ label:hover ~ input:checked ~ label{
         <div class="menu-itam-holder">
             
             <div id="menu-item-list-6272" class="menu-itam-list">
+              <div class ="img-big-wrap mainImage">
                     <ul>
                         {% for package in package %}
                         <li class="has-border">
@@ -103,6 +104,16 @@ label:hover ~ input:checked ~ label{
                                 {% endif %}
                                
                         </li>
+                      </div>
+
+                      <ul class="thumbnail">
+                        <li>
+                          {% for i in package_gallery %}
+                          <a href="#"><img src="{{ i.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+                          {%endfor%}
+                          
+                        </li>
+                      </ul>
                         <div class="text-holder">
                           <div><b>Package Name:</b> {{ package }} </div>
                           <div><b>Package Description:</b> {{ package.description }} </div>
@@ -189,9 +200,9 @@ label:hover ~ input:checked ~ label{
                 {% else %}
                 <p>You must be logged in to post a review. <span><a href="{% url 'login' %}">Login now</a></span></p>
                 {% endif %}
-                <div class="alert alert-danger" role="alert" style="margin-top:10px;">
+               <!-- <div class="alert alert-danger" role="alert" style="margin-top:10px;">
 2-Factor Review Submission is disabled for demo purpose.
-</div>
+</div>-->
 
 </div>
 {% include 'includes/alerts.html' %}
