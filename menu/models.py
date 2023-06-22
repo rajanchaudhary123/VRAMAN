@@ -47,3 +47,5 @@ class PackageItem(models.Model):
 
     def __str__(self):
         return self.package_title
+
+    

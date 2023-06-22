@@ -2,6 +2,7 @@ from django.db import models
 from accounts.models import User
 from vendor.models import Vendor
 from menu.models import PackageItem
+from django.db.models import Avg
 
 #for colab libraries
 from django.conf import settings
@@ -34,6 +35,7 @@ class ReviewRatingPackage(models.Model):
 
     def __str__(self):
         return self.subject
+
     
 #maybe we need to include booking  date here-abhishek video-138
         
