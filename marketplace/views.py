@@ -20,7 +20,7 @@ from django.contrib.gis.measure import D # ``D`` is a shortcut for ``Distance``
 from django.contrib.gis.db.models.functions import Distance
 from .forms import OrderForm
 from datetime import date, datetime
-from orders.models import OrderedPackage
+from orders.models import OrderedPackage,Order
 
 
 #import for collaborative recommendation 
@@ -284,11 +284,18 @@ def search_package(request):
     
 def package_detail(request, package_id):
     package=PackageItem.objects.filter(id=package_id)
+    
+
+    
+    
+    
+    
     #orderpackage = OrderedPackage.objects.filter(user=request.user, id = package_id).exists()
     if request.user.is_authenticated:
         
         try:
-            orderpackage = OrderedPackage.objects.filter(user=request.user, id = package_id).exists()
+            orderpackage = OrderedPackage.objects.filter(user=request.user, packageitem = package_id ).exists()
+            
             print(orderpackage)
         except OrderedPackage.DoesNotExist:
             orderpackage = None
