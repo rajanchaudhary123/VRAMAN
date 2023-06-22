@@ -325,7 +325,7 @@ def package_detail(request, package_id):
 
     return render(request, 'marketplace/package_detail.html', context)
    
-    return render(request, 'marketplace/package_detail.html',context)
+    
 
 
 #checkout
