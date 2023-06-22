@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render , redirect
 from accounts.models import UserProfile
-
+from django.db.models import Avg, Count
 from vendor.models import  Vendor
 from vendor.models import  Vendor, OpeningHour
 from menu.models import Category, PackageItem
@@ -44,6 +44,12 @@ def marketplace(request):
 
 def vendor_detail(request, vendor_slug):
     vendor = get_object_or_404(Vendor, vendor_slug=vendor_slug)
+    reviews = ReviewRating.objects.filter(vendor=vendor.id, status=True).aggregate(average=Avg('rating'))
+    avg1 = reviews['average'] or 0
+    reviewcount = ReviewRating.objects.filter(vendor=vendor.id, status=True).aggregate(count=Count('id'))
+    count = reviewcount['count'] or 0
+    print(count)
+
     categories = Category.objects.filter(vendor=vendor).prefetch_related(
         Prefetch(
         'packageitems',
@@ -70,6 +76,8 @@ def vendor_detail(request, vendor_slug):
         'opening_hours':opening_hours,
         'current_opening_hours':current_opening_hours,
         'reviewvendor':reviewvendor,
+        'avg1': avg1,
+        'count' : count,
     }
 
     return render(request, 'marketplace/vendor_detail.html',context)
@@ -283,30 +291,38 @@ def search_package(request):
         return render(request,'marketplace/listings.html',context)
     
 def package_detail(request, package_id):
-    package=PackageItem.objects.filter(id=package_id)
-    #orderpackage = OrderedPackage.objects.filter(user=request.user, id = package_id).exists()
+    package = PackageItem.objects.filter(id=package_id)
+    print(package_id)
+    reviews = ReviewRatingPackage.objects.filter(package=package_id, status=True).aggregate(average=Avg('rating'))
+    avg = reviews['average'] or 0
+    print(avg)
+    reviewcount1 = ReviewRatingPackage.objects.filter(package=package_id, status=True).aggregate(count1=Count('id'))
+    count1 = reviewcount1['count1'] or 0
+    print(count1)
+
     if request.user.is_authenticated:
-        
         try:
-            orderpackage = OrderedPackage.objects.filter(user=request.user, id = package_id).exists()
+            orderpackage = OrderedPackage.objects.filter(user=request.user, id=package_id).exists()
             print(orderpackage)
         except OrderedPackage.DoesNotExist:
             orderpackage = None
     else:
         orderpackage = None
-    
 
     # Get the reviews
-    reviewpackage = ReviewRatingPackage.objects.filter(package = package_id, status=True)
+    reviewpackage = ReviewRatingPackage.objects.filter(package=package_id, status=True)
     print(reviewpackage)
 
-    
-    context={
-        'package':package,
-        'orderpackage':orderpackage,
+    context = {
+        'package': package,
+        'orderpackage': orderpackage,
         'reviewpackage': reviewpackage,
+        'reviews': reviews,
+        'avg': avg,
+        'count1':count1,
     }
-   
+
+    return render(request, 'marketplace/package_detail.html', context)
    
     return render(request, 'marketplace/package_detail.html',context)
 
