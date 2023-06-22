@@ -167,7 +167,7 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'BHRAMAN marketplace <bhraman653@gmail.com>'
 
 
-GOOGLE_API_KEY ='AIzaSyCh9w2d8jWhKXSTRtLqa9521VGVkiR5wU4'
+GOOGLE_API_KEY ='AIzaSyAd1iF0qOMcbvehRChx4F1PxaB2MZPsUHc'
 
 #abhishek
 #os.environ['PATH'] = os.path.join(BASE_DIR, 'myenv\Lib\site-packages\osgeo') + ';' + os.environ['PATH']
