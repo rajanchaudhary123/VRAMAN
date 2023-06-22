@@ -3,106 +3,118 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bhraman</title>
-  <!-- Google Font Family Link Start -->
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800">
-  
-  <!-- Google Font Family Link End -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bhraman</title>
+    <!-- Google Font Family Link Start -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800">
 
-  <!-- CSS -->
-  <link href="{% static 'css/iconmoon.css' %}" rel="stylesheet">
-  <link href="{% static 'css/style.css' %}" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href="{% static 'css/cs-foodbakery-plugin.css' %}" rel="stylesheet">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link href="{% static 'css/bootstrap-slider.css' %}" rel="stylesheet">
-    
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Google Font Family Link End -->
 
-  <!-- JAVASCRIPT -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="{% static 'js/modernizr.js' %}"></script>
-  <script src="{% static 'js/bootstrap.js' %}"></script>
-  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <!-- CSS -->
+    <link href="{% static 'css/iconmoon.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{% static 'css/cs-foodbakery-plugin.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="{% static 'css/bootstrap-slider.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- JAVASCRIPT -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="{% static 'js/modernizr.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="{% static 'js/custom.js'%}"></script>
 
-  <style>
-    body, .main-section p, .mce-content-body p{
-      font:Normal  14px/24px "Open Sans", sans-serif;letter-spacing: 0px;text-transform: none;color: #515151 !important;
-    }
-    /* Hide Radio button */
-.rate > input{
-  display: none;
-}
+    <style>
+        body,
+        .main-section p,
+        .mce-content-body p {
+            font: Normal 14px/24px "Open Sans", sans-serif;
+            letter-spacing: 0px;
+            text-transform: none;
+            color: #515151 !important;
+        }
 
-.rate{
-  display: inline-block;;
-  border: 0;
-}
+        /* Hide Radio button */
+        .rate>input {
+            display: none;
+        }
 
-.rate > label{
-  float: right;
-}
+        .rate {
+            display: inline-block;
+            ;
+            border: 0;
+        }
 
-/* Showing the stars */
-.rate > label:before{
-  display: inline-block;
-  font-size: 1.1rem;
-  font-family: FontAwesome;
-  content: "\f005";
-  margin:0;
-  padding:0.3rem .2rem;
-  cursor: pointer;
-}
+        .rate>label {
+            float: right;
+        }
 
-/* Half star */
-.rate .half:before{
-  content: "\f089";
-  position: absolute;
-  padding-right: 0;
-}
+        /* Showing the stars */
+        .rate>label:before {
+            display: inline-block;
+            font-size: 1.1rem;
+            font-family: FontAwesome;
+            content: "\f005";
+            margin: 0;
+            padding: 0.3rem .2rem;
+            cursor: pointer;
+        }
 
-/* Click and hover */
-input:checked ~ label, label:hover ~ label{
-  color: #ffb503;
-}
+        /* Half star */
+        .rate .half:before {
+            content: "\f089";
+            position: absolute;
+            padding-right: 0;
+        }
 
-/* hover hightlight */
-input:checked + label:hover, input:checked ~ label:hover,input:checked ~ label:hover ~ label,
-label:hover ~ input:checked ~ label{
-  color: #cc9000;
-}
+        /* Click and hover */
+        input:checked~label,
+        label:hover~label {
+            color: #ffb503;
+        }
 
-.rating-star i{
-  color: #ffb503 !important;
-}
-.rate i{
-    color: #ffb503 !important;
-  }
-.review-box {
-    border: 1px solid #ccc;
-    padding: 10px;
-    background-color: #f9f9f9;
-    margin-bottom: 10px;
-    /* Add more styles as needed */
-  }
-  
-  .review-box h6 {
-    color: #333;
-    font-weight: bold;
-    /* Add more styles as needed */
-  }
-  
-  .review-box p {
-    color: #666;
-    /* Add more styles as needed */
-  }
-  </style>
+        /* hover hightlight */
+        input:checked+label:hover,
+        input:checked~label:hover,
+        input:checked~label:hover~label,
+        label:hover~input:checked~label {
+            color: #cc9000;
+        }
+
+        .rating-star i {
+            color: #ffb503 !important;
+        }
+
+        .rate i {
+            color: #ffb503 !important;
+        }
+
+        .review-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            /* Add more styles as needed */
+        }
+
+        .review-box h6 {
+            color: #333;
+            font-weight: bold;
+            /* Add more styles as needed */
+        }
+
+        .review-box p {
+            color: #666;
+            /* Add more styles as needed */
+        }
+    </style>
 </head>
 <!--load navbar here-->
 {% include 'includes/navbar.html' %}
@@ -114,10 +126,11 @@ label:hover ~ input:checked ~ label{
 
 <!-- Main Section Start -->
 <div class="main-section">
-    <div class="page-section restaurant-detail-image-section" style=" background: url({% if vendor.user_profile.cover_photo %} {{ vendor.user_profile.cover_photo.url }} {% else %} {% static 'images/default-cover.png' %} {% endif %}) no-repeat scroll 0 0 / cover;">
+    <div class="page-section restaurant-detail-image-section"
+        style=" background: url({% if vendor.user_profile.cover_photo %} {{ vendor.user_profile.cover_photo.url }} {% else %} {% static 'images/default-cover.png' %} {% endif %}) no-repeat scroll 0 0 / cover;">
         <!-- Container Start -->
         <div class="container">
-         
+
             <!-- Row Start -->
             <div class="row">
                 <!-- Column Start -->
@@ -130,11 +143,12 @@ label:hover ~ input:checked ~ label{
                                     <img src="{{ vendor.user_profile.profile_picture.url }}" alt="">
                                     {% else %}
                                     <img src="{% static 'images/default-profile.png' %}" alt="">
-                                    {% endif %} 
+                                    {% endif %}
                                 </figure>
                             </div>
                             <div class="text-holder">
-                                <span class="restaurant-title">{{vendor.vendor_name}}{% if not vendor.is_open %}[Closed]{% endif %}</span>
+                                <span class="restaurant-title">{{vendor.vendor_name}}{% if not vendor.is_open
+                                    %}[Closed]{% endif %}</span>
                                 <div class="text">
                                     {% if vendor.user_profile.address %}
                                     <i class="icon-location"></i>
@@ -144,39 +158,44 @@ label:hover ~ input:checked ~ label{
                                 <div class="text">
                                     {% if vendor.user.email %}
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
-                                    <a href="mailto:{{vendor.user.email}}"style='color: white'>{{vendor.user.email}}</a>
-                                    
+                                    <a href="mailto:{{vendor.user.email}}"
+                                        style='color: white'>{{vendor.user.email}}</a>
+
                                     {% endif %}
                                 </div>
                                 <div class="text">
                                     {% if vendor.user.phone_number %}
-                                    
-                                    <i class='fa fa-phone' ></i>
+
+                                    <i class='fa fa-phone'></i>
                                     <p>{{vendor.user_profile.phone_number}}</p>
-                                    
+
                                     {% endif %}
                                 </div>
-                                
-                               
+
+
                             </div>
                         </div>
                         {% if opening_hours %}
                         <div class="delivery-timing reviews-sortby">
-                            
+
                             <ul>
                                 <li>
                                     <a href="#" class="reviews-sortby-active">
                                         <span>Today :</span>
                                         {% for i in current_opening_hours %}
-                                        <span>{% if i.is_closed %}Closed{% else %}{{i.from_hour }} - {{ i.to_hour }}{% endif %}</span>
-                                        
+                                        <span>{% if i.is_closed %}Closed{% else %}{{i.from_hour }} - {{ i.to_hour }}{%
+                                            endif %}</span>
+
                                         {% endfor %}
                                         <i class="icon-chevron-small-down"></i>
                                     </a>
                                     <ul class="delivery-dropdown">
                                         {% for hour in opening_hours %}
-                                        <li><a href="#"><span class="opend-day">{{hour}}</span> <span class="opend-time"><small>:</small>{% if hour.is_closed %}Closed{% else %}{{ hour.from_hour}} - {{ hour.to_hour}}{% endif %}</span></a></li>
-                                        {%  endfor %}
+                                        <li><a href="#"><span class="opend-day">{{hour}}</span> <span
+                                                    class="opend-time"><small>:</small>{% if hour.is_closed %}Closed{%
+                                                    else %}{{ hour.from_hour}} - {{ hour.to_hour}}{% endif %}</span></a>
+                                        </li>
+                                        {% endfor %}
                                     </ul>
                                 </li>
                             </ul>
@@ -185,7 +204,7 @@ label:hover ~ input:checked ~ label{
                     </div>
                 </div>
 
-<!-- Column End -->
+                <!-- Column End -->
             </div>
             <!-- Row End -->
         </div>
@@ -196,7 +215,7 @@ label:hover ~ input:checked ~ label{
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 sticky-sidebar">
-                    
+
                     <div class="filter-wrapper">
                         <div class="categories-menu">
                             <h6><i class="icon-restaurant_menu"></i>Categories</h6>
@@ -205,24 +224,25 @@ label:hover ~ input:checked ~ label{
                                     {% for category in categories %}
                                     <li class="active"><a href="#" class="menu-category-link"> {{ category }} </a></li>
                                     {% endfor %}
-                               
-                            </ul>
+
+                                </ul>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
                     <div class="tabs-holder horizontal">
                         <ul class="stickynav-tabs nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Package</a></li>
-                            
+                            <li class="active"><a data-toggle="tab" href="#home"><i
+                                        class="icon- icon-room_service"></i>Package</a></li>
+
                         </ul>
                         <div class="tab-content">
                             <div id="home" class="tab-pane in active">
                                 <div class="menu-itam-holder">
-                                    
+
                                     <div id="menu-item-list-6272" class="menu-itam-list">
-                                        
-                                        
+
+
                                         {% for category in categories %}
                                         <div class="element-title" id="menu-category-2">
                                             <h5 class="text-color">{{ category }}</h5>
@@ -231,39 +251,47 @@ label:hover ~ input:checked ~ label{
                                         <ul>
                                             {% for package in category.packageitems.all %}
                                             <li>
-                                                <div class="image-holder"> <img src="{{ package.image.url }}" alt=""></div>
+                                                <div class="image-holder"> <img src="{{ package.image.url }}" alt="">
+                                                </div>
                                                 <div class="text-holder">
-                                                    <h6><a href="{% url 'package_detail' package.id %}" >{{ package}}</a></h6> 
-                                                    
+                                                    <h6><a href="{% url 'package_detail' package.id %}">{{ package}}</a>
+                                                    </h6>
+
                                                 </div>
                                                 <div class="price-holder">
                                                     <span class="price">${{package.price}}</span>
 
-                                                    <a href="#" class="decrease_cart" data-id="{{ package.id }}" data-url="{% url 'decrease_cart' package.id %}" style="margin-right: 28px;"><i class="icon-minus text-color"></i></a>
+                                                    <a href="#" class="decrease_cart" data-id="{{ package.id }}"
+                                                        data-url="{% url 'decrease_cart' package.id %}"
+                                                        style="margin-right: 28px;"><i
+                                                            class="icon-minus text-color"></i></a>
                                                     <label id="qty-{{package.id}}">0</label>
-                                                    <a href="#" class="add_to_cart" data-id="{{ package.id }}" data-url="{% url 'add_to_cart' package.id %}"><i class="icon-plus4 text-color"></i></a>
-                                                    </div>
+                                                    <a href="#" class="add_to_cart" data-id="{{ package.id }}"
+                                                        data-url="{% url 'add_to_cart' package.id %}"><i
+                                                            class="icon-plus4 text-color"></i></a>
+                                                </div>
                                             </li>
                                             {% endfor %}
-                                            
+
                                         </ul>
                                         {% endfor %}
-                                        
+
                                     </div>
                                     {% for item in cart_items %}
 
-<span id="qty-{{item.packageitem.id}}" class="item_qty d-none" data-qty="{{ item.quantity }}">{{ item.quantity }}</span>
+                                    <span id="qty-{{item.packageitem.id}}" class="item_qty d-none"
+                                        data-qty="{{ item.quantity }}">{{ item.quantity }}</span>
 
-                                    
+
 
                                     {% endfor %}
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -271,26 +299,31 @@ label:hover ~ input:checked ~ label{
 
 <!-- Main Section End -->
 {% if user.is_authenticated and user.get_role == 'Customer' %}
-<div class="row"style="margin-left: 100px; margin-top: 10px;">
+<div class="row" style="margin-left: 100px; margin-top: 10px;">
     <div class="col-md-9" style="margin-left: 200px; margin-top: 10px;">
-        <form  action="{% url 'submit_review' vendor.id %}" method="POST">
-            
+        <form action="{% url 'submit_review' vendor.id %}" method="POST">
+
             {% csrf_token %}
             <h5>Write Your Review</h5>
             <b>Average Rating:</b>
-                <div class="rate">
-                    <span>
-                        <i class="fa fa-star{% if avg1 < 0.5 %}-o{% elif avg1 >= 0.5 and avg1 < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if avg1 < 1.5 %}-o{% elif avg1 >= 1.5 and avg1 < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if avg1 < 2.5 %}-o{% elif avg1 >= 2.5 and avg1 < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if avg1 < 3.5 %}-o{% elif avg1 >= 3.5 and avg1 < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if avg1 < 4.5 %}-o{% elif avg1 >= 4.5 and avg1 < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
-                      </span>
+            <div class="rate">
+                <span>
+                    <i class="fa fa-star{% if avg1 < 0.5 %}-o{% elif avg1 >= 0.5 and avg1 < 1 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                    <i class="fa fa-star{% if avg1 < 1.5 %}-o{% elif avg1 >= 1.5 and avg1 < 2 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                    <i class="fa fa-star{% if avg1 < 2.5 %}-o{% elif avg1 >= 2.5 and avg1 < 3 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                    <i class="fa fa-star{% if avg1 < 3.5 %}-o{% elif avg1 >= 3.5 and avg1 < 4 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                    <i class="fa fa-star{% if avg1 < 4.5 %}-o{% elif avg1 >= 4.5 and avg1 < 5 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                </span>
 
-                </div>
-                <div>
-                    <b>Total reviews: {{ count }}</b>
-                </div>
+            </div>
+            <div>
+                <b>Total reviews: {{ count }}</b>
+            </div>
 
 
             <div>
@@ -298,20 +331,30 @@ label:hover ~ input:checked ~ label{
                 <label>How do you rate this product?</label>
                 <br>
                 <div class="rate">
-                    <input type="radio" name="rating" id="rating10" value="5" required /><label for="rating10" title="5"></label>
-                    <input type="radio" name="rating" id="rating9" value="4.5" required /><label for="rating9" title="4.5" class="half"></label>
-                    <input type="radio" name="rating" id="rating8" value="4" required /><label for="rating8" title="4"></label>
-                    <input type="radio" name="rating" id="rating7" value="3.5" required /><label for="rating7" title="3.5" class="half"></label>
-                    <input type="radio" name="rating" id="rating6" value="3" required /><label for="rating6" title="3"></label>
-                    <input type="radio" name="rating" id="rating5" value="2.5" required /><label for="rating5" title="2.5" class="half"></label>
-                    <input type="radio" name="rating" id="rating4" value="2" required /><label for="rating4" title="2"></label>
-                    <input type="radio" name="rating" id="rating3" value="1.5" required /><label for="rating3" title="1.5" class="half"></label>
-                    <input type="radio" name="rating" id="rating2" value="1" required /><label for="rating2" title="1"></label>
-                    <input type="radio" name="rating" id="rating1" value="0.5" required /><label for="rating1" title="0.5" class="half"></label>
+                    <input type="radio" name="rating" id="rating10" value="5" required /><label for="rating10"
+                        title="5"></label>
+                    <input type="radio" name="rating" id="rating9" value="4.5" required /><label for="rating9"
+                        title="4.5" class="half"></label>
+                    <input type="radio" name="rating" id="rating8" value="4" required /><label for="rating8"
+                        title="4"></label>
+                    <input type="radio" name="rating" id="rating7" value="3.5" required /><label for="rating7"
+                        title="3.5" class="half"></label>
+                    <input type="radio" name="rating" id="rating6" value="3" required /><label for="rating6"
+                        title="3"></label>
+                    <input type="radio" name="rating" id="rating5" value="2.5" required /><label for="rating5"
+                        title="2.5" class="half"></label>
+                    <input type="radio" name="rating" id="rating4" value="2" required /><label for="rating4"
+                        title="2"></label>
+                    <input type="radio" name="rating" id="rating3" value="1.5" required /><label for="rating3"
+                        title="1.5" class="half"></label>
+                    <input type="radio" name="rating" id="rating2" value="1" required /><label for="rating2"
+                        title="1"></label>
+                    <input type="radio" name="rating" id="rating1" value="0.5" required /><label for="rating1"
+                        title="0.5" class="half"></label>
                 </div>
                 {%endif%}
-<br>
-{% if user.is_authenticated and user.get_role == 'Customer' %}
+                <br>
+                {% if user.is_authenticated and user.get_role == 'Customer' %}
                 Review Title:
                 <input type="text" class="form-control" name="subject">
                 <br>
@@ -330,52 +373,57 @@ label:hover ~ input:checked ~ label{
 
                 {% if user.is_authenticated %}
 
-                        <input type="submit" value="Submit Review Vendor" class="btn btn-primary">
+                <input type="submit" value="Submit Review Vendor" class="btn btn-primary">
                 {% else %}
                 <p>You must be logged in to post a review. <span><a href="{% url 'login' %}">Login now</a></span></p>
-                {% endif %} 
-               
+                {% endif %}
 
-</div>
-{% include 'includes/alerts.html' %}
+
+            </div>
+            {% include 'includes/alerts.html' %}
         </form>
         {%endif%}
-        
-        
-<br>
-{% if user.is_authenticated and user.get_role == 'Customer' %}
-<header class="section-heading">
-<h3>Customer Reviews </h3>
 
 
-</header>
-{%endif%}
+        <br>
 
-{% for review in reviewvendor %}
-<div class="review-box">
-    <article class="box mb-3">
-        <div class="icontext w-100">
-            <div class="text">
-                <span class="date text-muted float-md-right">{{ review.updated_at }}</span>
-                <h6 class="mb-1">{{ review.user.full_name }}</h6>
-                <div class="rate">
-                    <span>
-                        <i class="fa fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o{% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o{% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o{% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o{% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o{% endif %}" aria-hidden="true"></i>
-                    </span>
+        <header class="section-heading">
+            <h3>Customer Reviews </h3>
+
+
+        </header>
+
+
+        {% for review in reviewvendor %}
+        <div class="review-box">
+            <article class="box mb-3">
+                <div class="icontext w-100">
+                    <div class="text">
+                        <span class="date text-muted float-md-right">{{ review.updated_at }}</span>
+                        <h6 class="mb-1">{{ review.user.full_name }}</h6>
+                        <div class="rate">
+                            <span>
+                                <i class="fa fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o{% endif %}"
+                                    aria-hidden="true"></i>
+                                <i class="fa fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o{% endif %}"
+                                    aria-hidden="true"></i>
+                                <i class="fa fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o{% endif %}"
+                                    aria-hidden="true"></i>
+                                <i class="fa fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o{% endif %}"
+                                    aria-hidden="true"></i>
+                                <i class="fa fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o{% endif %}"
+                                    aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div> <!-- icontext.// -->
+                <div class="mt-3">
+                    <h6>{{ review.subject }}</h6>
+                    <p>{{ review.review }}</p>
                 </div>
-            </div>
-        </div> <!-- icontext.// -->
-        <div class="mt-3">
-            <h6>{{ review.subject }}</h6>
-            <p>{{ review.review }}</p>
+            </article>
         </div>
-    </article>
-</div>
-{% endfor %}
+        {% endfor %}
 
 
 

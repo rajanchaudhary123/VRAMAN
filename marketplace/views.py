@@ -20,7 +20,7 @@ from django.contrib.gis.measure import D # ``D`` is a shortcut for ``Distance``
 from django.contrib.gis.db.models.functions import Distance
 from .forms import OrderForm
 from datetime import date, datetime
-from orders.models import OrderedPackage
+from orders.models import OrderedPackage,Order
 
 
 #import for collaborative recommendation 
@@ -324,7 +324,7 @@ def package_detail(request, package_id):
 
     return render(request, 'marketplace/package_detail.html', context)
    
-    return render(request, 'marketplace/package_detail.html',context)
+    
 
 
 #checkout
