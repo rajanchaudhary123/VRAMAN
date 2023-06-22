@@ -140,11 +140,11 @@ def add_to_cart(request, package_id):
                     # decrease the cart quantity
                     chkCart.quantity += 1
                     chkCart.save()
-                    return JsonResponse({'status': 'Success', 'message': 'Increased the cart quantity','cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
+                    return JsonResponse({'status': 'Success', 'message': 'Increased the wishlist quantity','cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
                 
                except:
                     chkCart = Cart.objects.create(user=request.user, packageitem=packageitem, quantity=1)
-                    return JsonResponse({'status': 'Success', 'message': 'Added the package to the cart', 'cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
+                    return JsonResponse({'status': 'Success', 'message': 'Added the package to the wishlist', 'cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
                
            
            except:
@@ -180,7 +180,7 @@ def decrease_cart(request, package_id):
                     return JsonResponse({'status': 'Success','cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
                 
                except:
-                    return JsonResponse({'status': 'Failed', 'message': 'You dont have this package in cart!!'})
+                    return JsonResponse({'status': 'Failed', 'message': 'You dont have this package in wishlist!!'})
                
            
            except:
@@ -212,9 +212,9 @@ def delete_cart(request, cart_id):
                 cart_item = Cart.objects.get(user=request.user, id=cart_id)
                 if cart_item:
                     cart_item.delete()
-                    return JsonResponse({'status': 'Success','message':'Cart item has been deleted!','cart_counter': get_cart_counter(request),'cart_amount':get_cart_amounts(request)})
+                    return JsonResponse({'status': 'Success','message':'Wishlist item has been deleted!','cart_counter': get_cart_counter(request),'cart_amount':get_cart_amounts(request)})
             except:
-                return JsonResponse({'status': 'Failed', 'message': 'You dont have this package in cart!!'})
+                return JsonResponse({'status': 'Failed', 'message': 'You dont have this package in wishlist!!'})
     else:
         return JsonResponse({'status': 'Failed', 'message': 'Request invalid'})
     
