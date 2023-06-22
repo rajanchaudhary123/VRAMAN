@@ -302,7 +302,7 @@ def package_detail(request, package_id):
 
     if request.user.is_authenticated:
         try:
-            orderpackage = OrderedPackage.objects.filter(user=request.user, id=package_id).exists()
+            orderpackage = OrderedPackage.objects.filter(user=request.user, packageitem=package_id).exists()
             print(orderpackage)
         except OrderedPackage.DoesNotExist:
             orderpackage = None
