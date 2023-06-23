@@ -13,8 +13,8 @@ request_object = ''
 class Payment(models.Model):
     PAYMENT_METHOD = (
         ('PayPal', 'PayPal'),
-        ('SajiloPay', 'SajiloPay'), # Only for Indian Students.
-         # Only for Indian Students.
+        ('SajiloPay', 'SajiloPay'), 
+        
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100)
@@ -108,10 +108,12 @@ class Order(models.Model):
     
 
 class OrderedPackage(models.Model):
+    
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     packageitem = models.ForeignKey(PackageItem, on_delete=models.CASCADE)
+    
     quantity = models.IntegerField()
     price = models.FloatField()
     amount = models.FloatField()
@@ -120,4 +122,8 @@ class OrderedPackage(models.Model):
 
     def __str__(self):
         return self.packageitem.package_title
+    
+    
+   
+   
 

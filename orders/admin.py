@@ -11,7 +11,11 @@ class OrderPackageInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     list_display =['order_number','name','phone','email','total','payment_method','status','order_placed_to','is_ordered']
     inlines = [OrderPackageInline]
+class OrderedPackageAdmin(admin.ModelAdmin):
+    list_display =['id','packageitem']
+    
+
 
 admin.site.register(Payment)
 admin.site.register(Order,OrderAdmin)
-admin.site.register(OrderedPackage)
+admin.site.register(OrderedPackage,OrderedPackageAdmin)

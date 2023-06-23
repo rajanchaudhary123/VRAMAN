@@ -130,10 +130,12 @@
 							<li class="has-border">
 								<figure>
 									{% if package.image %}
-									<a href="#"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+									<a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
 									{% else %}
 									<a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
 									{% endif %}
+								</figure>
+								<div>{{ package.package_title }}</div>
 							</li>
 							{% endfor %}
 							
@@ -167,10 +169,12 @@
 							<li class="has-border">
 								<figure>
 									{% if package.image %}
-									<a href="#"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+									<a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
 									{% else %}
 									<a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
 									{% endif %}
+								</figure>
+								<div>{{ package.package_title }}</div>
 							</li>
 							{% endfor %}
 							
@@ -201,7 +205,7 @@
 							<li class="has-border">
 								<figure>
 									{% if package.image %}
-									<a href="#"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+									<a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
 									
 									{% else %}
 									<a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>

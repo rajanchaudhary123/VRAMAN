@@ -31,7 +31,7 @@ class PackageItem(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     description = models.TextField(max_length=800, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='packageimages')
+    image = models.ImageField(upload_to='packageimages', null=True)
     address = models.CharField(max_length=250, blank=True, null=True)
     country = models.CharField(max_length=15, blank=True, null=True)
     state = models.CharField(max_length=20, blank=True, null=True)
@@ -45,5 +45,11 @@ class PackageItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    image2 = models.ImageField(upload_to='packageimages', null=True)
+    image3 = models.ImageField(upload_to='packageimages', null=True)
+    image4 = models.ImageField(upload_to='packageimages', null=True)
+
     def __str__(self):
         return self.package_title
+
+    

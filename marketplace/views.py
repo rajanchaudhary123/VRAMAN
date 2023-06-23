@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render , redirect
 from accounts.models import UserProfile
-
+from django.db.models import Avg, Count
 from vendor.models import  Vendor
 from vendor.models import  Vendor, OpeningHour
 from menu.models import Category, PackageItem
@@ -20,6 +20,7 @@ from django.contrib.gis.measure import D # ``D`` is a shortcut for ``Distance``
 from django.contrib.gis.db.models.functions import Distance
 from .forms import OrderForm
 from datetime import date, datetime
+from orders.models import OrderedPackage,Order
 
 
 #import for collaborative recommendation 
@@ -44,6 +45,12 @@ def marketplace(request):
 
 def vendor_detail(request, vendor_slug):
     vendor = get_object_or_404(Vendor, vendor_slug=vendor_slug)
+    reviews = ReviewRating.objects.filter(vendor=vendor.id, status=True).aggregate(average=Avg('rating'))
+    avg1 = reviews['average'] or 0
+    reviewcount = ReviewRating.objects.filter(vendor=vendor.id, status=True).aggregate(count=Count('id'))
+    count = reviewcount['count'] or 0
+    print(count)
+
     categories = Category.objects.filter(vendor=vendor).prefetch_related(
         Prefetch(
         'packageitems',
@@ -61,12 +68,17 @@ def vendor_detail(request, vendor_slug):
         cart_items = Cart.objects.filter(user=request.user)
     else:
         cart_items = None
+
+    reviewvendor = ReviewRating.objects.filter(vendor = vendor.id, status=True)
     context = {
         'vendor':vendor,
         'categories':categories,
         'cart_items': cart_items,
         'opening_hours':opening_hours,
         'current_opening_hours':current_opening_hours,
+        'reviewvendor':reviewvendor,
+        'avg1': avg1,
+        'count' : count,
     }
 
     return render(request, 'marketplace/vendor_detail.html',context)
@@ -137,11 +149,11 @@ def add_to_cart(request, package_id):
                     # decrease the cart quantity
                     chkCart.quantity += 1
                     chkCart.save()
-                    return JsonResponse({'status': 'Success', 'message': 'Increased the cart quantity','cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
+                    return JsonResponse({'status': 'Success', 'message': 'Increased the wishlist quantity','cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
                 
                except:
                     chkCart = Cart.objects.create(user=request.user, packageitem=packageitem, quantity=1)
-                    return JsonResponse({'status': 'Success', 'message': 'Added the package to the cart', 'cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
+                    return JsonResponse({'status': 'Success', 'message': 'Added the package to the wishlist', 'cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
                
            
            except:
@@ -177,7 +189,7 @@ def decrease_cart(request, package_id):
                     return JsonResponse({'status': 'Success','cart_counter': get_cart_counter(request), 'qty': chkCart.quantity,'cart_amount':get_cart_amounts(request)})
                 
                except:
-                    return JsonResponse({'status': 'Failed', 'message': 'You dont have this package in cart!!'})
+                    return JsonResponse({'status': 'Failed', 'message': 'You dont have this package in wishlist!!'})
                
            
            except:
@@ -209,9 +221,9 @@ def delete_cart(request, cart_id):
                 cart_item = Cart.objects.get(user=request.user, id=cart_id)
                 if cart_item:
                     cart_item.delete()
-                    return JsonResponse({'status': 'Success','message':'Cart item has been deleted!','cart_counter': get_cart_counter(request),'cart_amount':get_cart_amounts(request)})
+                    return JsonResponse({'status': 'Success','message':'Wishlist item has been deleted!','cart_counter': get_cart_counter(request),'cart_amount':get_cart_amounts(request)})
             except:
-                return JsonResponse({'status': 'Failed', 'message': 'You dont have this package in cart!!'})
+                return JsonResponse({'status': 'Failed', 'message': 'You dont have this package in wishlist!!'})
     else:
         return JsonResponse({'status': 'Failed', 'message': 'Request invalid'})
     
@@ -280,13 +292,40 @@ def search_package(request):
         return render(request,'marketplace/listings.html',context)
     
 def package_detail(request, package_id):
-    package=PackageItem.objects.filter(id=package_id)
-    context={
-        'package':package,
+    package = PackageItem.objects.filter(id=package_id)
+    print(package_id)
+    reviews = ReviewRatingPackage.objects.filter(package=package_id, status=True).aggregate(average=Avg('rating'))
+    avg = reviews['average'] or 0
+    print(avg)
+    reviewcount1 = ReviewRatingPackage.objects.filter(package=package_id, status=True).aggregate(count1=Count('id'))
+    count1 = reviewcount1['count1'] or 0
+    print(count1)
+
+    if request.user.is_authenticated:
+        try:
+            orderpackage = OrderedPackage.objects.filter(user=request.user, packageitem=package_id).exists()
+            print(orderpackage)
+        except OrderedPackage.DoesNotExist:
+            orderpackage = None
+    else:
+        orderpackage = None
+
+    # Get the reviews
+    reviewpackage = ReviewRatingPackage.objects.filter(package=package_id, status=True)
+    print(reviewpackage)
+
+    context = {
+        'package': package,
+        'orderpackage': orderpackage,
+        'reviewpackage': reviewpackage,
+        'reviews': reviews,
+        'avg': avg,
+        'count1':count1,
     }
+
+    return render(request, 'marketplace/package_detail.html', context)
    
-   
-    return render(request, 'marketplace/package_detail.html',context)
+    
 
 
 #checkout
