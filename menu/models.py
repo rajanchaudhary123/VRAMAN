@@ -29,7 +29,12 @@ class PackageItem(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE,related_name='packageitems')
     package_title = models.CharField(max_length=50)
     slug = models.SlugField(max_length=100, unique=True)
-    description = models.TextField(max_length=800, blank=True)
+    description = models.TextField(max_length=1000, blank=True)
+
+    experiences_covered = models.TextField(max_length=500, blank=True)
+    inclusions = models.TextField(max_length=500, blank=True)
+    durations = models.TextField(max_length=500, blank=True)
+
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='packageimages', null=True)
     address = models.CharField(max_length=250, blank=True, null=True)
@@ -45,9 +50,9 @@ class PackageItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    image2 = models.ImageField(upload_to='packageimages', null=True)
-    image3 = models.ImageField(upload_to='packageimages', null=True)
-    image4 = models.ImageField(upload_to='packageimages', null=True)
+    image2 = models.ImageField(upload_to='packageimages', null=True, blank=True)
+    image3 = models.ImageField(upload_to='packageimages', null=True, blank=True)
+    image4 = models.ImageField(upload_to='packageimages', null=True, blank=True)
 
     def __str__(self):
         return self.package_title
