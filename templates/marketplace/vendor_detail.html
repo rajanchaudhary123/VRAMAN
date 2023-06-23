@@ -147,8 +147,10 @@
                                 </figure>
                             </div>
                             <div class="text-holder">
-                                <span class="restaurant-title">{{vendor.vendor_name}}{% if not vendor.is_open
-                                    %}[Closed]{% endif %}</span>
+                                <span class="restaurant-title">{{vendor.vendor_name}}
+                                    {% if not vendor.is_open%}
+                                    [Closed]
+                                    {% endif %}</span>
                                 <div class="text">
                                     {% if vendor.user_profile.address %}
                                     <i class="icon-location"></i>
@@ -183,8 +185,11 @@
                                     <a href="#" class="reviews-sortby-active">
                                         <span>Today :</span>
                                         {% for i in current_opening_hours %}
-                                        <span>{% if i.is_closed %}Closed{% else %}{{i.from_hour }} - {{ i.to_hour }}{%
-                                            endif %}</span>
+                                        <span>{% if i.is_closed %}
+                                            Closed
+                                            {% else %}
+                                            {{i.from_hour }} - {{ i.to_hour }}
+                                            {%endif %}</span>
 
                                         {% endfor %}
                                         <i class="icon-chevron-small-down"></i>
@@ -192,8 +197,12 @@
                                     <ul class="delivery-dropdown">
                                         {% for hour in opening_hours %}
                                         <li><a href="#"><span class="opend-day">{{hour}}</span> <span
-                                                    class="opend-time"><small>:</small>{% if hour.is_closed %}Closed{%
-                                                    else %}{{ hour.from_hour}} - {{ hour.to_hour}}{% endif %}</span></a>
+                                                    class="opend-time"><small>:</small>
+                                                    {% if hour.is_closed %}
+                                                    Closed
+                                                    {% else %}
+                                                    {{ hour.from_hour}} - {{ hour.to_hour}}
+                                                    {% endif %}</span></a>
                                         </li>
                                         {% endfor %}
                                     </ul>
