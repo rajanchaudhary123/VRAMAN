@@ -7,6 +7,8 @@ from orders.models import Order, OrderedPackage
 import simplejson as json
 
 
+
+
 @login_required(login_url='login')
 def cprofile(request):
     profile = get_object_or_404(UserProfile, user=request.user)

@@ -16,6 +16,25 @@ from django import template
 from accounts.views import check_role_customer
 
 
+#for content based
+from marketplace.models import ContentRecommendation
+from orders.models import OrderedPackage
+import joblib
+from django.conf import settings
+import os
+import pickle
+from django.shortcuts import render
+from orders.models import  OrderedPackage
+from marketplace.models import ContentRecommendation
+
+#for sentiment based 
+import pickle
+from marketplace.models import ReviewRatingPackage
+
+
+
+
+
 
 def get_or_set_current_location(request):
     if 'lat' in request.session:
@@ -30,6 +49,59 @@ def get_or_set_current_location(request):
         return lng, lat
     else:
         return None
+    
+# start for sentiment based-1
+import re
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+
+def preprocess_text(text):
+    # Convert to lowercase
+    text = text.lower()
+
+    # Remove special characters and punctuation
+    text = re.sub(r'[^\w\s]', '', text)
+
+    # Remove extra whitespaces
+    text = re.sub(r'\s+', ' ', text)
+
+    # Tokenize the text
+    tokens = text.split()
+
+    # Remove stop words
+    stop_words = set(stopwords.words('english'))
+    tokens = [word for word in tokens if word not in stop_words]
+
+    # Apply stemming using Porter Stemmer
+    stemmer = PorterStemmer()
+    tokens = [stemmer.stem(word) for word in tokens]
+
+    # Join the tokens back into a single string
+    preprocessed_text = ' '.join(tokens)
+
+    return preprocessed_text
+
+def analyze_sentiment(review):
+    # Load the sentiment analysis model (previously trained)
+    sentiment_model = joblib.load('sentiment_model.pkl')
+    vectorizer = sentiment_model.named_steps['vectorizer']
+    
+    # Preprocess the review
+    processed_review = preprocess_text(review)
+    
+    # Transform the preprocessed review using the vectorizer
+    transformed_review = vectorizer.transform([processed_review])
+    
+    # Predict the sentiment using the sentiment analysis model
+    sentiment = sentiment_model.predict(transformed_review)[0]
+    
+    return sentiment
+
+
+# end for sentiment based-1
+
+
+
 
 @login_required(login_url='login')
 def home(request):
@@ -37,6 +109,7 @@ def home(request):
    # start colaborative recommendation from marketplace's recommend_packages
     
    # Get the user's cart items
+
     user_cart = Cart.objects.filter(user=request.user)
     user_cart_items = user_cart.values_list('packageitem__id', flat=True)
    
@@ -55,19 +128,96 @@ def home(request):
     recommended_packages_cf = PackageItem.objects.filter(cart__in=similar_users_cart_items).distinct()[:8]
 
     collaborative_recommendation.recommended_packages.set(recommended_packages_cf)
-    
+    # print(recommended_packages_cf)
 
-  #end of  colaborative recommendation from marketplace's recommend_packages
+   #end of  colaborative recommendation from marketplace's recommend_packages
 
 
-#   #start of for category==interest
+    #start of for category==interest
     user = User.objects.get(email=request.user.email)
     user_interest = user.interest
     package_items = PackageItem.objects.filter(category__category_name=user_interest)
+    # print(package_items)
+
+  
+   
+
+    
+
+    #end of  category==interest
+
+        # Get the current user
+    user = request.user
+
+    # Check if the user has any purchase history
+    has_purchase_history = OrderedPackage.objects.filter(user=user).exists()
+
+    if not has_purchase_history:
+        # No purchase history found
+        recommended_packages = []
+    else:
+        # Define the absolute file path for the cosine similarity model
+        file_path = os.path.join(settings.BASE_DIR, 'marketplace', 'just__test_model.pkl')
+
+        # Check if the cosine similarity model file exists
+        if os.path.exists(file_path):
+            # Load the cosine similarity model
+            with open(file_path, 'rb') as f:
+                cosine_similarities = pickle.load(f)
+
+            # Get the user's purchased package
+            purchased_package = OrderedPackage.objects.filter(user=user).order_by('-created_at').first()
+            print(purchased_package)
+
+            # Check if a purchased package exists
+            if not purchased_package:
+                # No purchased package found
+                recommended_packages = []
+                #print('hello')
+            else:
+                # Get the index of the purchased package in the cosine similarity matrix
+                purchased_package_index = purchased_package.packageitem.id
+
+                # Check if the purchased package index is within bounds
+                if purchased_package_index >= cosine_similarities.shape[0]:
+                    # Set similarity scores to 0 for out-of-bound indices
+                    similarity_scores = [0] * cosine_similarities.shape[1]
+                else:
+                    # Get the similarity scores for the purchased package
+                    similarity_scores = cosine_similarities[purchased_package_index]
+
+                # Get the indices of the top similar packages
+                similar_package_indices = similarity_scores.argsort()[::-1]
+                #print(similar_package_indices)
+
+                # Exclude the purchased package itself
+                similar_package_indices = similar_package_indices[similar_package_indices != purchased_package_index]
+
+                # Get the recommended packages (at least 8 if available)
+                recommended_packages = PackageItem.objects.filter(id__in=similar_package_indices[:8])
+                print(recommended_packages)
+
+        else:
+            # Cosine similarity model file not found
+            recommended_packages = []
+
+    # Create or update the content recommendation model
+    content_recommendation, created = ContentRecommendation.objects.get_or_create(user=user)
+    content_recommendation.recommended_packages.set(recommended_packages)
+    content_recommendation.save()
+
+    
+
+      #end of content based from 2 models 
+
+# start for sentiment based-2
+
+
+# end for sentiment based-2
 
 
 
-#   #end of  category==interest
+
 
     package=PackageItem.objects.filter(is_available=True)[:8]
 
@@ -91,7 +241,8 @@ def home(request):
         'package': package,
          'recommended_packages_cf': recommended_packages_cf,
         'package_items': package_items,
-       
+        'recommended_packages': recommended_packages,
+        'has_purchase_history': has_purchase_history, 
           
          
     }

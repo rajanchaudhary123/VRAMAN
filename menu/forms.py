@@ -1,4 +1,4 @@
-from typing import Self
+
 from django import forms 
 from .models import Category,PackageItem
 from accounts.validators import allow_only_images_validator

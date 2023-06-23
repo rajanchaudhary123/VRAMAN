@@ -72,6 +72,43 @@
 		</div>
 	</div>
 	<!-- Main Search End -->
+	{% if has_purchase_history %}
+	<div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 0px;margin-bottom: 0px;background: #ffffff;">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="element-title align-left">
+						<h2>content Packages</h2>
+						<p>content packages</p>
+					</div>
+				</div>
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0 !important; padding-left: 0 !important;">
+					<div class="company-logo">
+						<ul>
+							
+							{% for package in  recommended_packages %}
+							<li class="has-border">
+								<figure>
+									{% if package.image %}
+									<a href="#"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+									{% else %}
+									<a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+									{% endif %}
+							</li>
+							{% endfor %}
+							
+							
+							
+						
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+							{% endif %}
 	
 	<!-- Top Restarurants Section Start -->
 	{% if package_items.exists and recommended_packages_cf.exists %}
@@ -112,7 +149,8 @@
 	</div>
 	{% endif %}
 
-	{% if user.is_authenticated %}
+	{% if user.is_authenticated and user.get_role == 'Customer' %}
+
 	<div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 0px;margin-bottom: 0px;background: #ffffff;">
 		<div class="container">
 			<div class="row">
