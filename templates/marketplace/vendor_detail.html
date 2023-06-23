@@ -306,7 +306,28 @@
         </div>
     </div>
 </div>
+{% if user.is_authenticated and user.get_role == 'Vendor' %}
+<b>Average Rating:</b>
+<div class="rate">
+    <span>
+        <i class="fa fa-star{% if avg1 < 0.5 %}-o{% elif avg1 >= 0.5 and avg1 < 1 %}-half-o {% endif %}"
+            aria-hidden="true"></i>
+        <i class="fa fa-star{% if avg1 < 1.5 %}-o{% elif avg1 >= 1.5 and avg1 < 2 %}-half-o {% endif %}"
+            aria-hidden="true"></i>
+        <i class="fa fa-star{% if avg1 < 2.5 %}-o{% elif avg1 >= 2.5 and avg1 < 3 %}-half-o {% endif %}"
+            aria-hidden="true"></i>
+        <i class="fa fa-star{% if avg1 < 3.5 %}-o{% elif avg1 >= 3.5 and avg1 < 4 %}-half-o {% endif %}"
+            aria-hidden="true"></i>
+        <i class="fa fa-star{% if avg1 < 4.5 %}-o{% elif avg1 >= 4.5 and avg1 < 5 %}-half-o {% endif %}"
+            aria-hidden="true"></i>
+    </span>
 
+</div>
+<div>
+    <b>Total reviews: {{ count }}</b>
+</div>
+
+{% endif%}
 <!-- Main Section End -->
 {% if user.is_authenticated and user.get_role == 'Customer' %}
 <div class="row" style="margin-left: 100px; margin-top: 10px;">

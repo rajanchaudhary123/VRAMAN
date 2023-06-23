@@ -14,7 +14,8 @@ from marketplace.models  import Cart
 from accounts.models import User
 from django import template
 from accounts.views import check_role_customer
-
+from django.db.models import Avg
+from marketplace.views import ReviewRatingPackage
 
 
 def get_or_set_current_location(request):
@@ -71,7 +72,15 @@ def home(request):
 
     package=PackageItem.objects.filter(is_available=True)[:8]
 
-   
+   # Get all packages with their average ratings greater than 3.5
+    packages_with_avg_ratings = PackageItem.objects.annotate(average_rating=Avg('reviewratingpackage__rating'))
+    filtered_packages = packages_with_avg_ratings.filter(average_rating__gte=3.5)
+
+    for package in filtered_packages:
+        print(f"Package: {package},Package ID: {package.id}, Average Rating: {package.average_rating}")
+
+# Sort the packages in descending order based on average ratings
+    sorted_packages = filtered_packages.order_by('-average_rating')
 
     if get_or_set_current_location(request) is not None:
     
@@ -91,6 +100,7 @@ def home(request):
         'package': package,
          'recommended_packages_cf': recommended_packages_cf,
         'package_items': package_items,
+        'sorted_packages': sorted_packages,
        
           
          
