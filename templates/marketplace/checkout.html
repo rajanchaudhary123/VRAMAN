@@ -53,7 +53,7 @@
                                             </div>
                                             <span class="text-danger" id="start-method-error"></span>
                                         
-                                            <div class="form-group col-md-6 col-sm-12 col-lg-6" id="end_date">
+                                            <!--<div class="form-group col-md-6 col-sm-12 col-lg-6" id="end_date">
                                                 End Date:
                                                 <input type="date" id="end" name="end_date" >
                                                 <ul class="errorlist">
@@ -64,7 +64,7 @@
                                                     {% endif %}
                                                 </ul>
                                             </div>
-                                            <span class="text-danger" id="end-method-error"></span>
+                                            <span class="text-danger" id="end-method-error"></span>-->
                                         </div>
 
                                         
@@ -215,17 +215,14 @@
         
 var payMethod = $("input[name='payment_method']:checked").val();
 var start = $("input[name='start_date']").val();
-var end = $("input[name='end_date']").val();
+
 
 
 if (!start) {
     $('#start-method-error').html("Select start date!");
     return false;
 }
-if (!end) {
-    $('#end-method-error').html("Select end date!");
-    return false;
-}
+
 if (!payMethod) {
     $('#payment-method-error').html("Select Payment Method!");
     return false;
@@ -246,7 +243,7 @@ if (!payMethod) {
     $('input[name=start_date], input[name=end_date]').on('change', function(){
     $('#start-method-error, #end-method-error').html("");
     var startDate = new Date($('input[name=start_date]').val());
-    var endDate = new Date($('input[name=end_date]').val());
+    
     var today = new Date();
 
     if (startDate < today) {
@@ -255,11 +252,7 @@ if (!payMethod) {
         $('#start-method-error').html("");
     }
 
-    if (endDate < startDate) {
-        $('#end-method-error').html("End date should be after startdate!");
-    } else {
-        $('#end-method-error').html("");
-    }
+    
 
 
 });

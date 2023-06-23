@@ -29,7 +29,7 @@ class OrderForm(forms.ModelForm):
       
 
     start_date=forms.DateField(widget = forms.SelectDateWidget(),validators=[validate_date])
-    end_date=forms.DateField(widget = forms.SelectDateWidget(),validators=[validate_date])
+    #end_date=forms.DateField(widget = forms.SelectDateWidget(),validators=[validate_date])
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'phone', 'email', 'start_date','end_date','address', 'country', 'state', 'city', 'pin_code']
+        fields = ['first_name', 'last_name', 'phone', 'email', 'start_date','address', 'country', 'state', 'city', 'pin_code']

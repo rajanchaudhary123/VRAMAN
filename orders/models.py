@@ -48,7 +48,7 @@ class Order(models.Model):
     email = models.EmailField(max_length=50)
     address = models.CharField(max_length=200)
     start_date = models.DateField(max_length=200,blank=False,null=True,default=None, validators=[validate_date])
-    end_date = models.DateField(max_length=200,blank=False,null=True,default=None, validators=[validate_date])
+   # end_date = models.DateField(max_length=200,blank=False,null=True,default=None, validators=[validate_date])
     country = models.CharField(max_length=15, blank=True)
     state = models.CharField(max_length=25, blank=True)
     city = models.CharField(max_length=50)
