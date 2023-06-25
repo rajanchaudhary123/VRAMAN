@@ -74,7 +74,7 @@ def home(request):
 
    # Get all packages with their average ratings greater than 3.5
     packages_with_avg_ratings = PackageItem.objects.annotate(average_rating=Avg('reviewratingpackage__rating'))
-    filtered_packages = packages_with_avg_ratings.filter(average_rating__gte=3.5)
+    filtered_packages = packages_with_avg_ratings.filter(average_rating__gte=2)
 
     for package in filtered_packages:
         print(f"Package: {package},Package ID: {package.id}, Average Rating: {package.average_rating}")
