@@ -284,6 +284,7 @@ def search_package(request):
                 'package_search' : package_search,
                 'package_count':package_count,
                 'vendor_count': vendor_count,
+                'vendors':vendors,
                 
             
             }
