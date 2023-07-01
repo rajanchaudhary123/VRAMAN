@@ -35,10 +35,11 @@ from scipy import sparse
 #from marketplace.models import SentimentRecommendation
 
 
-
-
+#rating_based
 from django.db.models import Avg
 from marketplace.views import ReviewRatingPackage
+
+
 
 
 def get_or_set_current_location(request):
@@ -77,7 +78,6 @@ def preprocess_text(text):
 
 
 # end for sentiment based-1
-
 
 
 
@@ -129,7 +129,6 @@ def home(request):
 
     # Check if the user has any purchase history
     has_purchase_history = OrderedPackage.objects.filter(user=user).exists()
-
     if not has_purchase_history:
         # No purchase history found
         recommended_packages = []
@@ -174,6 +173,11 @@ def home(request):
                 # Get the recommended packages (at least 8 if available)
                 recommended_packages = PackageItem.objects.filter(id__in=similar_package_indices[:8])
                 print(recommended_packages)
+
+                # Print the cosine similarity scores of the recommended packages
+                for package_index in similar_package_indices[:8]:
+                    similarity_score = similarity_scores[package_index]
+                    print(f"Cosine similarity of package {package_index} is {similarity_score}")
                 
 
         else:
@@ -220,7 +224,6 @@ def home(request):
   
 
 #     file_path = os.path.join(settings.BASE_DIR, 'marketplace', 'vectorizer.pkl')
-
 # #    Check if the vectorizer model file exists
 #     if os.path.exists(file_path):
 # #         # Load the sentiment analysis model
@@ -270,17 +273,19 @@ def home(request):
 
 
 
-    package=PackageItem.objects.filter(is_available=True)[:8]
 
-   # Get all packages with their average ratings greater than 3.5
+    package=PackageItem.objects.filter(is_available=True)[:8]
+    # Get all packages with their average ratings greater than 3.5
     packages_with_avg_ratings = PackageItem.objects.annotate(average_rating=Avg('reviewratingpackage__rating'))
-    filtered_packages = packages_with_avg_ratings.filter(average_rating__gte=2)
+    filtered_packages = packages_with_avg_ratings.filter(average_rating__gte=3)
 
     for package in filtered_packages:
         print(f"Package: {package},Package ID: {package.id}, Average Rating: {package.average_rating}")
 
 # Sort the packages in descending order based on average ratings
     sorted_packages = filtered_packages.order_by('-average_rating')
+
+   
 
     if get_or_set_current_location(request) is not None:
     
@@ -294,18 +299,23 @@ def home(request):
     
     else:
         vendors = Vendor.objects.filter(is_approved=True, user__is_active=True)[:8]
+
+    
     context = {
         'is_customer': (request.user.role == 'Customer'),
+        'user': request.user, 
         'vendors': vendors,
         'package': package,
-         'recommended_packages_cf': recommended_packages_cf,
+        'recommended_packages_cf': recommended_packages_cf,
         'package_items': package_items,
-       
+        'recommended_packages': recommended_packages,
+        'has_purchase_history': has_purchase_history, 
+        'sorted_packages': sorted_packages,
+        #'recommended_packages_s': sentiment_recommendation.recommended_packages_s.all()
           
          
     }
     if request.user.is_authenticated:
         return render(request, 'home.html', context)
     else:
-        return render(request, 'home.html')
-
+        return render(request, 'home.html',context)
