@@ -30,6 +30,9 @@ from marketplace.models import ContentRecommendation
 #for sentiment based 
 import pickle
 from marketplace.models import ReviewRatingPackage
+from sklearn.feature_extraction.text import TfidfVectorizer
+from scipy import sparse
+#from marketplace.models import SentimentRecommendation
 
 
 
@@ -51,51 +54,24 @@ def get_or_set_current_location(request):
         return None
     
 # start for sentiment based-1
-import re
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
-
+import nltk
 def preprocess_text(text):
-    # Convert to lowercase
-    text = text.lower()
-
-    # Remove special characters and punctuation
-    text = re.sub(r'[^\w\s]', '', text)
-
-    # Remove extra whitespaces
-    text = re.sub(r'\s+', ' ', text)
-
+    print(f"Input text type: {type(text)}")
     # Tokenize the text
-    tokens = text.split()
-
-    # Remove stop words
-    stop_words = set(stopwords.words('english'))
-    tokens = [word for word in tokens if word not in stop_words]
-
-    # Apply stemming using Porter Stemmer
-    stemmer = PorterStemmer()
-    tokens = [stemmer.stem(word) for word in tokens]
-
-    # Join the tokens back into a single string
-    preprocessed_text = ' '.join(tokens)
-
-    return preprocessed_text
-
-def analyze_sentiment(review):
-    # Load the sentiment analysis model (previously trained)
-    sentiment_model = joblib.load('sentiment_model.pkl')
-    vectorizer = sentiment_model.named_steps['vectorizer']
+    tokens = nltk.word_tokenize(text)
     
-    # Preprocess the review
-    processed_review = preprocess_text(review)
+    # Lemmatize the tokens
+    lemmatizer = nltk.WordNetLemmatizer()
+    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
     
-    # Transform the preprocessed review using the vectorizer
-    transformed_review = vectorizer.transform([processed_review])
+    # Join the tokens back into a string
+    processed_text = ' '.join(lemmatized_tokens)
     
-    # Predict the sentiment using the sentiment analysis model
-    sentiment = sentiment_model.predict(transformed_review)[0]
-    
-    return sentiment
+    # Convert the text to lowercase
+    processed_text = processed_text.lower()
+
+    return processed_text
+
 
 
 # end for sentiment based-1
@@ -196,6 +172,7 @@ def home(request):
                 # Get the recommended packages (at least 8 if available)
                 recommended_packages = PackageItem.objects.filter(id__in=similar_package_indices[:8])
                 print(recommended_packages)
+                
 
         else:
             # Cosine similarity model file not found
@@ -211,8 +188,80 @@ def home(request):
       #end of content based from 2 models 
 
 # start for sentiment based-2
+# #       # Get the current user
+#     user = request.user
 
+# #     # Load the sentiment analysis model
+# #     # Define the absolute file path for the cosine similarity model
+#     file_path = os.path.join(settings.BASE_DIR, 'marketplace', 'sentiment_model.pkl')
 
+# #         
+# #    # Check if the sentiment analysis model file exists
+#     if os.path.exists(file_path):
+# #         # Load the sentiment analysis model
+#         with open(file_path, 'rb') as f:
+#             sentiment_model = pickle.load(f)
+#             print("Sentiment analysis model is successfully loaded.")
+#             print("hello from sentiment")
+           
+#     else:
+#         print("Error loading sentiment analysis model.")
+#         print("bye from sentiment")
+
+    
+    
+    
+# #   
+
+    
+
+  
+
+#     file_path = os.path.join(settings.BASE_DIR, 'marketplace', 'vectorizer.pkl')
+
+# #    Check if the vectorizer model file exists
+#     if os.path.exists(file_path):
+# #         # Load the sentiment analysis model
+#         with open(file_path, 'rb') as f:
+#             vectorizer = pickle.load(f)
+#             print("Svectorizer model is successfully loaded.")
+           
+           
+#     else:
+#         print("Error loading vectorizer model.")
+#       # Get the latest review of the current user on a particular package
+#     # Get the latest review of the current user on a particular package
+#     latest_review = ReviewRatingPackage.objects.filter(user=user).latest('created_at')
+#     print(latest_review)
+#     current_user_review = preprocess_text(latest_review.review)
+#     current_user_review_vectorized = vectorizer.transform([current_user_review])
+#     current_user_sentiment = sentiment_model.predict(current_user_review_vectorized)[0]
+#     #print(current_user_sentiment)
+
+#    # Get all reviews on the same package by all users
+#     package_reviews = ReviewRatingPackage.objects.filter(package=latest_review.package)
+
+#     # Filter reviews with similar sentiments
+#     similar_users = []
+#     for review in package_reviews:
+#         processed_review = preprocess_text(review.review)
+#         review_vectorized = vectorizer.transform([processed_review])
+#         sentiment = sentiment_model.predict(review_vectorized)[0]
+#         if sentiment == current_user_sentiment:
+#             similar_users.append(review.user)
+#     # Retrieve all purchased packages of similar users
+#     # Retrieve all purchased packages of similar users
+#     similar_ordered_packages = OrderedPackage.objects.exclude(user=user).filter(user__in=similar_users).values_list('packageitem', flat=True)
+
+#     print(similar_ordered_packages)
+
+#     # Create or update the sentiment recommendation model
+#     sentiment_recommendation, created = SentimentRecommendation.objects.get_or_create(user=user)
+#     sentiment_recommendation.recommended_packages_s.set(similar_ordered_packages)
+   
+
+    
+    
 # end for sentiment based-2
 
 
@@ -243,6 +292,7 @@ def home(request):
         'package_items': package_items,
         'recommended_packages': recommended_packages,
         'has_purchase_history': has_purchase_history, 
+        # 'recommended_packages_s': sentiment_recommendation.recommended_packages_s.all()
           
          
     }

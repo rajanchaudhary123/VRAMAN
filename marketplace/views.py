@@ -31,6 +31,7 @@ from accounts.models import User
 
 
 
+
 def marketplace(request):
     vendors = Vendor.objects.filter(is_approved=True, user__is_active=True)
     package = PackageItem.objects.filter(is_available=True)
