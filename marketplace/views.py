@@ -30,6 +30,8 @@ from accounts.models import User
 
 
 
+
+
 def marketplace(request):
     vendors = Vendor.objects.filter(is_approved=True, user__is_active=True)
     package = PackageItem.objects.filter(is_available=True)
@@ -413,4 +415,52 @@ def render_matching_packages(request):
 
 
 
-#category == interest enf
+# #start of content based recommendation
+# from django.shortcuts import render
+# from django.contrib.auth.decorators import login_required
+# from orders.models import OrderedPackage
+# from .models import ContentRecommendation
+# import joblib
+# from .models import PackageItem
+
+# # Load the cosine similarity model
+# cosine_similarity_model = joblib.load('cosine_similarity_model.joblib')
+
+# @login_required
+# def personalized_recommendation(request):
+#     # Get the user's ordered packages
+#     ordered_packages = OrderedPackage.objects.filter(user=request.user)
+#     package_items = ordered_packages.values_list('packageitem', flat=True)
+
+#     # Retrieve the package item that the user recently ordered
+#     recent_packageitem = PackageItem.objects.filter(id__in=package_items).order_by('-created_at').first()
+
+#     # Perform content-based filtering using cosine similarity
+#     if recent_packageitem:
+#         package_item_ids = PackageItem.objects.values_list('id', flat=True)
+#         package_item_indices = dict(zip(package_item_ids, range(len(package_item_ids))))
+#         package_item_index = package_item_indices[recent_packageitem.id]
+
+#         # Get the cosine similarities for the recent package item
+#         cosine_similarities = cosine_similarity_model[package_item_index]
+
+#         # Get the indices of the most similar package items
+#         most_similar_indices = cosine_similarities.argsort()[:-9:-1]
+
+#         # Retrieve the recommended package items
+#         recommended_packageitems = PackageItem.objects.filter(id__in=most_similar_indices)
+
+#         # Save the recommended package items for the user
+#         content_recommendation, created = ContentRecommendation.objects.get_or_create(user=request.user)
+#         content_recommendation.recommended_packages.set(recommended_packageitems)
+
+#     else:
+#         recommended_packageitems = None
+
+#     return render(request, 'home.html', {'recommended_packageitems': recommended_packageitems})
+
+
+
+
+# #end of content based
+

@@ -9,6 +9,9 @@ urlpatterns = [
     path('', views.recommend_packages, name='recommend_packages'),
     #for interest=category
     path('', views.render_matching_packages, name='render_matching_packages'),
+    #for content based
+    #   path('', views.personalized_recommendation, name='personalized_recommendation'),
+
 
 
     path('<slug:vendor_slug>/',views.vendor_detail, name='vendor_detail'),
