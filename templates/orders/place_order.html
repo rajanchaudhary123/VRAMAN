@@ -211,69 +211,171 @@ onApprove: function(data, actions) {
     }                                           
                                        
    
-                                                $('#payment-button-wallet').on('click', function (e) {
-                                                e.preventDefault();
-                                                // Generate a unique transaction ID
-                                                let transaction_id = generateTransactionID();
+//                                                 $('#payment-button-wallet').on('click', function (e) {
+//                                                 e.preventDefault();
+//                                                 // Generate a unique transaction ID
+//                                                 let transaction_id = generateTransactionID();
     
-                                                // Convert the amount to an integer
-                                                let amount = parseInt(grand_total) * 100;
-                                                let paymentDetails = {
-                                                vendor_key :'production_9fd0f8ca-aa3c-4633-ae44-20b96de67103',
-                                                title: "Bhraman",
-                                                description: "category",
-                                                amount : amount,
-                                                transaction_id:transaction_id,
-                                                response_url:"/home",
-                                                cancellation_url:"/home",
-                                                payment_method: "SajiloPay",
-                                                }
-                                                //request payment process
-                                                $.ajax({
-                                                type: 'POST',
-                                                url: 'https://sandboxapi.sajilopay.com.np/api/merchant/process-payment',
-                                                async: true,
-                                                data: paymentDetails,
-                                                success: function (resp) {
-                                                console.log(resp)
-                                                //your code after success.
-                                                //redirect the page to the URL obtained from the response.
-                                                location.href = resp.redirect_url;
-                                                // Call the checkTransactionStatus function after a delay to allow time for the payment to process
-                                                   setTimeout(function() {
-                                                   checkTransactionStatus(paymentDetails.transaction_id);
-                                                  }, 5000); // Delay for 5 seconds (adjust as needed)
-                                                },
-                                                error: function (resp) {
-                                                    console.log(resp)
-                                                //your code on error
-                                                }
-                                                });
-                                                })
-                                                // Function to generate a unique transaction ID
+//                                                 // Convert the amount to an integer
+//                                                 let amount = parseInt(grand_total) * 100;
+//                                                 let paymentDetails = {
+//                                                 vendor_key :'production_9fd0f8ca-aa3c-4633-ae44-20b96de67103',
+//                                                 title: "Bhraman",
+//                                                 description: "category",
+//                                                 amount : amount,
+//                                                 transaction_id:transaction_id,
+//                                                 response_url:"/home",
+//                                                 cancellation_url:"/home",
+//                                                 payment_method: "SajiloPay",
+//                                                 }
+//                                                 //request payment process
+//                                                 $.ajax({
+//                                                 type: 'POST',
+//                                                 url: 'https://sandboxapi.sajilopay.com.np/api/merchant/process-payment',
+//                                                 async: true,
+//                                                 data: paymentDetails,
+//                                                 success: function (resp) {
+//                                                 console.log(resp)
+//                                                 //your code after success.
+//                                                 //redirect the page to the URL obtained from the response.
+//                                                 location.href = resp.redirect_url;
+//                                                 // Call the checkTransactionStatus function after a delay to allow time for the payment to process
+//                                                    setTimeout(function() {
+//                                                    checkTransactionStatus(paymentDetails.transaction_id);
+//                                                   }, 5000); // Delay for 5 seconds (adjust as needed)
+//                                                 },
+//                                                 error: function (resp) {
+//                                                     console.log(resp)
+//                                                 //your code on error
+//                                                 }
+//                                                 });
+//                                                 })
+//                                                 // Function to generate a unique transaction ID
+// function generateTransactionID() {
+//     // Use a timestamp and a random number to generate a unique ID
+//     return 'transaction_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+// }
+// // Function to check the transaction status
+// function checkTransactionStatus(transaction_id) {
+//     let checkStatusURL = 'https://sandboxapi.sajilopay.com.np/api/merchant/check-transaction-status';
+    
+//     let checkStatusData = {
+//         vendor_key: 'production_9fd0f8ca-aa3c-4633-ae44-20b96de67103',
+//         transaction_id: transaction_id
+//     };
+    
+//     // Request transaction status check
+//     $.ajax({
+//         type: 'POST',
+//         url: checkStatusURL,
+//         async: true,
+//         data: checkStatusData,
+//         success: function (resp) {
+//             // Call the sendTransaction function with the updated transaction_id
+//             sendTransaction(transaction_id, paymentDetails.payment_method, resp.status);
+            
+//             // Your code after successfully checking the transaction status
+//         },
+//         error: function (resp) {
+//             console.log(resp);
+//             // Your code on error
+//         }
+//     });
+// }
+$('#payment-button-wallet').on('click', function (e) {
+    e.preventDefault();
+
+    // Generate a unique transaction ID
+    let transaction_id = generateTransactionID();
+
+    // Convert the amount to an integer
+    let amount = parseInt(grand_total) * 100;
+    
+    // Prepare the payment payload
+    let paymentDetails = {
+        return_url: "/home",
+        website_url: "https://example.com/",
+        amount: amount,
+        purchase_order_id: transaction_id,
+        purchase_order_name: "Bhraman",
+        customer_info: {
+            name: "John Doe",
+            email: "johndoe@example.com",
+            phone: "9876543210"
+        },
+        amount_breakdown: [
+            {
+                label: "Total Amount",
+                amount: amount
+            }
+        ],
+        product_details: [
+            {
+                identity: transaction_id,
+                name: "Bhraman",
+                total_price: amount,
+                quantity: 1,
+                unit_price: amount
+            }
+        ]
+    };
+
+    // Request payment process
+    $.ajax({
+        type: 'POST',
+        url: 'https://a.khalti.com/api/v2/epayment/initiate/',
+        headers: {
+            "Authorization": "Key a73cd51c1fd24644bac5676c4d57003f"
+                
+        },
+        async: true,
+        data: JSON.stringify(paymentDetails),
+        contentType: "application/json",
+        success: function (resp) {
+            console.log(resp);
+            // Redirect the page to the payment_url obtained from the response
+            location.href = resp.payment_url;
+
+            // Call the checkTransactionStatus function after a delay to allow time for the payment to process
+            setTimeout(function() {
+                checkTransactionStatus(transaction_id);
+            }, 5000); // Delay for 5 seconds (adjust as needed)
+        },
+        error: function (resp) {
+            console.log(resp);
+            // Your code on error
+        }
+    });
+});
+
+// Function to generate a unique transaction ID
 function generateTransactionID() {
     // Use a timestamp and a random number to generate a unique ID
     return 'transaction_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
 }
+
 // Function to check the transaction status
 function checkTransactionStatus(transaction_id) {
-    let checkStatusURL = 'https://sandboxapi.sajilopay.com.np/api/merchant/check-transaction-status';
-    
+    let checkStatusURL = 'https://a.khalti.com/api/v2/epayment/lookup/';
+
     let checkStatusData = {
-        vendor_key: 'production_9fd0f8ca-aa3c-4633-ae44-20b96de67103',
-        transaction_id: transaction_id
+        pidx: transaction_id
     };
-    
+
     // Request transaction status check
     $.ajax({
         type: 'POST',
         url: checkStatusURL,
+        headers: {
+            "Authorization": "Key a73cd51c1fd24644bac5676c4d57003f"
+        },
         async: true,
-        data: checkStatusData,
+        data: JSON.stringify(checkStatusData),
+        contentType: "application/json",
         success: function (resp) {
             // Call the sendTransaction function with the updated transaction_id
-            sendTransaction(transaction_id, paymentDetails.payment_method, resp.status);
-            
+            sendTransaction(transaction_id, "Khalti", resp.status);
+
             // Your code after successfully checking the transaction status
         },
         error: function (resp) {
@@ -282,6 +384,7 @@ function checkTransactionStatus(transaction_id) {
         }
     });
 }
+
                                                 
 </script>
 
