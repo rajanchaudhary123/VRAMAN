@@ -6,10 +6,11 @@ from .models import Order, OrderedPackage, Payment
 from marketplace.context_processors import get_cart_amounts
 import simplejson as json
 from marketplace.utils import generate_order_number,order_total_by_vendor
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from accounts.utils import send_notification
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
+import requests
 
 
 @login_required(login_url='login')
@@ -198,6 +199,7 @@ def payments(request):
     return HttpResponse('Payment View')
 
 
+
 def order_complete(request):
     order_number = request.GET.get('order_no')
     transaction_id = request.GET.get('trans_id')
@@ -220,6 +222,49 @@ def order_complete(request):
         return render(request, 'orders/order_complete.html', context)
     except:
         return redirect('home')
+    
+def initiate_payment(request):
+    if request.method == 'POST':
+        # Retrieve the necessary data from the request
+        amount = request.POST.get('amount')
+        purchase_order_id = request.POST.get('purchase_order_id')
+        purchase_order_name = request.POST.get('purchase_order_name')
+        return_url = request.POST.get('return_url')
+        website_url = request.POST.get('website_url')
+
+
+        # Prepare the payload for the Khalti API request
+        payload = {
+            'amount':amount,
+            'purchase_order_id': purchase_order_id,
+            'purchase_order_name': purchase_order_name,
+            'return_url': return_url,
+            'website_url' : website_url,
+            # Add any other required parameters
+        }
+
+        # Set the API endpoint URL
+        api_url = 'https://a.khalti.com/api/v2/epayment/initiate/'
+
+        # Set the headers for the API request
+        headers = {
+            'Authorization': 'Key a73cd51c1fd24644bac5676c4d57003f',
+            'Content-Type': 'application/json',
+        }
+
+        # Send the payment request to the API
+        response = requests.post(api_url, headers=headers, data=json.dumps(payload))
+
+        # Return the response from the Khalti API as a JSON response
+        return JsonResponse(response.json())
+    
+    # # Redirect to the URL from the response
+    #     return HttpResponseRedirect(response.json()['payment_url'])
+
+
+    # Return an error response if the request method is not POST
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
 
 
 
