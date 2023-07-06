@@ -271,11 +271,15 @@ $('#payment-button-wallet').on('click', function (e) {
 
             var paymentUrl = response.payment_url;
             // Save the pidx value
-            var pidx = response.pidx;
+            
             
             
         // Redirect to the payment_url
         window.location.href = paymentUrl;
+
+        var pidx = response.pidx;
+            var status = "Success"
+            sendTransaction(transaction_id, "Khalti", status);
             // Call the checkTransactionStatus function after a delay
 
             
