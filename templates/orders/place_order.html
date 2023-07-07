@@ -230,7 +230,7 @@ $('#payment-button-wallet').on('click', function (e) {
         return_url:"http://127.0.0.1:8000/orders/return_url",
         website_url: "http://127.0.0.1:8000",
         amount: amount,
-        purchase_order_id: transaction_id,
+        purchase_order_id: order_number,
         purchase_order_name: "Bhraman",
         csrfmiddlewaretoken: csrftoken,
         customer_info: {
@@ -278,11 +278,11 @@ $('#payment-button-wallet').on('click', function (e) {
         // Redirect to the payment_url
         window.location.href = paymentUrl;
 
-         var pidx = response.pidx;
+        //  var pidx = response.pidx;
          
-        var status = "Success"
-        sendTransaction(pidx, "Khalti", status);
-            // Call the checkTransactionStatus function after a delay
+        // var status = "Success"
+        // sendTransaction(pidx, "Khalti", status);
+            
 
             
             

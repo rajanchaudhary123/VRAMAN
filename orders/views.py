@@ -272,25 +272,30 @@ def return_url_view(request):
     transaction_id = request.GET.get('transaction_id') 
     pidx = request.GET.get('pidx') 
     
-    print(transaction_id)
+    
     payment_method = 'Khalti'
     status = 'Success'
     order_number = request.GET.get('purchase_order_id')
+    
+    
     amount = request.GET.get('amount')
+    
+    sendTransaction(request,transaction_id, payment_method, status, order_number)
     
     
     
     try:
-      order = Order.objects.get( payment__transaction_id=pidx, is_ordered=True)
+      order = Order.objects.get(order_number=order_number, payment__transaction_id=transaction_id, is_ordered=True)
+    
       ordered_package = OrderedPackage.objects.filter(order=order)
-      print(ordered_package)
+      
       subtotal = 0
       for item in ordered_package:
-            subtotal += (item.price * item.quantity)
+             subtotal += (item.price * item.quantity)
 
       tax_data = json.loads(order.tax_data)
-    # Call the sendTransaction function to process the transaction
-    #sendTransaction(transaction_id, payment_method, status, order_number)
+   
+    
 
 
       context={
@@ -301,16 +306,16 @@ def return_url_view(request):
               'order_number': order_number,
               'amount': amount,
               'pidx': pidx,
-              'order': order,
-            'ordered_package': ordered_package,
-            'subtotal': subtotal,
-            'tax_data': tax_data,
+               'order': order,
+             'ordered_package': ordered_package,
+             'subtotal': subtotal,
+             'tax_data': tax_data,
               
               }
     # Redirect to the place_order template with the relevant data
       return render(request, 'orders/order_complete.html',context)
     except:
-            return redirect('home')
+        return redirect('home')
 
     
         
@@ -318,17 +323,101 @@ def return_url_view(request):
 
  
 
-def sendTransaction(transaction_id, payment_method, status, order_number):
-    # Perform necessary actions, such as saving the transaction details to the database
-    # ...
+def sendTransaction(request,transaction_id, payment_method, status, order_number):
+    
 
-    # Optionally, return any relevant data for further processing
-    return {
-        'order_number': order_number,
-        'transaction_id': transaction_id,
-        'payment_method': payment_method,
-        'status': status,
-    }
+        
+        
+        
+
+        order = Order.objects.get(user=request.user, order_number=order_number)
+        payment = Payment(
+            user = request.user,
+            transaction_id = transaction_id,
+            payment_method = payment_method,
+            amount = order.total,
+            status = status
+        )
+        payment.save()
+
+        # UPDATE THE ORDER MODEL
+        order.payment = payment
+        order.is_ordered = True
+        order.save()
+
+
+         # MOVE THE CART ITEMS TO ORDERED Package MODEL
+        cart_items = Cart.objects.filter(user=request.user)
+        for item in cart_items:
+            ordered_package = OrderedPackage()
+            ordered_package.order = order
+            ordered_package.payment = payment
+            ordered_package.user = request.user
+            ordered_package.packageitem = item.packageitem
+            ordered_package.quantity = item.quantity
+            ordered_package.price = item.packageitem.price
+            ordered_package.amount = item.packageitem.price * item.quantity # total amount
+            ordered_package.save()
+
+     # SEND ORDER CONFIRMATION EMAIL TO THE CUSTOMER
+        mail_subject = 'Thank you for ordering with us.'
+        mail_template = 'orders/order_confirmation_email.html'
+
+        ordered_package = OrderedPackage.objects.filter(order=order)
+        customer_subtotal = 0
+        for item in ordered_package:
+            customer_subtotal += (item.price * item.quantity)
+        tax_data = json.loads(order.tax_data)
+        context = {
+            'user': request.user,
+            'order': order,
+            'to_email': order.email,
+            'ordered_package': ordered_package,
+            'domain': get_current_site(request),
+            'customer_subtotal': customer_subtotal,
+            'tax_data': tax_data,
+        }
+        send_notification(mail_subject, mail_template, context)
+
+         # SEND ORDER RECEIVED EMAIL TO THE VENDOR
+        mail_subject = 'You have received a new order.'
+        mail_template = 'orders/new_order_received.html'
+        to_emails = []
+        for i in cart_items:
+            if i.packageitem.vendor.user.email not in to_emails:
+                to_emails.append(i.packageitem.vendor.user.email)
+                #print(to_emails)
+
+                ordered_package_to_vendor = OrderedPackage.objects.filter(order=order, packageitem__vendor=i.packageitem.vendor)
+                print(ordered_package_to_vendor)
+
+        
+                context = {
+                    'order': order,
+                    'to_email': i.packageitem.vendor.user.email,
+                    'ordered_package_to_vendor': ordered_package_to_vendor,
+                    'vendor_subtotal': order_total_by_vendor(order, i.packageitem.vendor.id)['subtotal'],
+                    'tax_data': order_total_by_vendor(order, i.packageitem.vendor.id)['tax_dict'],
+                    'vendor_grand_total': order_total_by_vendor(order, i.packageitem.vendor.id)['grand_total'],
+                }
+                send_notification(mail_subject, mail_template, context)
+        
+    #CLEAR THE CART IF THE PAYMENT IS SUCCESS
+        cart_items.delete() 
+
+   
+
+        # # RETURN BACK TO AJAX WITH THE STATUS SUCCESS OR FAILURE
+        # response = {
+        #    'order_number': order_number,
+        #     'transaction_id': transaction_id,
+        # }
+        # return JsonResponse(response)
+    
+
+        return HttpResponse('Payment View')
+
+
 
 
 
