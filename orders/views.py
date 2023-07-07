@@ -265,6 +265,71 @@ def initiate_payment(request):
     # Return an error response if the request method is not POST
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
+def return_url_view(request):
+    
+    
+    # Extract the necessary parameters from the query string
+    transaction_id = request.GET.get('transaction_id') 
+    pidx = request.GET.get('pidx') 
+    
+    print(transaction_id)
+    payment_method = 'Khalti'
+    status = 'Success'
+    order_number = request.GET.get('purchase_order_id')
+    amount = request.GET.get('amount')
+    
+    
+    
+    try:
+      order = Order.objects.get( payment__transaction_id=pidx, is_ordered=True)
+      ordered_package = OrderedPackage.objects.filter(order=order)
+      print(ordered_package)
+      subtotal = 0
+      for item in ordered_package:
+            subtotal += (item.price * item.quantity)
+
+      tax_data = json.loads(order.tax_data)
+    # Call the sendTransaction function to process the transaction
+    #sendTransaction(transaction_id, payment_method, status, order_number)
+
+
+      context={
+            
+             'transaction_id': transaction_id,
+              'payment_method': payment_method,
+              'status': status,
+              'order_number': order_number,
+              'amount': amount,
+              'pidx': pidx,
+              'order': order,
+            'ordered_package': ordered_package,
+            'subtotal': subtotal,
+            'tax_data': tax_data,
+              
+              }
+    # Redirect to the place_order template with the relevant data
+      return render(request, 'orders/order_complete.html',context)
+    except:
+            return redirect('home')
+
+    
+        
+
+
+ 
+
+def sendTransaction(transaction_id, payment_method, status, order_number):
+    # Perform necessary actions, such as saving the transaction details to the database
+    # ...
+
+    # Optionally, return any relevant data for further processing
+    return {
+        'order_number': order_number,
+        'transaction_id': transaction_id,
+        'payment_method': payment_method,
+        'status': status,
+    }
+
 
 
 

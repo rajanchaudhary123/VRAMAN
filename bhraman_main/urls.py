@@ -20,6 +20,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from marketplace import views as MarketplaceViews
+from orders import views as OrdersViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -45,4 +46,6 @@ urlpatterns = [
 
     #Orders
     path('orders/', include('orders.urls')),
+
+    #path('return_url/', OrdersViews.return_url_view, name='return_url'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

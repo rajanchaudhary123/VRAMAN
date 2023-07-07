@@ -106,10 +106,10 @@
                                             {% if order.payment_method == 'PayPal' %}
                                             <!-- PayPal Checkout Button -->
                                             <div id="paypal-button-container"></div>
-                                            {% elif order.payment_method == 'SajiloPay' %}
+                                            {% elif order.payment_method == 'Khalti' %}
                                             <div>
-                                              <!-- <button id="payment-button">Pay with Khalti</button> -->
-                                              <button type="submit" id="payment-button-wallet" class="wallet-btn wallet-btn-primary"></button>
+                                                
+                                              <button type="submit" id="payment-button-wallet" >Pay with Khalti</button>
                                             </div>
                                             {% endif %}
                                             
@@ -222,11 +222,12 @@ $('#payment-button-wallet').on('click', function (e) {
     let transaction_id = generateTransactionID();
 
     // Convert the amount to an integer
-    let amount = parseInt(grand_total) * 1000;
+    let amount = parseInt(grand_total) * 1000; //change to 100
+    var returnURL = "{% url 'return_url' %}"
     
     // Prepare the payment payload
     let paymentDetails = {
-        return_url:"http://127.0.0.1:8000",
+        return_url:"http://127.0.0.1:8000/orders/return_url",
         website_url: "http://127.0.0.1:8000",
         amount: amount,
         purchase_order_id: transaction_id,
@@ -277,9 +278,10 @@ $('#payment-button-wallet').on('click', function (e) {
         // Redirect to the payment_url
         window.location.href = paymentUrl;
 
-        var pidx = response.pidx;
-            var status = "Success"
-            sendTransaction(transaction_id, "Khalti", status);
+         var pidx = response.pidx;
+         
+        var status = "Success"
+        sendTransaction(pidx, "Khalti", status);
             // Call the checkTransactionStatus function after a delay
 
             
@@ -294,44 +296,22 @@ $('#payment-button-wallet').on('click', function (e) {
         
 });
 
-// Function to check the transaction status
-function checkTransactionStatus(transaction_id) {
-    let checkStatusURL = 'https://a.khalti.com/api/v2/epayment/lookup/';
-
-    let checkStatusData = {
-        pidx: pidx
-    };
-
-    // Request transaction status check
-    $.ajax({
-        type: 'POST',
-        url: checkStatusURL,
-        headers: {
-            "Authorization": "Key ",
-                "Content-Type": "application/json"
-        },
-        async: true,
-        data: JSON.stringify(checkStatusData),
-        contentType: "application/json",
-        success: function (resp) {
-            // Call the sendTransaction function with the updated transaction_id
-            sendTransaction(transaction_id, "Khalti", resp.status);
-
-            // Your code after successfully checking the transaction status
-        },
-        error: function (resp) {
-            console.log(resp);
-            // Your code on error
-        }
-    });
-}
-// Function to generate a unique transaction ID
 function generateTransactionID() {
     // Use a timestamp and a random number to generate a unique ID
     return 'transaction_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
 }
                                                 
 </script>
+<!-- <script>
+    // Retrieve the base URL for constructing the return URL
+    var baseURL = window.location.origin;
+  
+    // Construct the return URL with the appropriate path
+    var returnURL = baseURL + '/return-url/';
+  
+    // Update the paymentDetails object with the return URL
+    paymentDetails.return_url = returnURL;
+  </script> -->
 
 
 <!-- Main Section End -->
