@@ -106,9 +106,10 @@
                                             {% if order.payment_method == 'PayPal' %}
                                             <!-- PayPal Checkout Button -->
                                             <div id="paypal-button-container"></div>
-                                            {% elif order.payment_method == 'SajiloPay' %}
+                                            {% elif order.payment_method == 'Khalti' %}
                                             <div>
-                                              <button type="submit" id="payment-button-wallet" class="wallet-btn wallet-btn-primary"></button>
+                                                
+                                              <button type="submit" id="payment-button-wallet" >Pay with Khalti</button>
                                             </div>
                                             {% endif %}
                                             
@@ -211,79 +212,106 @@ onApprove: function(data, actions) {
     }                                           
                                        
    
-                                                $('#payment-button-wallet').on('click', function (e) {
-                                                e.preventDefault();
-                                                // Generate a unique transaction ID
-                                                let transaction_id = generateTransactionID();
+
+
+
+$('#payment-button-wallet').on('click', function (e) {
+    e.preventDefault();
+
+    // Generate a unique transaction ID
+    let transaction_id = generateTransactionID();
+
+    // Convert the amount to an integer
+    let amount = parseInt(grand_total) * 1000; //change to 100
+    var returnURL = "{% url 'return_url' %}"
     
-                                                // Convert the amount to an integer
-                                                let amount = parseInt(grand_total) * 100;
-                                                let paymentDetails = {
-                                                vendor_key :'production_9fd0f8ca-aa3c-4633-ae44-20b96de67103',
-                                                title: "Bhraman",
-                                                description: "category",
-                                                amount : amount,
-                                                transaction_id:transaction_id,
-                                                response_url:"/home",
-                                                cancellation_url:"/home",
-                                                payment_method: "SajiloPay",
-                                                }
-                                                //request payment process
-                                                $.ajax({
-                                                type: 'POST',
-                                                url: 'https://sandboxapi.sajilopay.com.np/api/merchant/process-payment',
-                                                async: true,
-                                                data: paymentDetails,
-                                                success: function (resp) {
-                                                console.log(resp)
-                                                //your code after success.
-                                                //redirect the page to the URL obtained from the response.
-                                                location.href = resp.redirect_url;
-                                                // Call the checkTransactionStatus function after a delay to allow time for the payment to process
-                                                   setTimeout(function() {
-                                                   checkTransactionStatus(paymentDetails.transaction_id);
-                                                  }, 5000); // Delay for 5 seconds (adjust as needed)
-                                                },
-                                                error: function (resp) {
-                                                    console.log(resp)
-                                                //your code on error
-                                                }
-                                                });
-                                                })
-                                                // Function to generate a unique transaction ID
+    // Prepare the payment payload
+    let paymentDetails = {
+        return_url:"http://127.0.0.1:8000/orders/return_url",
+        website_url: "http://127.0.0.1:8000",
+        amount: amount,
+        purchase_order_id: order_number,
+        purchase_order_name: "Bhraman",
+        csrfmiddlewaretoken: csrftoken,
+        customer_info: {
+            name: "John Doe",
+            email: "johndoe@example.com",
+            phone: "9876543210"
+        },
+        amount_breakdown: [
+            {
+                label: "Total Amount",
+                amount: amount
+            }
+        ],
+        product_details: [
+            {
+                identity: transaction_id,
+                name: "Bhraman",
+                total_price: amount,
+                quantity: 1,
+                unit_price: amount
+            }
+        ]
+    };
+    var initiate_payment = "{% url 'initiate_payment' %}"
+    
+    
+
+    // Request payment process
+    $.ajax({
+          type: 'POST',
+          url: initiate_payment,  // Update the URL according to your Django URL configuration
+          data: paymentDetails,
+      // Include the CSRF token if using Django's CSRF protection
+    
+ 
+          success: function(response) {
+            // Handle the response from the server
+            console.log(response);
+
+            var paymentUrl = response.payment_url;
+            // Save the pidx value
+            
+            
+            
+        // Redirect to the payment_url
+        window.location.href = paymentUrl;
+
+        //  var pidx = response.pidx;
+         
+        // var status = "Success"
+        // sendTransaction(pidx, "Khalti", status);
+            
+
+            
+            
+        
+          },
+          error: function(xhr, status, error) {
+            // Handle the error
+            console.error(error);
+          }
+        });
+        
+});
+
 function generateTransactionID() {
     // Use a timestamp and a random number to generate a unique ID
     return 'transaction_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
 }
-// Function to check the transaction status
-function checkTransactionStatus(transaction_id) {
-    let checkStatusURL = 'https://sandboxapi.sajilopay.com.np/api/merchant/check-transaction-status';
-    
-    let checkStatusData = {
-        vendor_key: 'production_9fd0f8ca-aa3c-4633-ae44-20b96de67103',
-        transaction_id: transaction_id
-    };
-    
-    // Request transaction status check
-    $.ajax({
-        type: 'POST',
-        url: checkStatusURL,
-        async: true,
-        data: checkStatusData,
-        success: function (resp) {
-            // Call the sendTransaction function with the updated transaction_id
-            sendTransaction(transaction_id, paymentDetails.payment_method, resp.status);
-            
-            // Your code after successfully checking the transaction status
-        },
-        error: function (resp) {
-            console.log(resp);
-            // Your code on error
-        }
-    });
-}
                                                 
 </script>
+<!-- <script>
+    // Retrieve the base URL for constructing the return URL
+    var baseURL = window.location.origin;
+  
+    // Construct the return URL with the appropriate path
+    var returnURL = baseURL + '/return-url/';
+  
+    // Update the paymentDetails object with the return URL
+    paymentDetails.return_url = returnURL;
+  </script> -->
 
 
 <!-- Main Section End -->

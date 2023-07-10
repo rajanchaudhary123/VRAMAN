@@ -270,7 +270,7 @@
                                                 </div>
                                                 <div class="price-holder">
                                                     <span class="price">${{package.price}}</span>
-
+                                                    {% if user.is_authenticated and user.get_role == 'Customer' %}
                                                     <a href="#" class="decrease_cart" data-id="{{ package.id }}"
                                                         data-url="{% url 'decrease_cart' package.id %}"
                                                         style="margin-right: 28px;"><i
@@ -279,6 +279,7 @@
                                                     <a href="#" class="add_to_cart" data-id="{{ package.id }}"
                                                         data-url="{% url 'add_to_cart' package.id %}"><i
                                                             class="icon-plus4 text-color"></i></a>
+                                                            {% endif %}
                                                 </div>
                                             </li>
                                             {% endfor %}

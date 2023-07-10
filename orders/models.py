@@ -13,7 +13,7 @@ request_object = ''
 class Payment(models.Model):
     PAYMENT_METHOD = (
         ('PayPal', 'PayPal'),
-        ('SajiloPay', 'SajiloPay'), 
+        ('Khalti', 'Khalti'), 
         
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
