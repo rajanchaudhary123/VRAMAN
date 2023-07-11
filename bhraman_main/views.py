@@ -275,6 +275,7 @@ def home(request):
 
 
     package=PackageItem.objects.filter(is_available=True)[:8]
+    #start of review rating
     # Get all packages with their average ratings greater than 3
     packages_with_avg_ratings = PackageItem.objects.annotate(average_rating=Avg('reviewratingpackage__rating'))
     filtered_packages = packages_with_avg_ratings.filter(average_rating__gte=3)
@@ -284,7 +285,7 @@ def home(request):
 
 # Sort the packages in descending order based on average ratings
     sorted_packages = filtered_packages.order_by('-average_rating')
-
+#end of review rating part
    
 
     if get_or_set_current_location(request) is not None:
