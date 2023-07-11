@@ -275,7 +275,7 @@ def home(request):
 
 
     package=PackageItem.objects.filter(is_available=True)[:8]
-    # Get all packages with their average ratings greater than 3.5
+    # Get all packages with their average ratings greater than 3
     packages_with_avg_ratings = PackageItem.objects.annotate(average_rating=Avg('reviewratingpackage__rating'))
     filtered_packages = packages_with_avg_ratings.filter(average_rating__gte=3)
 
