@@ -14,6 +14,7 @@ from marketplace.models  import Cart
 from accounts.models import User
 from django import template
 from accounts.views import check_role_customer
+from django.db.models import Avg
 
 
 #for content based
@@ -155,6 +156,18 @@ def home(request):
 
 
         #End of category==Interest
+
+        #start of review rating
+         # Get all packages with their average ratings greater than 3
+        packages_with_avg_ratings = PackageItem.objects.annotate(average_rating=Avg('reviewratingpackage__rating'))
+        filtered_packages = packages_with_avg_ratings.filter(average_rating__gte=3)
+
+        for package in filtered_packages:
+            print(f"Package: {package},Package ID: {package.id}, Average Rating: {package.average_rating}")
+
+         # Sort the packages in descending order based on average ratings
+        sorted_packages = filtered_packages.order_by('-average_rating')
+         #end of review rating part
 
 
         #Start of content based recommendation
@@ -482,6 +495,7 @@ def home(request):
             'recommended_packages': recommended_packages,
             'is_customer': (request.user.role == 'Customer'),
             'similar_ordered_packages':similar_ordered_packages,
+            'sorted_packages':sorted_packages,
             
         
             
@@ -493,6 +507,19 @@ def home(request):
     else:
         print("hello from new User")
         package = PackageItem.objects.filter(is_available=True)[:8]
+
+
+        #start of review rating
+         # Get all packages with their average ratings greater than 3
+        packages_with_avg_ratings = PackageItem.objects.annotate(average_rating=Avg('reviewratingpackage__rating'))
+        filtered_packages = packages_with_avg_ratings.filter(average_rating__gte=3)
+
+        for package in filtered_packages:
+            print(f"Package: {package},Package ID: {package.id}, Average Rating: {package.average_rating}")
+
+         # Sort the packages in descending order based on average ratings
+        sorted_packages = filtered_packages.order_by('-average_rating')
+         #end of review rating part
 
         if get_or_set_current_location(request) is not None:
             pnt = GEOSGeometry('POINT(%s %s)' % (get_or_set_current_location(request)))
@@ -509,6 +536,7 @@ def home(request):
             'user': request.user,
             'vendors': vendors,
             'package': package,
+            'sorted_packages':sorted_packages,
         }
 
         return render(request, 'home.html', context)
