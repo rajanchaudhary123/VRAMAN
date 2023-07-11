@@ -14,14 +14,12 @@ from menu.models import Category
 #     ]
 
 class UserForm(forms.ModelForm):
-    #interest= forms.CharField(label='Interest ?', widget=forms.Select(choices=Interest))
+    # Fetch choices dynamically from the Category model
+    interest_choices = Category.objects.values_list('category_name', 'category_name')
+    
+    interest = forms.CharField(label='Interest', widget=forms.Select(choices=interest_choices))
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(widget=forms.PasswordInput())
-
-    def __init__(self, *args, **kwargs):
-        super(UserForm, self).__init__(*args, **kwargs)
-        choices = [(category.slug, category.category_name) for category in Category.objects.all()]
-        self.fields['interest'] = forms.ChoiceField(choices=choices, label='Interest ?')
     class Meta:
         model = User
         fields = {'first_name', 'last_name', 'username','email','password','interest'}
