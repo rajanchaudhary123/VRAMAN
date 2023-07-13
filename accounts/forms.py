@@ -2,23 +2,28 @@ from django import forms
 from .models import User,UserProfile
 from .validators import allow_only_images_validator
 from django.core.validators import RegexValidator
+from menu.models import Category
 
-Interest= [
-    ('adventure', 'Adventure'),
-    ('vacation and chill', 'Vacation and Chill'),
-    ('sight seeing', 'Sightseeing'),
-    ('pilgrimage and peace', 'Pilgrimage and Peace'),
-    ('trekking','Trekking'),
-    ('hiking','Hiking'),
-    ]
+# Interest= [
+#     ('adventure', 'Adventure'),
+#     ('vacation and chill', 'Vacation and Chill'),
+#     ('sight seeing', 'Sightseeing'),
+#     ('pilgrimage and peace', 'Pilgrimage and Peace'),
+#     ('trekking','Trekking'),
+#     ('hiking','Hiking'),
+#     ]
 
 class UserForm(forms.ModelForm):
-    interest= forms.CharField(label='Interest ?', widget=forms.Select(choices=Interest))
+    # Fetch choices dynamically from the Category model
+    interest_choices = Category.objects.values_list('category_name', 'category_name')
+    
+    interest = forms.CharField(label='Interest', widget=forms.Select(choices=interest_choices))
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(widget=forms.PasswordInput())
     class Meta:
         model = User
         fields = {'first_name', 'last_name', 'username','email','password','interest'}
+    
 
     def clean(self):
         cleaned_data = super(UserForm, self).clean()

@@ -5,290 +5,422 @@
 {% block content %}
 <!-- Main Section Start -->
 <div class="main-section">
-	<!-- Home Pages Elements Strat -->
-	<!-- Main Search Start -->
-	<div class="page-section nopadding cs-nomargin" style="padding-top: 200px; padding-bottom: 150px; margin-bottom: 0px; background: url({% static 'extra-images/banner.png' %}) no-repeat center / cover;">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-					<div class="element-title">
-						<h1 style="font-size: 40px; color: #505050; text-transform: uppercase; line-height: 50px; margin-bottom: 25px; text-align:center;">
-							We are in the business of travel and tourism<br></h1>
-						<p style="font-size: 18px; letter-spacing: 1px; color: #505050; text-align:center;">
-							Search for Travel Destinations and Packages.</p>
-					</div>
-				</div>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-					<div class="main-search fancy bg-holder">
-						<form action="{% url 'search' %}" method="GET">
-							<div class="row">
-								<div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
-									<div class="field-holder">
-										<input type="text" name='keyword' placeholder=" Travel Destinations or package name">
-									</div>
-								</div>
-								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
-									<div class="field-holder">
-										<ul>
-											<li class="select-location">
-												<div class="foodbakery-locations-fields-group foodbakery-focus-out">
-													<span class="foodbakery-search-location-icon"><i class="icon-location"></i></span>
-													
-													<input type="text" name="address" class="location-field-text filter" id="id_address" required placeholder="All Locations">
-													<input type="hidden" name="lat" value="" id="id_latitude">
-													<input type="hidden" name="lng" value="" id="id_longitude">
+  <!-- Home Pages Elements Strat -->
+  <!-- Main Search Start -->
+  <div id="banner" class="page-section nopadding cs-nomargin" style="padding-top: 200px; padding-bottom: 150px; margin-bottom: 0px; background: url({% static 'extra-images/banner.png' %}) no-repeat center / cover;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+			<div class="element-title">
+				<h1 style="font-size: 40px; color: #FFD700; text-transform: uppercase; line-height: 50px; margin-bottom: 25px; text-align:center;">
+				  We are in the business of travel and tourism<br></h1>
+				<p style="font-size: 18px; letter-spacing: 1px; color: #FFD700; text-align:center;">
+				  <b>Search for Travel Destinations and Packages.</b></p>
+			</div>
+        </div>
+     <script>
+      var images = [
+        '{% static 'extra-images/POKHARA-min' %}',
+        '{% static 'extra-images/banner2.png' %}',
+        '{% static 'extra-images/banner3.png' %}'
+      ];
+      var index = 0;
+      var banner = document.getElementById('banner');
+      
+      function changeBackground() {
+        banner.style.backgroundImage = 'url(' + images[index] + ')';
+        index = (index + 1) % images.length;
+      }
+      
+      setInterval(changeBackground, 5000); // Change image every 5 seconds
+      </script> 
+      
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+          <div class="main-search fancy bg-holder">
+            <form action="{% url 'search' %}" method="GET">
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+                  <div class="field-holder">
+                    <input type="text" name='keyword' placeholder=" Travel Destinations or package name">
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
+                  <div class="field-holder">
+                    <ul>
+                      <li class="select-location">
+                        <div class="foodbakery-locations-fields-group foodbakery-focus-out">
+                          <span class="foodbakery-search-location-icon"><i class="icon-location"></i></span>
+                          
+                          <input type="text" name="address" class="location-field-text filter" id="id_address" required placeholder="All Locations">
+                          <input type="hidden" name="lat" value="" id="id_latitude">
+                          <input type="hidden" name="lng" value="" id="id_longitude">
+            </div>
+                        
+          </li>
+          </ul>
+        </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+        <select name="radius" id="radius" style="height: 50px;" >
+          <option value="" selected>Choose Radius</option>
+          <option value="5">5km</option>
+          <option value="10">10km</option>
+          <option value="15">15km</option>
+          <option value="25">25km</option>
+          <option value="50">50km</option>
+          <option value="75">75km</option>
+          <option value="100">100km</option>
+        </select>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+        <div class="field-holder">
+          <input type="submit" value="Search">
+        </div>
+        </div>
+      </div>
+      </form>
+      
+      
+    </div>
+    </div>
+    
+  </div>
+  </div>
+</div>
+<!-- Main Search End -->
+{% if  user.is_authenticated and user.get_role == 'Customer' and similar_ordered_packages  %}
+<div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 0px;margin-bottom: 0px;background: #ffffff;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="element-title align-left">
 
-												</div>
-												
-											</li>
-										</ul>
-									</div>
-								</div>
-								<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-									<select name="radius" id="radius" style="height: 50px;" required>
-										<option value="" selected>Choose Radius</option>
-										<option value="5">5km</option>
-										<option value="10">10km</option>
-										<option value="15">15km</option>
-										<option value="25">25km</option>
-										<option value="50">50km</option>
-										<option value="75">75km</option>
-										<option value="100">100km</option>
-									</select>
-								</div>
-								<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-									<div class="field-holder">
-										<input type="submit" value="Search">
-									</div>
-								</div>
-							</div>
-						</form>
-						
-						
-					</div>
-				</div>
-				
-			</div>
-		</div>
-	</div>
-	<!-- Main Search End -->
-	
-	<!-- Top Restarurants Section Start -->
-	{% if package_items.exists and recommended_packages_cf.exists %}
-	<div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 0px;margin-bottom: 0px;background: #ffffff;">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="element-title align-left">
-						<h2>collaborative Packages</h2>
-						<p>collaborative packages</p>
-					</div>
-				</div>
-				
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0 !important; padding-left: 0 !important;">
-					<div class="company-logo">
-						<ul>
-							
-							{% for package in recommended_packages_cf%}
-							<li class="has-border">
-								<figure>
-									{% if package.image %}
-									<a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
-									{% else %}
-									<a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
-									{% endif %}
-								</figure>
-								<div>{{ package.package_title }}</div>
-							</li>
-							{% endfor %}
-							
-							
-							
-						
-							
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	{% endif %}
 
-	{% if user.is_authenticated %}
-	<div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 0px;margin-bottom: 0px;background: #ffffff;">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="element-title align-left">
-						<h2>category=interest</h2>
-						<p>category=interest</p>
-					</div>
-				</div>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0 !important; padding-left: 0 !important;">
-					<div class="company-logo">
-						<ul>
-							{% for package in  package_items%}
-							<li class="has-border">
-								<figure>
-									{% if package.image %}
-									<a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
-									{% else %}
-									<a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
-									{% endif %}
-								</figure>
-								<div>{{ package.package_title }}</div>
-							</li>
-							{% endfor %}
-							
-							
-						
-							
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	{% endif %}
-	
-	<div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 0px;margin-bottom: 0px;background: #ffffff;">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="element-title align-left">
-						<h2>Top Rated Travel Packages</h2>
-						<p>Explore our travel packages</p>
-					</div>
-				</div>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0 !important; padding-left: 0 !important;">
-					<div class="company-logo">
-						<ul>
-							{% for package in sorted_packages %}
-							<li class="has-border">
-								<figure>
-									{% if package.image %}
-									<a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
-									
-									{% else %}
-									<a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
-									{% endif %}
-									
-								</figure>
-									<div>{{ package.package_title }}</div>
-									<div>
-										<div class="rate">
-											<span>
-											  <i class="fa fa-star{% if package.average_rating == 0.5 %}-half-o{% elif package.average_rating < 1 %}-o{% endif %}"
-												aria-hidden="true"></i>
-											  <i class="fa fa-star{% if package.average_rating == 1.5 %}-half-o{% elif package.average_rating < 2 %}-o{% endif %}"
-												aria-hidden="true"></i>
-											  <i class="fa fa-star{% if package.average_rating == 2.5 %}-half-o{% elif package.average_rating < 3 %}-o{% endif %}"
-												aria-hidden="true"></i>
-											  <i class="fa fa-star{% if package.average_rating == 3.5 %}-half-o{% elif package.average_rating < 4 %}-o{% endif %}"
-												aria-hidden="true"></i>
-											  <i class="fa fa-star{% if package.average_rating == 4.5 %}-half-o{% elif package.average_rating < 5 %}-o{% endif %}"
-												aria-hidden="true"></i>
-											</span>
-										  </div>
-									</div>
-								
-							</li>
-							{% endfor %}
-							
-							
-						
-								
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Top Restarurants Section End -->
-	<!-- Choose From Most Popular Listin Start -->
-	<div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 50px;margin-bottom: 0px;background: #ffffff;">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="element-title align-center">
-						<h2>Choose From Most Popular Merchants</h2>
-						<p>Here is a list of some popular MERCHANTs</p>
-					</div>
-				</div>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="listing fancy">
-						<ul class="row">
-							{% for vendor in vendors %}
-							<li class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="list-post featured">
-									<div class="img-holder">
-										<figure>
-											<a href="{% url 'vendor_detail' vendor.vendor_slug %}">
-												{% if vendor.user_profile.profile_picture %}
-												<img src="{{ vendor.user_profile.profile_picture.url }}" class="img-thumb wp-post-image" alt="">
-												{% else %}
-												<img src="{% static 'images/default-profile.png' %}" class="img-thumb wp-post-image" alt="">
-												{% endif %}
-											</a>
-										</figure>
-										{% if vendor.is_open %}
-										<span class="restaurant-status open">
-											<em class="bookmarkRibbon"></em>Open
-										</span>
-										{% else %}
-										<span class="restaurant-status close">
-											<em class="bookmarkRibbon"></em>Close
-										</span>
-										{% endif %}
-									</div>
-									<div class="text-holder">
-										<!--<div class="list-rating">
-											<div class="rating-star">
-												<span class="rating-box" style="width: 100%;"></span>
-											</div>
-											<span class="reviews">(1)</span>
-										</div>-->
-										<div class="post-title">
-											<h5>
-												<a href="{% url 'vendor_detail' vendor.vendor_slug %}">{{vendor}}</a>
-												
-											</h5>
-											
-											{% if vendor.user_profile.city and vendor.user_profile.state and vendor.user_profile.pin_code %}
-											<span>{{vendor.user_profile.city}}, {{ vendor.user_profile.state }}, {{ vendor.user_profile.pin_code }}</span>
-											{% endif %}
-											{% if vendor.kms %}
-											<br>
-											<span><small><b>{{vendor.kms}} km </b>away</small></span>
-										{% endif %}
-										
-										</div>
+<h2>Based On Your Review</h2>
+          <p><h5>Similar Users have purchased</h5></p>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0 !important; padding-left: 0 !important;">
+        <div class="company-logo">
+          <ul>
+            {% for package in similar_ordered_packages %}
+            <li class="has-border">
+              <figure>
+                {% if package.image %}
+                <a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+        {% else %}
+                <a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+                {% endif %}
+                
+                </figure>
+                <div>{{ package.package_title }}</div>
+            </li>
+            {% endfor %}
+            
+            
+          
+              
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 
-										
-									</div>
-									 <div class="list-option">
-										<a href="javascript:void(0);" class="shortlist-btn" data-toggle="modal" data-target="#sign-in">
-											<i class="icon-heart-o"></i>
-										</a>
-									</div>
-									
-								</div>
-							</li>
-							{% endfor %}
-							
-							
-							
-							
-							
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Choose From Most Popular Listing End -->
+<!-- Main Search End -->
+{% if user.is_authenticated and user.get_role == 'Customer' and has_purchase_history %}
+<div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 0px;margin-bottom: 0px;background: #ffffff;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="element-title align-left">
+          <h2> Similar Packages You May Look For</h2>
+          <p><h5>Based on your recent purchase</h5></p>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0 !important; padding-left: 0 !important;">
+        <div class="company-logo">
+          <ul>
+            {% for package in recommended_packages %}
+            <li class="has-border">
+              <figure>
+                {% if package.image %}
+                <a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+        {% else %}
+                <a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+                {% endif %}
+                
+                </figure>
+                <div>{{ package.package_title }}</div>
+            </li>
+            {% endfor %}
+            
+            
+          
+              
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+  
+  
+  {% if   user.is_authenticated and user.get_role == 'Customer' and package_items.exists and recommended_packages_cf.exists  %}
+  <div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 0px;margin-bottom: 0px;background: #ffffff;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="element-title align-left">
+            <h2>Based on your Wishlist</h2>
+            <p><h5>Similar User have wishlisted</h5></p>
+          </div>
+        </div>
+        
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0 !important; padding-left: 0 !important;">
+          <div class="company-logo">
+            <ul>
+              
+              {% for package in recommended_packages_cf%}
+              <li class="has-border">
+                <figure>
+                  {% if package.image %}
+                  <a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+                  {% else %}
+                  <a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+                  {% endif %}
+                </figure>
+                <div>{{ package.package_title }}</div>
+              </li>
+              {% endfor %}
 
-	<!-- Home Pages Elements End  -->
+
+</ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+   <!-- Top rated travel package -->
+   <div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 0px;margin-bottom: 0px;background: #ffffff;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="element-title align-left">
+            <h2>Our Top Rated Packages</h2>
+            <p><h5>Explore our top packages</h5></p>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0 !important; padding-left: 0 !important;">
+          <div class="company-logo">
+            <ul>
+              {% for package in sorted_packages %}
+              <li class="has-border">
+                <figure>
+          {% if package.image %}
+          <a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+          
+          {% else %}
+          <a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+          {% endif %}
+          
+        </figure>
+          <div>{{ package.package_title }}</div>
+          <div>
+            <div class="rate">
+              <span>
+                <i class="fa fa-star{% if package.average_rating < 0.5 %}-o{% elif package.average_rating >= 0.5 and package.average_rating < 1 %}-half-o {% endif %}"
+                  aria-hidden="true"></i>
+                <i class="fa fa-star{% if package.average_rating < 1.5 %}-o{% elif package.average_rating >= 1.5 and package.average_rating < 2 %}-half-o {% endif %}"
+                  aria-hidden="true"></i>
+                <i class="fa fa-star{% if package.average_rating < 2.5 %}-o{% elif package.average_rating >= 2.5 and package.average_rating < 3 %}-half-o {% endif %}"
+                  aria-hidden="true"></i>
+                <i class="fa fa-star{% if package.average_rating < 3.5 %}-o{% elif package.average_rating >= 3.5 and package.average_rating < 4 %}-half-o {% endif %}"
+                  aria-hidden="true"></i>
+                <i class="fa fa-star{% if package.average_rating < 4.5 %}-o{% elif package.average_rating >= 4.5 and package.average_rating < 5 %}-half-o {% endif %}"
+                  aria-hidden="true"></i>
+              </span>
+              </div>
+          </div>
+        
+      </li>
+      {% endfor %}
+              
+              
+            
+                
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--end of top rated travel package-->
+
+  {% if user.is_authenticated and user.get_role == 'Customer' and not recommended_packages_cf %}
+
+
+<div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 0px;margin-bottom: 0px;background: #ffffff;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="element-title align-left">
+            <h2>Based on your Interest</h2>
+            <p><h5>You may look for</h5></p>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0 !important; padding-left: 0 !important;">
+          <div class="company-logo">
+            <ul>
+              {% for package in  package_items%}
+              <li class="has-border">
+                <figure>
+                  {% if package.image %}
+                  <a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+                  {% else %}
+                  <a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+                  {% endif %}
+                </figure>
+                <div>{{ package.package_title }}</div>
+              </li>
+              {% endfor %}
+              
+              
+            
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  
+  {% comment %} <div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 0px;margin-bottom: 0px;background: #ffffff;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="element-title align-left">
+            <h2>Top Travel Packages</h2>
+            <p>Explore our travel packages</p>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0 !important; padding-left: 0 !important;">
+          <div class="company-logo">
+            <ul>
+              {% for package in package %}
+              <li class="has-border">
+                <figure>
+                  {% if package.image %}
+                  <a href="{% url 'package_detail' package.id %}"><img src="{{ package.image.url }}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+          {% else %}
+                  <a href="#"><img src="{% static 'images/default-profile.png' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
+                  {% endif %}
+                  
+                  </figure>
+                  <div>{{ package.package_title }}</div>
+              </li>
+              {% endfor %}
+              
+              
+            
+                
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> {% endcomment %}
+
+
+<!-- Top Restarurants Section End -->
+  <!-- Choose From Most Popular Listin Start -->
+  <div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 50px;margin-bottom: 0px;background: #ffffff;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="element-title align-center">
+            <h2>Choose From Most Popular Merchants</h2>
+            <p><h6>Here is a list of some popular MERCHANTs</h6></p>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="listing fancy">
+            <ul class="row">
+              {% for vendor in vendors %}
+              <li class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="list-post featured">
+                  <div class="img-holder">
+                    <figure>
+                      <a href="{% url 'vendor_detail' vendor.vendor_slug %}">
+                        {% if vendor.user_profile.profile_picture %}
+                        <img src="{{ vendor.user_profile.profile_picture.url }}" class="img-thumb wp-post-image" alt="">
+                        {% else %}
+                        <img src="{% static 'images/default-profile.png' %}" class="img-thumb wp-post-image" alt="">
+                        {% endif %}
+                      </a>
+                    </figure>
+                    {% if vendor.is_open %}
+                    <span class="restaurant-status open">
+                      <em class="bookmarkRibbon"></em>Open
+                    </span>
+                    {% else %}
+                    <span class="restaurant-status close">
+                      <em class="bookmarkRibbon"></em>Close
+                    </span>
+                    {% endif %}
+                  </div>
+                  <div class="text-holder">
+                    <!--<div class="list-rating">
+                      <div class="rating-star">
+                        <span class="rating-box" style="width: 100%;"></span>
+                      </div>
+                      <span class="reviews">(1)</span>
+                    </div>-->
+                    <div class="post-title">
+                      <h5>
+                        <a href="{% url 'vendor_detail' vendor.vendor_slug %}">{{vendor}}</a>
+                        
+                      </h5>
+                      
+                      {% if vendor.user_profile.city and vendor.user_profile.state and vendor.user_profile.pin_code %}
+                      <span>{{vendor.user_profile.city}}, {{ vendor.user_profile.state }}, {{ vendor.user_profile.pin_code }}</span>
+                      {% endif %}
+                      {% if vendor.kms %}
+                      <br>
+                      <span><small><b>{{vendor.kms}} km </b>away</small></span>
+                    {% endif %}
+                    
+                    </div>
+
+                    
+                  </div>
+                   <div class="list-option">
+                    <a href="javascript:void(0);" class="shortlist-btn" data-toggle="modal" data-target="#sign-in">
+                      <i class="icon-heart-o"></i>
+                    </a>
+                  </div>
+                  
+                </div>
+              </li>
+              {% endfor %}
+              
+              
+              
+              
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Choose From Most Popular Listing End -->
+  <!-- Home Pages Elements End  -->
 </div>
 <!-- Main Section End -->
 {% endblock %}

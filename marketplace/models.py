@@ -4,6 +4,7 @@ from vendor.models import Vendor
 from menu.models import PackageItem
 from django.db.models import Avg
 
+
 #for colab libraries
 from django.conf import settings
 
@@ -35,7 +36,6 @@ class ReviewRatingPackage(models.Model):
 
     def __str__(self):
         return self.subject
-
     
 #maybe we need to include booking  date here-abhishek video-138
         
@@ -72,3 +72,38 @@ class CollaborativeRecommendation(models.Model):
 
 
     #end of colaboration model
+
+# #start of content cosine based
+from django.db import models
+
+
+class ContentRecommendation(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    recommended_packages = models.ManyToManyField(PackageItem)
+
+    def __str__(self):
+        return f"Content recommendation for {self.user.username}"
+    
+    
+# #end of cosine based
+
+
+
+#start of sentiment analysis
+# from django.db import models
+# from django.contrib.auth.models import User
+
+# class RecommendedPackage(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     packages = models.ManyToManyField('PackageItem')
+
+#     def __str__(self):
+#         return f"Recommended Packages for {self.user.username}"
+
+class SentimentRecommendation(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    recommended_packages_s = models.ManyToManyField(PackageItem)
+
+
+
+#end of sentiment analysis
