@@ -127,10 +127,29 @@
         </div>
     </div>
 </div>
-var productDetails = [];
 
 
 <script>
+    // Define and populate the productDetails array
+// var productDetails = [];
+
+// {% for item in cart_items %}
+//     var unitPrice = parseFloat('{{ item.packageitem.price|floatformat:2 }}');
+//     var quantity = parseInt('{{ item.quantity }}');
+//     var totalPrice = unitPrice * quantity;
+
+//     var productDetail = {
+//         identity: 'identity',
+//         name: '{{ item.packageitem }}',
+//         total_price: totalPrice.toFixed(2),
+//         quantity: '{{ item.quantity }}',
+//         unit_price: unitPrice.toFixed(2)
+//     };
+
+//     productDetails.push(productDetail);
+// {% endfor %}
+
+// console.log("Product Details:", productDetails);
 
 function getCookie(name) {
     let cookieValue = null;
@@ -236,7 +255,7 @@ $('#payment-button-wallet').on('click', function (e) {
     // Convert the amount to an integer
     let amount = parseInt(grand_total) * 100; 
     //change to 100
-    var returnURL = "{% url 'return_url' %}"
+
    
     // Prepare the payment payload
     let paymentDetails = {
@@ -257,7 +276,7 @@ $('#payment-button-wallet').on('click', function (e) {
                 amount: amount
             }
         ],
-        
+        // product_details: productDetails
         
     };
     
