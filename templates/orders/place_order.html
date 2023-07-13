@@ -29,7 +29,7 @@
                                             <div><b>Email: </b>{{ order.email }}</div>
                                             <div><b>Payment: </b>{{ order.payment_method }}</div>
                                             <div><b>Start Date:</b>{{ order.start_date }}</div>
-                                            <div><b>End Date:</b>{{ order.end_date }}</div>
+                                           
                                             <br>
                                             <div><a href="{% url 'checkout' %}" class="btn btn-outline-danger">Edit</a></div>
                                             <br>
@@ -59,7 +59,7 @@
                                 <div class="menu-itam-holder">
                                     
                                     <div>
-
+                                         {{cart_item}}
                                         <table class="table">
                                             <tbody>
                                                 {% for item in cart_items %}
@@ -67,7 +67,7 @@
                                                     <td><img src="{{ item.packageitem.image.url }}" width="40" alt="packet Image"></td>
                                                     <td><b>{{ item.packageitem }}</b></td>
                                                     <td>{{ item.quantity }}</td>
-                                                    <td>${{ item.packageitem.price }}</td>
+                                                    <td>NPR {{ item.packageitem.price }}</td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
@@ -77,7 +77,7 @@
                                             <li style="list-style-type: none;">
                                                 Subtotal
                                                 <span class="price float-right">
-                                                    <span class="currency">NPR</span>
+                                                    <span class="currency">NPR </span>
                                                     <span id="subtotal">{{ subtotal }}</span>
                                                 </span>
                                             </li>
@@ -87,7 +87,7 @@
                                                     <li style="list-style-type: none;">
                                                         {{ key }} <small>({{ i }}%)</small>
                                                         <span class="price float-right">
-                                                            <span class="currency">NPR</span>
+                                                            <span class="currency">NPR </span>
                                                             <span id="tax-{{ key }}">{{ j }}</span>
                                                         </span>
                                                     </li>
@@ -98,7 +98,7 @@
                                             <li style="list-style-type: none; font-weight: 600;">
                                                 TOTAL
                                                 <span class="price float-right">
-                                                    <span class="currency">NPR</span>
+                                                    <span class="currency">NPR </span>
                                                     <span id="total">{{ grand_total }}</span>
                                                 </span>
                                             </li>
@@ -106,9 +106,10 @@
                                             {% if order.payment_method == 'PayPal' %}
                                             <!-- PayPal Checkout Button -->
                                             <div id="paypal-button-container"></div>
-                                            {% elif order.payment_method == 'SajiloPay' %}
+                                            {% elif order.payment_method == 'Khalti' %}
                                             <div>
-                                              <button type="submit" id="payment-button-wallet" class="wallet-btn wallet-btn-primary"></button>
+                                                
+                                              <button type="submit" id="payment-button-wallet" >Pay with Khalti</button>
                                             </div>
                                             {% endif %}
                                             
@@ -126,7 +127,29 @@
         </div>
     </div>
 </div>
+
+
 <script>
+    // Define and populate the productDetails array
+// var productDetails = [];
+
+// {% for item in cart_items %}
+//     var unitPrice = parseFloat('{{ item.packageitem.price|floatformat:2 }}');
+//     var quantity = parseInt('{{ item.quantity }}');
+//     var totalPrice = unitPrice * quantity;
+
+//     var productDetail = {
+//         identity: 'identity',
+//         name: '{{ item.packageitem }}',
+//         total_price: totalPrice.toFixed(2),
+//         quantity: '{{ item.quantity }}',
+//         unit_price: unitPrice.toFixed(2)
+//     };
+
+//     productDetails.push(productDetail);
+// {% endfor %}
+
+// console.log("Product Details:", productDetails);
 
 function getCookie(name) {
     let cookieValue = null;
@@ -149,6 +172,15 @@ var url = "{% url 'payments' %}"
 var order_number = "{{ order.order_number }}"
 const csrftoken = getCookie('csrftoken');
 var order_complete = "{% url 'order_complete' %}"
+var name = "{{order.name}}"
+var email="{{order.email}}"
+var phone="{{order.phone}}"
+var cart_items="{{cart_item}}"
+
+
+
+
+
     // Render the PayPal button into #paypal-button-container
     paypal.Buttons({
 
@@ -211,79 +243,104 @@ onApprove: function(data, actions) {
     }                                           
                                        
    
-                                                $('#payment-button-wallet').on('click', function (e) {
-                                                e.preventDefault();
-                                                // Generate a unique transaction ID
-                                                let transaction_id = generateTransactionID();
+
+
+
+$('#payment-button-wallet').on('click', function (e) {
+    e.preventDefault();
+
+    // Generate a unique transaction ID
+    let transaction_id = generateTransactionID();
+
+    // Convert the amount to an integer
+    let amount = parseInt(grand_total) * 100; 
+    //change to 100
+
+   
+    // Prepare the payment payload
+    let paymentDetails = {
+        return_url:"http://127.0.0.1:4000/orders/return_url",
+        website_url: "http://127.0.0.1:4000",
+        amount: amount,
+        purchase_order_id: order_number,
+        purchase_order_name: "Bhraman",
+        csrfmiddlewaretoken: csrftoken,
+        customer_info: {
+            name: name,
+            email: email,
+            phone: phone
+        },
+        amount_breakdown: [
+            {
+                label: "Total Amount",
+                amount: amount
+            }
+        ],
+        // product_details: productDetails
+        
+    };
     
-                                                // Convert the amount to an integer
-                                                let amount = parseInt(grand_total) * 100;
-                                                let paymentDetails = {
-                                                vendor_key :'production_9fd0f8ca-aa3c-4633-ae44-20b96de67103',
-                                                title: "Bhraman",
-                                                description: "category",
-                                                amount : amount,
-                                                transaction_id:transaction_id,
-                                                response_url:"/home",
-                                                cancellation_url:"/home",
-                                                payment_method: "SajiloPay",
-                                                }
-                                                //request payment process
-                                                $.ajax({
-                                                type: 'POST',
-                                                url: 'https://sandboxapi.sajilopay.com.np/api/merchant/process-payment',
-                                                async: true,
-                                                data: paymentDetails,
-                                                success: function (resp) {
-                                                console.log(resp)
-                                                //your code after success.
-                                                //redirect the page to the URL obtained from the response.
-                                                location.href = resp.redirect_url;
-                                                // Call the checkTransactionStatus function after a delay to allow time for the payment to process
-                                                   setTimeout(function() {
-                                                   checkTransactionStatus(paymentDetails.transaction_id);
-                                                  }, 5000); // Delay for 5 seconds (adjust as needed)
-                                                },
-                                                error: function (resp) {
-                                                    console.log(resp)
-                                                //your code on error
-                                                }
-                                                });
-                                                })
-                                                // Function to generate a unique transaction ID
+   
+
+    var initiate_payment = "{% url 'initiate_payment' %}"
+    
+   
+
+
+    // Request payment process
+    $.ajax({
+          type: 'POST',
+          url: initiate_payment,  // Update the URL according to your Django URL configuration
+          data: paymentDetails,
+      // Include the CSRF token if using Django's CSRF protection
+    
+ 
+          success: function(response) {
+            // Handle the response from the server
+            console.log(response);
+
+            var paymentUrl = response.payment_url;
+            // Save the pidx value
+            
+            
+            
+        // Redirect to the payment_url
+        window.location.href = paymentUrl;
+
+        //  var pidx = response.pidx;
+         
+        // var status = "Success"
+        // sendTransaction(pidx, "Khalti", status);
+            
+
+            
+            
+        
+          },
+          error: function(xhr, status, error) {
+            // Handle the error
+            console.error(error);
+          }
+        });
+        
+});
+
 function generateTransactionID() {
     // Use a timestamp and a random number to generate a unique ID
     return 'transaction_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
 }
-// Function to check the transaction status
-function checkTransactionStatus(transaction_id) {
-    let checkStatusURL = 'https://sandboxapi.sajilopay.com.np/api/merchant/check-transaction-status';
-    
-    let checkStatusData = {
-        vendor_key: 'production_9fd0f8ca-aa3c-4633-ae44-20b96de67103',
-        transaction_id: transaction_id
-    };
-    
-    // Request transaction status check
-    $.ajax({
-        type: 'POST',
-        url: checkStatusURL,
-        async: true,
-        data: checkStatusData,
-        success: function (resp) {
-            // Call the sendTransaction function with the updated transaction_id
-            sendTransaction(transaction_id, paymentDetails.payment_method, resp.status);
-            
-            // Your code after successfully checking the transaction status
-        },
-        error: function (resp) {
-            console.log(resp);
-            // Your code on error
-        }
-    });
-}
                                                 
 </script>
+<!-- <script>
+    // Retrieve the base URL for constructing the return URL
+    var baseURL = window.location.origin;
+  
+    // Construct the return URL with the appropriate path
+    var returnURL = baseURL + '/return-url/';
+  
+    // Update the paymentDetails object with the return URL
+    paymentDetails.return_url = returnURL;
+  </script> -->
 
 
 <!-- Main Section End -->

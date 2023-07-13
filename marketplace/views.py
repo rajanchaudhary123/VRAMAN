@@ -286,6 +286,7 @@ def search_package(request):
                 'package_search' : package_search,
                 'package_count':package_count,
                 'vendor_count': vendor_count,
+                'vendors':vendors,
                 
             
             }
@@ -294,18 +295,14 @@ def search_package(request):
     
 def package_detail(request, package_id):
     package = PackageItem.objects.filter(id=package_id)
-    print(package_id)
     reviews = ReviewRatingPackage.objects.filter(package=package_id, status=True).aggregate(average=Avg('rating'))
     avg = reviews['average'] or 0
-    print(avg)
     reviewcount1 = ReviewRatingPackage.objects.filter(package=package_id, status=True).aggregate(count1=Count('id'))
     count1 = reviewcount1['count1'] or 0
-    print(count1)
 
     if request.user.is_authenticated:
         try:
             orderpackage = OrderedPackage.objects.filter(user=request.user, packageitem=package_id).exists()
-            print(orderpackage)
         except OrderedPackage.DoesNotExist:
             orderpackage = None
     else:

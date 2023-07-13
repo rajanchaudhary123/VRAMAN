@@ -53,6 +53,9 @@
     <tr>
         <td>Transaction ID: {{ order.payment }}</td>
     </tr>
+    <tr>
+      <td>Start Date: {{ order.start_date }}</td>
+  </tr>
   </table>
 <!--- Ordered package table -->
 <table bgcolor="#EAF0F6" width="100%" role="presentation" border="0" cellpadding="0" cellspacing="10px" style="padding: 30px 30px 60px 60px;">
@@ -71,7 +74,7 @@
                 <small><a href="http://{{ domain }}{% url 'vendor_detail' package.packageitem.vendor.vendor_slug %}" style="color:#ccc;">{{ package.packageitem.vendor.vendor_name }}</a></small>
             </td>
             <td>{{ package.quantity }}</td>
-            <td>${{ package.price }}</td>
+            <td>NPR {{ package.price }}</td>
         </tr>
         {% endfor %}
     </tbody>
@@ -79,17 +82,17 @@
 <!-- Order amounts -->
 <table bgcolor="#EAF0F6" width="100%" role="presentation" border="0" cellpadding="0" cellspacing="10px" style="padding: 30px 30px 60px 60px;">
     <tbody>
-        <tr>Subtotal: ${{ customer_subtotal }}</tr>
+        <tr>Subtotal: NPR {{ customer_subtotal }}</tr>
         
         {% for key, val in tax_data.items %}
             {% for i, j in val.items %}
                 <tr>
-                    <td>{{ key }} <small>({{ i }}%)</small> : <span>${{ j }}</span></td>
+                    <td>{{ key }} <small>({{ i }}%)</small> : <span>NPR{{ j }}</span></td>
                 </tr>
             {% endfor %}
         {% endfor %}
 
-        <tr>Grand total: ${{ order.total }}</tr>
+        <tr>Grand total: NPR {{ order.total }}</tr>
     </tbody>
   </table>
 

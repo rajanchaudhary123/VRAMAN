@@ -194,7 +194,7 @@ def myAccount(request):
 @user_passes_test(check_role_customer)
 def custDashboard(request):
     orders = Order.objects.filter(user=request.user, is_ordered=True)
-    recent_orders = orders[:5]
+    recent_orders = orders
     context = {
         'orders': orders,
         'orders_count': orders.count(),
@@ -211,7 +211,7 @@ def vendorDashboard(request):
     vendor = Vendor.objects.get(user=request.user)
     orders = Order.objects.filter(vendors__in=[vendor.id], is_ordered=True).order_by('created_at')
     
-    recent_orders = orders[:10]
+    recent_orders = orders
 
     # current month's revenue
     current_month = datetime.datetime.now().month

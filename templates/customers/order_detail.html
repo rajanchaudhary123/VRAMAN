@@ -55,9 +55,7 @@
                                                 <div>
                                                     <span class="d-block">Start Date: </span><span class="font-weight-bold">{{ order.start_date }}</span>
                                                 </div>
-                                                <div>
-                                                    <span class="d-block">End Date: </span><span class="font-weight-bold">{{ order.end_date }}</span>
-                                                </div>
+                                                
                                             </div>
                                             <hr>
                                             <table class="table">
@@ -85,7 +83,7 @@
                                                         <li style="list-style-type: none;">
                                                             Subtotal
                                                             <span class="price float-right">
-                                                                <span class="currency">$</span>
+                                                                <span class="currency">NPR </span>
                                                                 <span id="subtotal">{{ subtotal }}</span>
                                                             </span>
                                                         </li>
@@ -95,7 +93,7 @@
                                                                 <li style="list-style-type: none;">
                                                                     {{ key }} <small>({{ i }}%)</small>
                                                                     <span class="price float-right">
-                                                                        <span class="currency">$</span>
+                                                                        <span class="currency">NPR </span>
                                                                         <span id="tax-{{ key }}">{{ j }}</span>
                                                                     </span>
                                                                 </li>
@@ -106,7 +104,7 @@
                                                         <li style="list-style-type: none; font-weight: 600;">
                                                             TOTAL
                                                             <span class="price float-right">
-                                                                <span class="currency">NPR</span>
+                                                                <span class="currency">NPR </span>
                                                                 <span id="total">{{ order.total }}</span>
                                                             </span>
                                                         </li>

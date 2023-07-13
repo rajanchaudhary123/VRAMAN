@@ -138,7 +138,7 @@ def home(request):
         similar_users_cart_items = Cart.objects.filter(user__in=similar_users.values_list('user')).exclude(user=request.user)
         recommended_packages_cf = PackageItem.objects.filter(cart__in=similar_users_cart_items).distinct()[:8]
 
-        # Save the collaborative recommendations for the user
+# Save the collaborative recommendations for the user
         collaborative_recommendation, created = CollaborativeRecommendation.objects.get_or_create(user=request.user)
         collaborative_recommendation.recommended_packages.set(recommended_packages_cf)
 
@@ -222,7 +222,8 @@ def home(request):
                     print("for content based recommend")
                     print(recommended_packages)
 
-                    # Print the cosine similarity scores of the recommended packages
+
+# Print the cosine similarity scores of the recommended packages
                     for package_index in similar_package_indices[:8]:
                        similarity_score = similarity_scores[package_index]
                        #print(f"Cosine similarity of package {package_index} is {similarity_score}")
@@ -320,6 +321,7 @@ def home(request):
                 review_sequence = tokenizer.texts_to_sequences([processed_review])
                 review_sequence = pad_sequences(review_sequence, maxlen=max_sequence_length)
                 sentiment = np.argmax(model.predict(review_sequence))
+
 
                 if sentiment == current_user_sentiment:
                     similar_users.append(review.user)
@@ -421,7 +423,7 @@ def home(request):
         #     current_user_sentiment = DEFAULT_SENTIMENT
 
 
-        # # Filter reviews with similar sentiments if latest_review is not None
+# # Filter reviews with similar sentiments if latest_review is not None
         # if latest_review is not None:
         #     package_reviews = ReviewRatingPackage.objects.filter(package=latest_review.package).exclude(user=user)
         #     similar_users = []
@@ -517,7 +519,8 @@ def home(request):
         for package in filtered_packages:
             print(f"Package: {package},Package ID: {package.id}, Average Rating: {package.average_rating}")
 
-         # Sort the packages in descending order based on average ratings
+
+# Sort the packages in descending order based on average ratings
         sorted_packages = filtered_packages.order_by('-average_rating')
          #end of review rating part
 
