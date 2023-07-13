@@ -258,6 +258,7 @@ def search(request):
             for v in vendors:
                     v.kms = round(v.distance.km, 1)
         
+        
         vendor_count = vendors.count()
         package_count = package_search.count()
         context = {
