@@ -59,7 +59,7 @@
                                 <div class="menu-itam-holder">
                                     
                                     <div>
-
+                                         {{cart_item}}
                                         <table class="table">
                                             <tbody>
                                                 {% for item in cart_items %}
@@ -127,7 +127,29 @@
         </div>
     </div>
 </div>
+
+
 <script>
+    // Define and populate the productDetails array
+// var productDetails = [];
+
+// {% for item in cart_items %}
+//     var unitPrice = parseFloat('{{ item.packageitem.price|floatformat:2 }}');
+//     var quantity = parseInt('{{ item.quantity }}');
+//     var totalPrice = unitPrice * quantity;
+
+//     var productDetail = {
+//         identity: 'identity',
+//         name: '{{ item.packageitem }}',
+//         total_price: totalPrice.toFixed(2),
+//         quantity: '{{ item.quantity }}',
+//         unit_price: unitPrice.toFixed(2)
+//     };
+
+//     productDetails.push(productDetail);
+// {% endfor %}
+
+// console.log("Product Details:", productDetails);
 
 function getCookie(name) {
     let cookieValue = null;
@@ -150,6 +172,15 @@ var url = "{% url 'payments' %}"
 var order_number = "{{ order.order_number }}"
 const csrftoken = getCookie('csrftoken');
 var order_complete = "{% url 'order_complete' %}"
+var name = "{{order.name}}"
+var email="{{order.email}}"
+var phone="{{order.phone}}"
+var cart_items="{{cart_item}}"
+
+
+
+
+
     // Render the PayPal button into #paypal-button-container
     paypal.Buttons({
 
@@ -222,9 +253,10 @@ $('#payment-button-wallet').on('click', function (e) {
     let transaction_id = generateTransactionID();
 
     // Convert the amount to an integer
-    let amount = parseInt(grand_total) * 1000; //change to 100
-    var returnURL = "{% url 'return_url' %}"
-    
+    let amount = parseInt(grand_total) * 100; 
+    //change to 100
+
+   
     // Prepare the payment payload
     let paymentDetails = {
         return_url:"http://127.0.0.1:4000/orders/return_url",
@@ -234,9 +266,9 @@ $('#payment-button-wallet').on('click', function (e) {
         purchase_order_name: "Bhraman",
         csrfmiddlewaretoken: csrftoken,
         customer_info: {
-            name: "John Doe",
-            email: "johndoe@example.com",
-            phone: "9876543210"
+            name: name,
+            email: email,
+            phone: phone
         },
         amount_breakdown: [
             {
@@ -244,19 +276,16 @@ $('#payment-button-wallet').on('click', function (e) {
                 amount: amount
             }
         ],
-        product_details: [
-            {
-                identity: transaction_id,
-                name: "Bhraman",
-                total_price: amount,
-                quantity: 1,
-                unit_price: amount
-            }
-        ]
+        // product_details: productDetails
+        
     };
+    
+   
+
     var initiate_payment = "{% url 'initiate_payment' %}"
     
-    
+   
+
 
     // Request payment process
     $.ajax({

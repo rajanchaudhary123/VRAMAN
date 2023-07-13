@@ -227,36 +227,73 @@ def initiate_payment(request):
     if request.method == 'POST':
         # Retrieve the necessary data from the request
         amount = request.POST.get('amount')
+        
         purchase_order_id = request.POST.get('purchase_order_id')
+        print(purchase_order_id)
         purchase_order_name = request.POST.get('purchase_order_name')
         return_url = request.POST.get('return_url')
         website_url = request.POST.get('website_url')
+        customer_info = {
+        'name': request.POST.get('customer_info[name]'),
+        'email': request.POST.get('customer_info[email]'),
+        'phone': request.POST.get('customer_info[phone]')
+    }
+    #     product_details = []
+    #     index = 0
+    #     while True:
+    #         identity = request.POST.get(f'product_details[{index}][identity]')
+    #         if identity is None:
+    #             break
+            
+    #         product_detail = {
+    #             'identity': identity,
+    #             'name': request.POST.get(f'product_details[{index}][name]'),
+    #             'total_price': request.POST.get(f'product_details[{index}][total_price]'),
+    #             'quantity': request.POST.get(f'product_details[{index}][quantity]'),
+    #             'unit_price': request.POST.get(f'product_details[{index}][unit_price]')
+    #         }
+    #         product_details.append(product_detail)
+            
+    #         index += 1
 
 
+    # print(product_details)
+    
+
+        
+        
+   
+    
         # Prepare the payload for the Khalti API request
-        payload = {
+    payload = {
             'amount':amount,
             'purchase_order_id': purchase_order_id,
             'purchase_order_name': purchase_order_name,
             'return_url': return_url,
             'website_url' : website_url,
+            'customer_info': customer_info,
+            # 'product_details': product_details
+            
+            
+            
+            
             # Add any other required parameters
         }
 
         # Set the API endpoint URL
-        api_url = 'https://a.khalti.com/api/v2/epayment/initiate/'
+    api_url = 'https://a.khalti.com/api/v2/epayment/initiate/'
 
         # Set the headers for the API request
-        headers = {
+    headers = {
             'Authorization': 'Key a73cd51c1fd24644bac5676c4d57003f',
             'Content-Type': 'application/json',
         }
 
         # Send the payment request to the API
-        response = requests.post(api_url, headers=headers, data=json.dumps(payload))
+    response = requests.post(api_url, headers=headers, data=json.dumps(payload))
 
         # Return the response from the Khalti API as a JSON response
-        return JsonResponse(response.json())
+    return JsonResponse(response.json())
     
     # # Redirect to the URL from the response
     #     return HttpResponseRedirect(response.json()['payment_url'])
@@ -331,6 +368,7 @@ def sendTransaction(request,transaction_id, payment_method, status, order_number
         
 
         order = Order.objects.get(user=request.user, order_number=order_number)
+        
         payment = Payment(
             user = request.user,
             transaction_id = transaction_id,
@@ -364,6 +402,7 @@ def sendTransaction(request,transaction_id, payment_method, status, order_number
         mail_template = 'orders/order_confirmation_email.html'
 
         ordered_package = OrderedPackage.objects.filter(order=order)
+        
         customer_subtotal = 0
         for item in ordered_package:
             customer_subtotal += (item.price * item.quantity)
@@ -376,6 +415,7 @@ def sendTransaction(request,transaction_id, payment_method, status, order_number
             'domain': get_current_site(request),
             'customer_subtotal': customer_subtotal,
             'tax_data': tax_data,
+            
         }
         send_notification(mail_subject, mail_template, context)
 
@@ -389,7 +429,7 @@ def sendTransaction(request,transaction_id, payment_method, status, order_number
                 #print(to_emails)
 
                 ordered_package_to_vendor = OrderedPackage.objects.filter(order=order, packageitem__vendor=i.packageitem.vendor)
-                print(ordered_package_to_vendor)
+                # print(ordered_package_to_vendor)
 
         
                 context = {
