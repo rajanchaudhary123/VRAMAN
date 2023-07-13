@@ -186,11 +186,11 @@
             </div>
           </div>
 
-          <div class="text-holder">
+          <div class="text-holder" style="text-align:justify;line-height: 30px;">
             <div><b>Package Name:</b> {{ package }} </div>
-            <div><b>Package Description:</b> {{ package.description }} </div>
-            <div><b>Experiences Covered:</b> {{ package.experiences_covered }} </div>
-            <div><b>Inclusions:</b> {{ package.inclusions }} </div>
+            <div><b>Package Description:</b> <p>{{ package.description }} </p></div>
+            <div><b>Experiences Covered:</b> <p>{{ package.experiences_covered }}</p> </div>
+            <div><b>Inclusions:</b> <p>{{ package.inclusions }} </p></div>
             <div><b>Durations:</b> {{ package.durations }} </div>
             <div><b>Package Address:</b> {{ package.address }} </div>
             <div><b>Package Country:</b> {{ package.country }} </div>
@@ -203,7 +203,7 @@
 
           </div>
           <div class="price-holder">
-            <div style="margin-right: 28px; font-size: large;"><b>Price:</b>$ {{ package.price }} </div>
+            <div style="margin-right: 28px; font-size: large;"><b>Price:</b>NPR  {{ package.price }} </div>
           </div>
 
           <div class="price-holder" style="margin-right: 20px; margin-top: 28px;">
