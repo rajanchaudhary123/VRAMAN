@@ -269,7 +269,7 @@
 
                                                 </div>
                                                 <div class="price-holder">
-                                                    <span class="price">${{package.price}}</span>
+                                                    <span class="price">NPR {{package.price}}</span>
                                                     {% if user.is_authenticated and user.get_role == 'Customer' %}
                                                     <a href="#" class="decrease_cart" data-id="{{ package.id }}"
                                                         data-url="{% url 'decrease_cart' package.id %}"

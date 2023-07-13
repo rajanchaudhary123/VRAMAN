@@ -33,7 +33,7 @@
                                                     <a href="{% url 'vendor_detail' item.packageitem.vendor.vendor_slug %}" class="badge badge-warning">{{ item.packageitem.vendor }}</a>
                                                 </div>
                                                 <div class="price-holder">
-                                                    <span class="price">${{item.packageitem.price}}</span>
+                                                    <span class="price">NPR {{item.packageitem.price}}</span>
 
                                                     <a href="#" class="decrease_cart" data-id="{{ item.packageitem.id }}" id="{{item.id}}" data-url="{% url 'decrease_cart' item.packageitem.id %}" style="margin-right: 28px;"><i class="icon-minus text-color"></i></a>
                                                     <label id="qty-{{item.packageitem.id}}">0</label>
@@ -79,7 +79,7 @@
                                             <li style="list-style-type: none;">
                                                 SubTotal
                                                 <span class="price float-right">
-                                                    <span class="currency">$</span>
+                                                    <span class="currency">NPR </span>
                                                     <span id="subtotal">{{ subtotal }}</span>
                                                 </span>
                                             </li>
@@ -88,7 +88,7 @@
                                                 <li style="list-style-type: none;">
                                                     {{ key }} <small>({{ i }}%)</small>
                                                     <span class="price float-right">
-                                                        <span class="currency">$</span>
+                                                        <span class="currency">NPR </span>
                                                         <span id="tax-{{ key }}">{{ j }}</span>
                                                     </span>
                                                 </li>
@@ -97,7 +97,7 @@
                                             <li style="list-style-type: none; font-weight: 600;">
                                                 TOTAL
                                                 <span class="price float-right">
-                                                    <span class="currency">$</span>
+                                                    <span class="currency">NPR </span>
                                                     <span id="total">{{ grand_total}}</span>
                                                 </span>
                                             </li>

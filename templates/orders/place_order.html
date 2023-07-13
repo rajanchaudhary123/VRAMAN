@@ -67,7 +67,7 @@
                                                     <td><img src="{{ item.packageitem.image.url }}" width="40" alt="packet Image"></td>
                                                     <td><b>{{ item.packageitem }}</b></td>
                                                     <td>{{ item.quantity }}</td>
-                                                    <td>${{ item.packageitem.price }}</td>
+                                                    <td>NPR {{ item.packageitem.price }}</td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
@@ -77,7 +77,7 @@
                                             <li style="list-style-type: none;">
                                                 Subtotal
                                                 <span class="price float-right">
-                                                    <span class="currency">$</span>
+                                                    <span class="currency">NPR </span>
                                                     <span id="subtotal">{{ subtotal }}</span>
                                                 </span>
                                             </li>
@@ -87,7 +87,7 @@
                                                     <li style="list-style-type: none;">
                                                         {{ key }} <small>({{ i }}%)</small>
                                                         <span class="price float-right">
-                                                            <span class="currency">$</span>
+                                                            <span class="currency">NPR </span>
                                                             <span id="tax-{{ key }}">{{ j }}</span>
                                                         </span>
                                                     </li>
@@ -98,7 +98,7 @@
                                             <li style="list-style-type: none; font-weight: 600;">
                                                 TOTAL
                                                 <span class="price float-right">
-                                                    <span class="currency">$</span>
+                                                    <span class="currency">NPR </span>
                                                     <span id="total">{{ grand_total }}</span>
                                                 </span>
                                             </li>
