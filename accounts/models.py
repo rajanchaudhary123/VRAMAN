@@ -70,7 +70,7 @@ class User(AbstractBaseUser):
         blank=True,
         validators=[phone_regex]
     )
-    interest = models.CharField(max_length=50, null=False )
+    interest = models.CharField(max_length=50, null=True )
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICE, blank=True, null=True)
 
     # required fields

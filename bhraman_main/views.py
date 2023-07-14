@@ -166,7 +166,7 @@ def home(request):
             print(f"Package: {package},Package ID: {package.id}, Average Rating: {package.average_rating}")
 
          # Sort the packages in descending order based on average ratings
-        sorted_packages = filtered_packages.order_by('-average_rating')
+        sorted_packages = filtered_packages.order_by('-average_rating')[:8]
          #end of review rating part
 
 
@@ -521,7 +521,7 @@ def home(request):
 
 
 # Sort the packages in descending order based on average ratings
-        sorted_packages = filtered_packages.order_by('-average_rating')
+        sorted_packages = filtered_packages.order_by('-average_rating')[:8]
          #end of review rating part
 
         if get_or_set_current_location(request) is not None:

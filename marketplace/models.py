@@ -12,7 +12,7 @@ from django.conf import settings
 class ReviewRating(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete= models.CASCADE)
-    subject = models.CharField(max_length=50, blank=True)
+    subject = models.CharField(max_length=500, blank=True)
     review = models.TextField(max_length= 500,blank=True)
     rating = models.FloatField()
     ip = models.CharField(max_length=20, blank=True)
