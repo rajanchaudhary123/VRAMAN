@@ -3,6 +3,7 @@ from .models import User,UserProfile
 from .validators import allow_only_images_validator
 from django.core.validators import RegexValidator
 from menu.models import Category
+import re
 
 # Interest= [
 #     ('adventure', 'Adventure'),
@@ -34,6 +35,11 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError(
                 "password does not match!"
             )
+        if len(password) < 8:
+            raise forms.ValidationError("Password should be at least 8 characters long!")
+
+        if not re.search(r'[!@#$%^&*]', password):
+            raise forms.ValidationError("Password should contain at least one special character (!@#$%^&*)!")
 
 
 class UserProfileForm(forms.ModelForm):

@@ -1,3 +1,4 @@
+import re
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.db.models.fields.related import ForeignKey, OneToOneField
@@ -6,6 +7,7 @@ from django.core.validators import RegexValidator
 
 from django.contrib.gis.db import models as gismodels
 from django.contrib.gis.geos import Point
+from django.forms import ValidationError
  
  
  
@@ -93,6 +95,12 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+    def clean(self):
+        super().clean()
+        if self.email:
+            email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+            if not re.match(email_pattern, self.email):
+                raise ValidationError("Invalid email address.")
 
     def has_perm(self, perm, obj=None):
         return self.is_admin
