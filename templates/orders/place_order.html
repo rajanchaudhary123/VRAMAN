@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <!-- Main Section Start -->
 <div class="main-section pt-5">
@@ -109,7 +109,10 @@
                                             {% elif order.payment_method == 'Khalti' %}
                                             <div>
                                                 
-                                              <button type="submit" id="payment-button-wallet" >Pay with Khalti</button>
+                                                <button type="submit" id="payment-button-wallet">
+                                                    <img src="{% static 'images/khalti.png' %}" alt="Khalti" width="150"/>
+                                                    
+                                                </button>
                                             </div>
                                             {% endif %}
                                             
