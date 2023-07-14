@@ -15,7 +15,7 @@ from menu.models import Category
 
 class UserForm(forms.ModelForm):
     # Fetch choices dynamically from the Category model
-    interest_choices = Category.objects.values_list('category_name', 'category_name')
+    interest_choices = Category.objects.values_list('category_name', 'category_name').distinct()
     
     interest = forms.CharField(label='Interest', widget=forms.Select(choices=interest_choices))
     password = forms.CharField(widget=forms.PasswordInput())
