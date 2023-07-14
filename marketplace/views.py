@@ -238,6 +238,10 @@ def search(request):
         longitude = request.GET['lng']
         radius = request.GET['radius']
         keyword = request.GET['keyword']
+
+
+        package_search = PackageItem.objects.filter(package_title__icontains=keyword, is_available=True)
+        fetch_vendors_by_packageitems = PackageItem.objects.filter(package_title__icontains=keyword, is_available=True).values_list('vendor', flat=True)
         
         # get vendor ids that has the food item the user is looking for
         fetch_vendors_by_packageitems = PackageItem.objects.filter(package_title__icontains=keyword, is_available=True).values_list('vendor', flat=True)
@@ -254,8 +258,12 @@ def search(request):
             for v in vendors:
                     v.kms = round(v.distance.km, 1)
         
+        
         vendor_count = vendors.count()
+        package_count = package_search.count()
         context = {
+                'package_search' : package_search,
+                'package_count':package_count,
                 'vendors': vendors,
                 'vendor_count': vendor_count,
                  'source_location': address,

@@ -18,24 +18,24 @@
 				  <b>Search for Travel Destinations and Packages.</b></p>
 			</div>
         </div>
-		<script>
-			var images = [
-			  '{% static 'extra-images/POKHARA-min' %}',
-			  '{% static 'extra-images/banner2.png' %}',
-			  '{% static 'extra-images/banner3.png' %}',
-        '{% static 'extra-images/banner5.png' %}'
-			];
-			var index = 0;
-			var banner = document.getElementById('banner');
-		  
-			function changeBackground() {
-			  banner.style.backgroundImage = 'url(' + images[index] + ')';
-			  index = (index + 1) % images.length;
-			}
-		  
-			setInterval(changeBackground, 5000); // Change image every 5 seconds
-		  </script> 
-		  
+     <script>
+      var images = [
+        '{% static 'extra-images/background6.jpg' %}',
+        '{% static 'extra-images/background7.jpg' %}',
+        '{% static 'extra-images/background8.jpg' %}',
+        '{% static 'extra-images/background9.jpg' %}',
+      ];
+      var index = 0;
+      var banner = document.getElementById('banner');
+      
+      function changeBackground() {
+        banner.style.backgroundImage = 'url(' + images[index] + ')';
+        index = (index + 1) % images.length;
+      }
+      
+      setInterval(changeBackground, 5000); // Change image every 5 seconds
+      </script> 
+      
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
           <div class="main-search fancy bg-holder">
             <form action="{% url 'search' %}" method="GET">
