@@ -172,15 +172,15 @@ DEFAULT_FROM_EMAIL = 'BHRAMAN marketplace <bhraman653@gmail.com>'
 GOOGLE_API_KEY ='AIzaSyAd1iF0qOMcbvehRChx4F1PxaB2MZPsUHc'
 
 #abhishek
-os.environ['PATH'] = os.path.join(BASE_DIR, 'myenv\Lib\site-packages\osgeo') + ';' + os.environ['PATH']
-os.environ['PROJ_LIB'] = os.path.join(BASE_DIR, 'myenv\Lib\site-packages\osgeo\data\proj') + ';' + os.environ['PATH']
-GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'myenv\Lib\site-packages\osgeo\gdal304.dll')
+#os.environ['PATH'] = os.path.join(BASE_DIR, 'myenv\Lib\site-packages\osgeo') + ';' + os.environ['PATH']
+#os.environ['PROJ_LIB'] = os.path.join(BASE_DIR, 'myenv\Lib\site-packages\osgeo\data\proj') + ';' + os.environ['PATH']
+#GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'myenv\Lib\site-packages\osgeo\gdal304.dll')
 
 PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 
-# os.environ['PATH'] = os.path.join(BASE_DIR, 'meroenv\Lib\site-packages\osgeo') + ';' + os.environ['PATH']
-# os.environ['PROJ_LIB'] = os.path.join(BASE_DIR, 'meroenv\Lib\site-packages\osgeo\data\proj') + ';' + os.environ['PATH']
-# GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'meroenv\Lib\site-packages\osgeo\gdal304.dll')
+os.environ['PATH'] = os.path.join(BASE_DIR, 'meroenv\Lib\site-packages\osgeo') + ';' + os.environ['PATH']
+os.environ['PROJ_LIB'] = os.path.join(BASE_DIR, 'meroenv\Lib\site-packages\osgeo\data\proj') + ';' + os.environ['PATH']
+GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'meroenv\Lib\site-packages\osgeo\gdal304.dll')
