@@ -6,7 +6,7 @@
     <div class="page-section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12">
+                <div class="col-lg-5 col-md-8 col-sm-8 col-xs-12">
                     <div class="tabs-holder horizontal">
                         <ul class="stickynav-tabs nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#home"><i class="fa fa-shopping-cart text-danger"></i>Review Your Billing Address</a></li>
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <!-- your order section -->
-                <div class="col-lg-6 col-md-4 col-sm-4 col-xs-12">
+                <div class="col-lg-7 col-md-6 col-sm-6 col-xs-12">
                     <div class="tabs-holder horizontal">
                         <ul class="stickynav-tabs nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Your Order</a></li>
@@ -60,14 +60,23 @@
                                     
                                     <div>
                                          {{cart_item}}
+                                         <style>
+                                            .package-name,
+                                            .package-price {
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;
+                                                white-space: nowrap;
+                                            }
+                                        </style>
+                                         
                                         <table class="table">
                                             <tbody>
                                                 {% for item in cart_items %}
                                                 <tr>
                                                     <td><img src="{{ item.packageitem.image.url }}" width="40" alt="packet Image"></td>
-                                                    <td><b>{{ item.packageitem }}</b></td>
+                                                    <td class="package-name" ><b>{{ item.packageitem }}</b></td>
                                                     <td>{{ item.quantity }}</td>
-                                                    <td>NPR {{ item.packageitem.price }}</td>
+                                                    <td class="package-price">NPR {{ item.packageitem.price }}</td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>

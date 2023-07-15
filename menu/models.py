@@ -38,10 +38,10 @@ class PackageItem(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='packageimages', null=True)
     address = models.CharField(max_length=250, blank=True, null=True)
-    country = models.CharField(max_length=15, blank=True, null=True)
+    country = models.CharField(max_length=50, blank=True, null=True)
     state = models.CharField(max_length=30, blank=True, null=True)
-    city = models.CharField(max_length=15, blank=True, null=True)
-    pin_code = models.CharField(max_length=6, blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    pin_code = models.CharField(max_length=20, blank=True, null=True)
     latitude = models.CharField(max_length=30, blank=True, null=True)
     longitude = models.CharField(max_length=30, blank=True, null=True)
 
