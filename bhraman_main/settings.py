@@ -166,10 +166,10 @@ EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'BHRAMAN marketplace <bhraman653@gmail.com>'
+DEFAULT_FROM_EMAIL = 'BHRAMAN marketplace <email value here>'
 
 
-GOOGLE_API_KEY ='GOOGle API KEY VAlUE'
+GOOGLE_API_KEY ='AIzaSyAd1iF0qOMcbvehRChx4F1PxaB2MZPsUHc'
 
 #abhishek
 #os.environ['PATH'] = os.path.join(BASE_DIR, 'myenv\Lib\site-packages\osgeo') + ';' + os.environ['PATH']
